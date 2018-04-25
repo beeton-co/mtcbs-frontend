@@ -65,7 +65,7 @@ export const createChannel = (name, description) => {
                   dispatch(utils.async(CREATE_CHANNEL, error));
                 } else {
                   notification.channelCreationSucces(name, tx);
-                  dispatch(utils.async(CREATE_CHANNEL, {tx:tx}));
+                  dispatch(utils.async(CREATE_CHANNEL, {tx: tx}));
                 }
               }).catch(function (err) {
         hideMessage();
@@ -81,21 +81,27 @@ export const createChannel = (name, description) => {
 };
 
 export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration, minNumOfBets, exclusive) => {
-  const hideMessage = message.loading(`Creating '${name}' race. This might take a couple of seconds...!`, 0);
+  const hideMessage = message.loading(`Creating '${name}' race. This might take a couple of seconds...`, 0);
   return dispatch => {
     let controller;
     const mBet = web3Instance.utils.toWei(minBet, "ether");
+
     __controller().then(function (instance) {
       controller = instance;
       if (exclusive) {
-        return controller.createExclusiveRace.estimateGas(name, coins, mBet, bStartTime, rStartTime, duration, minNumOfBets, sc.smartcontract.context);
+        return controller.createExclusiveRace.estimateGas(name,
+                coins, mBet, bStartTime, rStartTime,
+                duration, minNumOfBets, sc.smartcontract.context);
       }
-      return controller.createRace.estimateGas(name, coins, mBet, bStartTime, rStartTime, duration, minNumOfBets, sc.smartcontract.context);
+      return controller.createRace.estimateGas(name, coins, mBet, bStartTime,
+              rStartTime, duration, minNumOfBets,
+              sc.smartcontract.context);
     }).then(function (estimateGas) {
       let context = sc.smartcontract.context;
       context['gas'] = estimateGas;
       if (exclusive) {
-        controller.createExclusiveRace(name, coins, mBet, rStartTime, bStartTime, duration, minNumOfBets, context)
+        controller.createExclusiveRace(name, coins, mBet, rStartTime,
+                bStartTime, duration, minNumOfBets, context)
                 .then(function (tx, error) {
                   hideMessage();
                   notification.raceCreationSuccess(tx);
@@ -131,9 +137,9 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
 export const betOn = (race, coin, value, coinName) => {
   let context = sc.smartcontract.context;
   const hideMessage = message.loading(`Placing a bet on ${coinName}. This might take a couple of seconds...`);
-  if (utils.nonNull(value)){
+  if (utils.nonNull(value)) {
     context['value'] = web3Instance.utils.toWei(value, "ether");
-  }else {//if value is undefined simply means user is using default value with is the min bet set by race creator
+  } else {//if value is undefined simply means user is using default value with is the min bet set by race creator
     context['value'] = race.minBet;
   }
   return dispatch => {
@@ -176,7 +182,7 @@ export const claimReward = (race) => {
                 console.log(tx, error);
                 hideMessage();
                 //TODO message
-                dispatcher(dispatch, CLAIM_REWARD, {race:race.id, amount: tx}, error);
+                dispatcher(dispatch, CLAIM_REWARD, {race: race.id, amount: tx}, error);
               }).catch(function (err) {
         hideMessage();
         //TODO message
