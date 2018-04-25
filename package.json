@@ -1,0 +1,41 @@
+{
+  "name": "full-react-template",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.3.3",
+    "redux-form-antd": "^1.0.5",
+    "axios": "^0.18.0",
+    "history": "^4.7.2",
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0",
+    "node-sass-chokidar": "^1.2.0",
+    "npm-run-all": "^4.1.2",
+    "primer-avatars": "^1.5.2",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "react-widgets": "^4.2.2",
+    "react-widgets-moment": "^4.0.10",
+    "react-widgets-simple-number": "^4.1.8",
+    "redux": "^3.7.2",
+    "redux-form": "^7.3.0",
+    "redux-thunk": "^2.2.0",
+    "truffle-contract": "^3.0.4",
+    "web3": "^1.0.0-beta.33"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build-js": "react-scripts build",
+    "build": "npm-run-all -p build-css build-js",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
