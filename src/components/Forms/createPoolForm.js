@@ -7,10 +7,10 @@ import {
   ControlButtons,
   SelectControl,
   DateTimePickerControl,
-  MinBetControl
+  MinBetControl,
+  MinNumberOfBetsControl
 } from "./controls";
 import DurationControl from './durationcontrol';
-//import MinBetControl from './mincontrol';
 
 
 import {
@@ -36,6 +36,7 @@ let PoolForm = props => {
       <Field {...defaultFormItemLayout} name="raceStartTime" component={DateTimePickerControl} label="Race Start Time" validate={[required]}/>
       <Field {...defaultFormItemLayout} name="raceDuration" component={DurationControl} label="Race Duration"  {...props}/>
       <Field {...defaultFormItemLayout} name="minBet" component={MinBetControl} label="Minimum Bet"  {...props}/>
+      <Field {...defaultFormItemLayout} name="minNumOfBets" component={MinNumberOfBetsControl} label="Minimum Number of Bets"  {...props}/>
       <Field name="ctrlBtns" component={ControlButtons}/>
     </form>
   </div>);

@@ -79,3 +79,19 @@ export const MinBetControl = (props) => {
             </Row>
           </FormItem>);
 };
+
+export const MinNumberOfBetsControl = (props) => {
+  const {input: {onChange}, label} = props;
+  const config = {defaultValue: 3, min: 3, step: 1, culture: 'en', format:"0"};
+  return (
+          <FormItem style={{marginTop: 32}}>
+            <Row>
+              <Col sm={7} xs={24} className="ant-form-item-label">
+                <label>{label}</label>
+              </Col>
+              <Col sm={8} md={6} xs={18}>
+                <NumberPicker onChange={onChange} format={config.format.value} {...config} />
+              </Col>
+            </Row>
+          </FormItem>);
+};

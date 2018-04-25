@@ -80,7 +80,7 @@ export const createChannel = (name, description) => {
   };
 };
 
-export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration, exclusive) => {
+export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration, minNumOfBets, exclusive) => {
   const hideMessage = message.loading(`Creating '${name}' race. This might take a couple of seconds...!`, 0);
   return dispatch => {
     let controller;
@@ -88,14 +88,14 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
     __controller().then(function (instance) {
       controller = instance;
       if (exclusive) {
-        return controller.createExclusiveRace.estimateGas(name, coins, mBet, bStartTime, rStartTime, duration, sc.smartcontract.context);
+        return controller.createExclusiveRace.estimateGas(name, coins, mBet, bStartTime, rStartTime, duration, minNumOfBets, sc.smartcontract.context);
       }
-      return controller.createRace.estimateGas(name, coins, mBet, bStartTime, rStartTime, duration, sc.smartcontract.context);
+      return controller.createRace.estimateGas(name, coins, mBet, bStartTime, rStartTime, duration, minNumOfBets, sc.smartcontract.context);
     }).then(function (estimateGas) {
       let context = sc.smartcontract.context;
       context['gas'] = estimateGas;
       if (exclusive) {
-        controller.createExclusiveRace(name, coins, mBet, rStartTime, bStartTime, duration, context)
+        controller.createExclusiveRace(name, coins, mBet, rStartTime, bStartTime, duration, minNumOfBets, context)
                 .then(function (tx, error) {
                   hideMessage();
                   notification.raceCreationSuccess(tx);
@@ -106,7 +106,7 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
           dispatcher(dispatch, CREATE_RACE, null, err);
         });
       } else {
-        controller.createRace(name, coins, mBet, rStartTime, bStartTime, duration, context)
+        controller.createRace(name, coins, mBet, rStartTime, bStartTime, duration, minNumOfBets, context)
                 .then(function (tx, error) {
                   hideMessage();
                   notification.raceCreationSuccess(tx);
@@ -120,6 +120,7 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
       }
 
     }).catch(function (err) {
+      console.log(err);
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, CREATE_RACE, null, err);

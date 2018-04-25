@@ -21,7 +21,8 @@ class CreateRace extends Component {
 
   state = {
     coins: [],
-    duration: HOUR
+    duration: HOUR,
+    minNumOfBets: 3
   };
 
   componentWillReceiveProps(nextProps) {
@@ -41,7 +42,9 @@ class CreateRace extends Component {
       let currentTime = Math.round(new Date().getTime() / 1000);
       const bettingStartTime = Math.floor(form.bettingStartTime.getTime() / 1000);
       const raceStartTime = Math.floor(form.raceStartTime.getTime() / 1000);
+      const minNumOfBets = utils.nonNull(form.minNumOfBets) ? form.minNumOfBets: this.state.minNumOfBets;
       const diff = bettingStartTime - currentTime;
+
       if (diff <= HOUR){
         notification.info('You cannot create a race that starts (both bet placement and race) in less than an hour from now.');
         return;
@@ -51,7 +54,7 @@ class CreateRace extends Component {
         notification.info("Race can't be created. At least 15 minutes is required for people to place their bets!");
         return;
       }
-      this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, this.state.duration, false);
+      this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, this.state.duration, minNumOfBets, false);
     }
   }
 
@@ -76,6 +79,7 @@ class CreateRace extends Component {
       return <Redirect to='/home' {...this.props} />;
     }
     return (<Card style={{marginTop: 32}} bordered={false}>
+      <div style={{ marginTop: 50, fontSize: 24, fontWeight: 500, color:"#fff", textTransform: "uppercase" }}>Race creation form</div>
       <CreatePoolForm onSubmit={this.handleCreateRace}
                       onMinBetChange={this.onMinBetChange}
                       selectValueChanged={this.selectValueChanged}
