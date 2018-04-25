@@ -65,7 +65,7 @@ export const createChannel = (name, description) => {
                   dispatch(utils.async(CREATE_CHANNEL, error));
                 } else {
                   notification.channelCreationSucces(name, tx);
-                  dispatch(utils.async(CREATE_CHANNEL, tx));
+                  dispatch(utils.async(CREATE_CHANNEL, {tx:tx}));
                 }
               }).catch(function (err) {
         hideMessage();
