@@ -1,5 +1,5 @@
 {
-  "contractName": "Controller",
+  "contractName": "MTCBSController",
   "abi": [
     {
       "inputs": [],
@@ -132,6 +132,20 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [],
+      "name": "createHouseChannel",
+      "outputs": [
+        {
+          "name": "chId",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [
         {
@@ -156,6 +170,10 @@
         {
           "name": "channelOwner",
           "type": "address"
+        },
+        {
+          "name": "expirationDate",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -187,6 +205,10 @@
         {
           "name": "id",
           "type": "uint256"
+        },
+        {
+          "name": "expirationDate",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -209,6 +231,44 @@
         {
           "name": "disable",
           "type": "bool"
+        },
+        {
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "name": "expirationDate",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "houseChannel",
+      "outputs": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "disable",
+          "type": "bool"
+        },
+        {
+          "name": "channelOwner",
+          "type": "address"
+        },
+        {
+          "name": "expirationDate",
+          "type": "uint256"
         },
         {
           "name": "id",
@@ -398,6 +458,20 @@
       "constant": true,
       "inputs": [],
       "name": "myRaces",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "houseRaces",
       "outputs": [
         {
           "name": "",
