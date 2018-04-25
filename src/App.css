@@ -1,0 +1,672 @@
+@import url(~antd/dist/antd.css);
+.avatar {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  border-radius: 3px; }
+
+.avatar-small {
+  border-radius: 2px; }
+
+.avatar-link {
+  float: left;
+  line-height: 1; }
+
+.avatar-group-item {
+  display: inline-block;
+  margin-bottom: 3px; }
+
+.avatar-parent-child {
+  position: relative; }
+
+.avatar-child {
+  position: absolute;
+  right: -15%;
+  bottom: -9%;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: -2px -2px 0 rgba(255, 255, 255, 0.8); }
+
+.avatar-stack {
+  display: inline-block;
+  white-space: nowrap; }
+  .avatar-stack .avatar {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    box-sizing: content-box;
+    margin-right: -15px;
+    background-color: #fff;
+    border-right: 1px solid #fff;
+    border-radius: 2px;
+    transition: margin 0.1s ease-in-out; }
+    .avatar-stack .avatar:only-child {
+      background-color: transparent; }
+    .avatar-stack .avatar:first-child {
+      z-index: 3; }
+    .avatar-stack .avatar:last-child {
+      z-index: 1;
+      margin-right: 0;
+      border-right: 0; }
+  .avatar-stack:hover .avatar {
+    margin-right: 3px; }
+    .avatar-stack:hover .avatar:last-child {
+      margin-right: 0; }
+
+.AvatarStack {
+  position: relative;
+  min-width: 26px;
+  height: 20px; }
+  .AvatarStack .AvatarStack-body {
+    position: absolute; }
+  .AvatarStack.AvatarStack--two {
+    min-width: 36px; }
+  .AvatarStack.AvatarStack--three-plus {
+    min-width: 46px; }
+
+.AvatarStack-body {
+  display: flex;
+  background: #fff; }
+  .AvatarStack-body .avatar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    box-sizing: content-box;
+    margin-right: -11px;
+    background-color: #fff;
+    border-right: 1px solid #fff;
+    border-radius: 2px;
+    transition: margin 0.1s ease-in-out; }
+    .AvatarStack-body .avatar:first-child {
+      z-index: 3; }
+    .AvatarStack-body .avatar:last-child {
+      z-index: 1; }
+    .AvatarStack-body .avatar img {
+      border-radius: 2px; }
+    .AvatarStack-body .avatar:nth-child(n+4) {
+      display: none;
+      opacity: 0; }
+  .AvatarStack-body:hover .avatar {
+    margin-right: 3px; }
+  .AvatarStack-body:hover .avatar:nth-child(n+4) {
+    display: flex;
+    opacity: 1; }
+  .AvatarStack-body:hover .avatar-more {
+    display: none !important; }
+
+.avatar.avatar-more {
+  z-index: 1;
+  margin-right: 0;
+  background: #f6f8fa; }
+  .avatar.avatar-more::before, .avatar.avatar-more::after {
+    position: absolute;
+    display: block;
+    height: 20px;
+    content: "";
+    border-radius: 2px;
+    outline: 1px solid #fff; }
+  .avatar.avatar-more::before {
+    width: 17px;
+    background: #e1e4e8; }
+  .avatar.avatar-more::after {
+    width: 14px;
+    background: #d1d5da; }
+
+.AvatarStack--right .AvatarStack-body {
+  right: 0;
+  flex-direction: row-reverse; }
+  .AvatarStack--right .AvatarStack-body:hover .avatar {
+    margin-right: 0;
+    margin-left: 3px; }
+
+.AvatarStack--right .avatar.avatar-more {
+  background: #d1d5da; }
+  .AvatarStack--right .avatar.avatar-more::before {
+    width: 5px; }
+  .AvatarStack--right .avatar.avatar-more::after {
+    width: 2px;
+    background: #f6f8fa; }
+
+.AvatarStack--right .avatar {
+  margin-right: 0;
+  margin-left: -11px;
+  border-right: 0;
+  border-left: 1px solid #fff; }
+
+.CircleBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 5px rgba(27, 31, 35, 0.15); }
+
+.CircleBadge-icon {
+  max-width: 60% !important;
+  height: auto !important;
+  max-height: 55% !important; }
+
+.CircleBadge--small {
+  width: 56px;
+  height: 56px; }
+
+.CircleBadge--medium {
+  width: 96px;
+  height: 96px; }
+
+.CircleBadge--large {
+  width: 128px;
+  height: 128px; }
+
+.DashedConnection {
+  position: relative; }
+  .DashedConnection::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    content: "";
+    border-bottom: 2px dashed #e1e4e8; }
+  .DashedConnection .CircleBadge {
+    position: relative; }
+
+body {
+  background-color: #181e36; }
+
+.App {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+
+.navbar {
+  height: 100%; }
+
+.main-screen {
+  width: 100%;
+  background-color: #181e36; }
+
+.card-container {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap; }
+
+.dash-card {
+  box-shadow: 0px 2px 1px #000;
+  width: 160px; }
+
+.dash-card .ant-card-body {
+  padding-top: 0px;
+  padding-bottom: 12px; }
+
+.dash-progress {
+  padding-top: 24px;
+  display: flex;
+  justify-content: center; }
+
+.ant-card-contain-tabs > .ant-card-body {
+  padding: 0px; }
+
+.dash-card > ul {
+  pointer-events: none; }
+
+.ant-card-meta-title {
+  color: #fff; }
+
+.payout-card-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: #818399; }
+
+.payout-card-flex p {
+  margin-bottom: 0; }
+
+.payout-card-value {
+  color: #52c41a; }
+
+.card-arr {
+  margin: 0 5px 0 5px;
+  height: 15px; }
+
+.ant-card-head-title {
+  color: #fff; }
+
+.ant-tabs {
+  color: #818399; }
+
+.ant-card {
+  background: transparent; }
+
+.ant-card-head {
+  background-color: #252d47;
+  border-bottom: 1px solid #20273f; }
+
+.ant-card.dash-card {
+  background-color: #1f273e; }
+
+.ant-card-bordered {
+  border: 1px solid #20273f;
+  border-radius: 5px; }
+
+.ant-card-actions {
+  border-top: 1px solid #20273f;
+  background: #252d47;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px; }
+
+.ant-card-actions > li {
+  color: #818399; }
+
+.ant-card-actions > li:not(:last-child) {
+  border-right: 1px solid #20273f; }
+
+.ant-progress-circle-trail {
+  stroke: #222642; }
+
+.ant-progress-circle .ant-progress-text {
+  color: #818399;
+  font-size: 14px; }
+
+.dash-progress > .ant-progress-inner > .ant-progress-circle {
+  filter: drop-shadow(0px 0px 1px black); }
+
+.betting-open > .ant-progress-inner > .ant-progress-circle > path.ant-progress-circle-path {
+  stroke: url(#gradient-circle-progress-open); }
+
+.betting-closed > .ant-progress-inner > .ant-progress-circle > path.ant-progress-circle-path {
+  stroke: url(#gradient-circle-progress-closed); }
+
+.ant-progress-status-success .ant-progress-circle-path {
+  stroke: #52c41a !important; }
+
+.participating-coins {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap; }
+
+.AvatarStack-body {
+  background: transparent; }
+
+.AvatarStack-body .avatar {
+  background-color: transparent;
+  border-right: none; }
+
+.dash-logo {
+  height: 35px;
+  filter: drop-shadow(0px 0px 1px black); }
+
+.dash-logo {
+  height: 35px;
+  filter: drop-shadow(0px 0px 1px black); }
+
+.create-pool-flex {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.create-channel {
+  padding: 20px;
+  align-items: center;
+  justify-content: center; }
+
+.create-channel-card {
+  box-shadow: 0px 2px 1px #000;
+  background: #252d47;
+  width: 30%;
+  padding: 15px; }
+
+.create-pool-card {
+  box-shadow: 0px 2px 1px #000;
+  background: #252d47;
+  width: 300px;
+  padding: 15px; }
+
+.create-pool-card label {
+  color: #fff; }
+
+.rw-multiselect {
+  border-radius: 5px; }
+
+.rw-list-option.rw-state-focus, .rw-list-option.rw-state-focus:hover {
+  border-color: transparent !important; }
+
+.rw-widget-picker > .rw-select {
+  background: #fff; }
+
+.pocket-form label {
+  color: #fff; }
+
+ant-carousel .slick-slide {
+  width: 163px; }
+
+.move-right-1 {
+  padding-left: 60px; }
+
+.anchor-not-clickable {
+  pointer-events: none;
+  cursor: default; }
+
+.standardList .ant-list-item-meta-description {
+  color: #fff;
+  font-size: 20px; }
+
+.standardList :global .ant-card-head {
+  border-bottom: none; }
+
+.standardList :global .ant-card-head-title {
+  line-height: 32px;
+  padding: 24px 0; }
+
+.standardList :global .ant-card-extra {
+  padding: 24px 0; }
+
+.standardList :global .ant-list-pagination {
+  text-align: right;
+  margin-top: 24px; }
+
+.standardList :global .ant-avatar-lg {
+  width: 48px;
+  height: 48px;
+  line-height: 48px; }
+
+.standardList .headerInfo {
+  position: relative;
+  text-align: center; }
+  .standardList .headerInfo > span {
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 22px;
+    margin-bottom: 4px; }
+  .standardList .headerInfo > p {
+    color: #fff;
+    font-size: 24px;
+    line-height: 32px;
+    margin: 0; }
+  .standardList .headerInfo > em {
+    background-color: hsv(0, 0, 91%);
+    position: absolute;
+    height: 56px;
+    width: 1px;
+    top: 0;
+    right: 0; }
+
+.standardList .listContent {
+  font-size: 0; }
+  .standardList .listContent .listContentItem {
+    color: #fff;
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 20px;
+    margin-left: 50px; }
+    .standardList .listContent .listContentItem > span {
+      line-height: 20px; }
+    .standardList .listContent .listContentItem > p {
+      margin-top: 4px;
+      margin-bottom: 0;
+      line-height: 22px; }
+
+.standardList .extraContentSearch {
+  margin-left: 16px;
+  width: 272px; }
+
+@media screen and (max-width: 480px) {
+  .standardList :global .ant-list-item-content {
+    display: block;
+    flex: none;
+    width: 100%; }
+  .standardList :global .ant-list-item-action {
+    margin-left: 0; }
+  .standardList .listContent {
+    margin-left: 0; }
+    .standardList .listContent > div {
+      margin-left: 0; }
+  .standardList .listCard :global .ant-card-head-title {
+    overflow: visible; } }
+
+@media screen and (max-width: 576px) {
+  .standardList .extraContentSearch {
+    margin-left: 0;
+    width: 100%; }
+  .standardList .headerInfo {
+    margin-bottom: 16px; }
+    .standardList .headerInfo > em {
+      display: none; } }
+
+@media screen and (max-width: 768px) {
+  .standardList .listContent > div {
+    display: block; }
+  .standardList .listContent > div:last-child {
+    top: 0;
+    width: 100%; }
+  .listCard :global .ant-radio-group {
+    display: block;
+    margin-bottom: 8px; } }
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+  .standardList .listContent > div {
+    display: block; }
+  .standardList .listContent > div:last-child {
+    top: 0;
+    width: 100%; } }
+
+@media screen and (max-width: 1200px) {
+  .standardList .listContent > div {
+    margin-left: 24px; }
+  .standardList .listContent > div:last-child {
+    top: 0; } }
+
+@media screen and (max-width: 1400px) {
+  .standardList .listContent {
+    text-align: right; }
+    .standardList .listContent > div:last-child {
+      top: 0; } }
+
+.descriptionList :global .ant-row {
+  margin-bottom: -16px;
+  overflow: hidden; }
+
+.descriptionList .title {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 16px; }
+
+.descriptionList .term {
+  line-height: 22px;
+  padding-bottom: 16px;
+  margin-right: 8px;
+  color: #fff;
+  white-space: nowrap;
+  display: table-cell; }
+  .descriptionList .term:after {
+    content: ":";
+    margin: 0 8px 0 2px;
+    position: relative;
+    top: -.5px; }
+
+.descriptionList .detail {
+  line-height: 22px;
+  width: 100%;
+  padding-bottom: 16px;
+  color: #fff;
+  display: table-cell; }
+
+.descriptionList.small :global .ant-row {
+  margin-bottom: -8px; }
+
+.descriptionList.small .title {
+  margin-bottom: 12px;
+  color: #fff; }
+
+.descriptionList.small .term, .descriptionList.small .detail {
+  padding-bottom: 8px; }
+
+.descriptionList.large .title {
+  font-size: 16px; }
+
+.descriptionList.vertical .term {
+  padding-bottom: 8px;
+  display: block; }
+
+.descriptionList.vertical .detail {
+  display: block; }
+
+.myraces-container > .title, .myraces-container .details, .myraces-container .term, .myraces-container .detail, .myraces-container .descriptionList .title {
+  color: #000; }
+
+.slick-arrow {
+  color: #fff  !important;
+  background: none !important; }
+
+.slick-prev:before, .slick-next:before {
+  color: red; }
+
+.runningListContentItem {
+  background: linear-gradient(120deg, #020024 0%, #0ea9c9 35%, #00d4ff 100%); }
+
+.finishedListContentItem {
+  background: #020024;
+  background: linear-gradient(90deg, #020024 0%, #0ec930 35%, #00d4ff 100%); }
+
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; }
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #181e36; }
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0; }
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0, rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) 0 1.5em 0 0, rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0, rgba(255, 255, 255, 0.5) -1.5em 0 0 0, rgba(255, 255, 255, 0.5) -1.1em -1.1em 0 0, rgba(255, 255, 255, 0.75) 0 -1.5em 0 0, rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0, rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) 0 1.5em 0 0, rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) -1.5em 0 0 0, rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0, rgba(255, 255, 255, 0.75) 0 -1.5em 0 0, rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0; }
+
+/* Animation */
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+.card-container > .ant-tabs-card > .ant-tabs-content {
+  height: 120px;
+  margin-top: -16px; }
+
+.card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+  background: #fff;
+  padding: 16px; }
+
+.card-container > .ant-tabs-card > .ant-tabs-bar {
+  border-color: #fff; }
+
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent; }
+
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+  border-color: #fff;
+  background: #fff; }
+
+.card-container-child {
+  width: 100%; }
