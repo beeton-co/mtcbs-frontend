@@ -41,7 +41,7 @@ class Header extends Component {
                     Create Race
                   </Link>
                 </Menu.Item>
-                <Menu.Item className="nav-item" key="create-race">
+                <Menu.Item className="nav-item" key="cmgmt-races">
                   <Link className="nav-link" to="/profile/cmgmt/races">
                     My Races
                   </Link>
