@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/**/node/
 
 # testing
 /coverage
@@ -25,3 +26,9 @@ yarn-error.log*
 .sass-cache/
 *.css.map
 *.iml
+
+# Logs:
+*.log
+*.out
+.npm-debug.log*
+*.pid
