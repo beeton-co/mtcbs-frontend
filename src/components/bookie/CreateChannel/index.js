@@ -17,7 +17,8 @@ export default class CreateChannel extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if(utils.nonNull(nextProps.econtract.cChannelResult)){
+    if(utils.nonNull(nextProps.econtract.cChannelResult) &&
+            utils.nonNull(nextProps.econtract.cChannelResult.tx)){
       this.setState({redirect:true});
     }
   }
