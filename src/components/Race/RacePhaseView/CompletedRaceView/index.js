@@ -40,13 +40,7 @@ export default class CompletedRaceView extends Component {
 
   eventHandler(id) {
     //Dispatch evens to race contracts to fetch current values;
-    // this.props.winningCoins(id);
-    // this.props.raceStartPrices(id);
-    // this.props.raceEndPrices(id);
-    this.props.inspectCoin(id, 1);
-    this.props.inspectCoin(id, 2);
-    this.props.inspectCoin(id, 3);
-    this.props.totalAmount(id);
+    this.props.winningCoins(id);
     this.setState({raceDetailId: id});
   }
 
@@ -181,11 +175,18 @@ export default class CompletedRaceView extends Component {
   }
 
   renderClaimRewardButton(){
+    console.log('this.props', this.props);
     const race = this.getDetailedRace();
     if(utils.nonNull(race)){
+      const winners = this.props.econtract.race.winners;
+      const descriptions = [];
+      descriptions.push(<Description key={utils.id()}><Button onClick={(event) => this.props.claimReward(race)} ghost>Claim Reward</Button></Description>);
+      if(utils.nonNull(winners)){
+        descriptions.push(<Description term="Winner(s)" key={utils.id()}>{utils.renderCoinAvatars(winners)}</Description>);
+      }
       return (<Card>
         <DescriptionList size="large" col="2" style={{ marginBottom: 32 }}>
-          <Description><Button onClick={(event) => this.props.claimReward(race)} ghost>Claim Reward</Button></Description>
+          {descriptions}
         </DescriptionList>
       </Card>);
     }
