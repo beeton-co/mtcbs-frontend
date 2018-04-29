@@ -28,7 +28,6 @@ class Header extends Component {
           My Bets
         </Link>
       </Menu.Item>
-      {this.channelManagementLinks()}
     </SubMenu>);
   }
 
@@ -100,6 +99,7 @@ class Header extends Component {
                 <Link to="/" className="navbar-brand"><span><Icon type="home"/><span>Home</span></span></Link>
               </Menu.Item>
               {this.createChannel()}
+              {this.channelManagementLinks()}
               {this.renderRaceLinks()}
               {this.profileLinks()}
             </Menu>

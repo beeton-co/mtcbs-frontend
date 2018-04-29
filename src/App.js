@@ -31,9 +31,14 @@ import {
   retrieveAccount,
   createChannel,
   betOn,
+  winningCoins,
   myChannel,
   createRace,
   claimReward,
+  raceEndPrices,
+  raceStartPrices,
+  totalAmount,
+  inspectCoin,
   CONTRACT_NETWORK
 } from './actions/pocketcoin';
 
@@ -183,6 +188,11 @@ function mapDispatchToProps(dispatch) {
     createChannel: createChannel,
     createRace:createRace,
     betOn: betOn,
+    winningCoins:winningCoins,
+    raceStartPrices:raceStartPrices,
+    raceEndPrices:raceEndPrices,
+    totalAmount:totalAmount,
+    inspectCoin:inspectCoin,
     claimReward:claimReward
   }, dispatch);
 }
