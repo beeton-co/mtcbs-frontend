@@ -1,4 +1,6 @@
+import React from 'react';
 import API from '../api';
+import * as priceengine from './priceengine';
 
 //an axios utility get call
 export const get = (url, asyncFunc) => {
@@ -64,4 +66,14 @@ export const id =  () => {
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
   // after the decimal.
   return '_' + Math.random().toString(36).substr(2, 9);
+};
+
+export const renderCoinAvatars = (coinIds) => {
+  let coins = [];
+
+  for (let i = 0; i < coinIds.length; i++){
+    coins.push(<img className="avatar dash-logo" key={`coin-${coinIds[i]}`} alt="dash-logo"
+                    src={process.env.PUBLIC_URL + `/coin-svg/${priceengine.getCoinSymbol(coinIds[i]).toLowerCase()}.svg`} />)
+  }
+  return coins;
 };
