@@ -39,6 +39,14 @@ export default class CompletedRaceView extends Component {
   }
 
   eventHandler(id) {
+    //Dispatch evens to race contracts to fetch current values;
+    // this.props.winningCoins(id);
+    // this.props.raceStartPrices(id);
+    // this.props.raceEndPrices(id);
+    this.props.inspectCoin(id, 1);
+    this.props.inspectCoin(id, 2);
+    this.props.inspectCoin(id, 3);
+    this.props.totalAmount(id);
     this.setState({raceDetailId: id});
   }
 
@@ -85,6 +93,7 @@ export default class CompletedRaceView extends Component {
               <Card bordered={false} >
                 <Divider style={{ marginBottom: 32 }} />
                 <DescriptionList title="Race Information" style={{ marginBottom: 32 }} size="small" col="1">
+                  <Description term="Race name">{race.name}</Description>
                   <Description term="Betting start time">{new Date(race.bStartTime *1000).toLocaleString()}</Description>
                   <Description term="Race start time">{new Date(race.startTime *1000).toLocaleString()}</Description>
                   <Description term="Race Duration"><CountDownTimer static={true} duration={race.duration} startTime={race.startTime}/></Description>
@@ -147,6 +156,9 @@ export default class CompletedRaceView extends Component {
     }
     if (utils.nonNull(races) && races.length > 0) {
       const raceId = utils.isNull(this.state.raceDetailId) ? races[0].id : this.state.raceDetailId;
+      // if(utils.isNull(this.state.raceDetailId) ){
+      //   this.props.winningCoins(raceId);
+      // }
       for (let i = 0; i < races.length; i++) {
         if (races[i].id === raceId) {
           return races[i];
@@ -187,11 +199,11 @@ export default class CompletedRaceView extends Component {
       const settings = {
         dots: false,
         arrows: true,
-        infinite: true,
+        infinite: false,
         autoplay: false,
         speed: 500,
         slidesToShow: 6,
-        slidesToScroll: 1
+        slidesToScroll: 6
       };
 
       return (
@@ -201,7 +213,7 @@ export default class CompletedRaceView extends Component {
                   </Col>
                   <Col sm={19}>
                     <Carousel {...settings}>
-                      {races.map(r => <div className="dash-card">
+                      {races.map(r => <div className="dash-card" key={utils.id()}>
                         <DashCard key={r.id}
                                   raceId={r.id}
                                   leadingCoin={this.leadingCoin(r)}

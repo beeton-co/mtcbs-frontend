@@ -71,7 +71,7 @@ export default class RunningRaceView extends Component {
               <Card bordered={false} >
                 <Divider style={{ marginBottom: 32 }} />
                 <DescriptionList size="large" title="Race Information" style={{ marginBottom: 32 }}>
-                  {/*<Description term="Betting start time">{bstartTime}</Description>*/}
+                  {/*<Description term="Race Name">{race.name}</Description>*/}
                   <Description term="Race start time">{new Date(race.startTime *1000).toLocaleString()}</Description>
                   <Description term="Race Countdown"><CountDownTimer duration={race.duration} startTime={race.startTime}/></Description>
                   <Description term="Number Of Coins">{race.coins.length}</Description>
@@ -177,7 +177,7 @@ export default class RunningRaceView extends Component {
                   </Col>
                   <Col sm={19}>
                     <Carousel {...settings}>
-                      {races.map(r => <div className="dash-card">
+                      {races.map(r => <div className="dash-card" key={utils.id()}>
                         <DashCard key={r.id}
                                   raceId={r.id}
                                   leadingCoin={this.leadingCoin(r)}

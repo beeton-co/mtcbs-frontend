@@ -20,6 +20,7 @@ export default class UpComingRaceView extends Component {
   };
 
   eventHandler(id) {
+    this.props.inspectCoin(id, 1);
     this.setState({raceDetailId: id});
   }
 
@@ -57,7 +58,7 @@ export default class UpComingRaceView extends Component {
       const settings = {
         dots: false,
         arrows: true,
-        infinite: true,
+        infinite: false,
         autoplay: false,
         speed: 500,
         slidesToShow: 6,

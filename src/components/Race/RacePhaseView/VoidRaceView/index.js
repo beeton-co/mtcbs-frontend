@@ -20,6 +20,8 @@ export default class UpComingRaceView extends Component {
   };
 
   eventHandler(id) {
+    this.props.inspectCoin(id, 1);
+    this.props.totalAmount(id);
     this.setState({raceDetailId: id});
   }
 
@@ -57,11 +59,11 @@ export default class UpComingRaceView extends Component {
       const settings = {
         dots: false,
         arrows: true,
-        infinite: true,
+        infinite: false,
         autoplay: false,
         speed: 500,
         slidesToShow: 6,
-        slidesToScroll: 1
+        slidesToScroll: 6
       };
 
       let race = undefined;
@@ -86,7 +88,7 @@ export default class UpComingRaceView extends Component {
                   </Col>
                   <Col sm={19}>
                     <Carousel {...settings}>
-                      {races.map(r => <div className="dash-card">
+                      {races.map(r => <div className="dash-card" key={utils.id()}>
                         <DashCard key={r.id}
                                   raceId={r.id}
                                   leadingCoin=''
