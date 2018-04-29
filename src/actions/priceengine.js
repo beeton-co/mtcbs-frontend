@@ -8,7 +8,7 @@ import API from '../api';
 import * as utils from './utils';
 import CountdownLatch from './countdownlatch';
 
-const PRECISION = 10000;
+const PRECISION = 100000;
 const UPDATE_INTERVAL = 5 * 60 * 1000;
 
 export const getDetailRaceCoins = (status, race) => {
@@ -143,7 +143,7 @@ function processRaceCoinPrices(race, status, data, callback, dispatch) {
 
       } else if ('completed' === status) {
         coins.forEach(function (value) {
-          value["change"] = (((value.endPrice - value.startPrice) / value.startPrice) * 100).toFixed(2);
+          value["change"] = (((value.endPrice - value.startPrice) / value.startPrice) * 100).toFixed(5);
           value["endPrice"] = (value.endPrice / PRECISION).toFixed(5);
           value["startPrice"] = (value.startPrice / PRECISION).toFixed(5);
         });
@@ -167,7 +167,7 @@ function fetchTicker(value, outterDone, processedCoins) {
     value["currentPrice"] = ((ticker / size) / PRECISION).toFixed(5);
     value["startPrice"] = ((value.startPrice) / PRECISION).toFixed(5);
     value["lastUpdate"] = new Date().getTime();
-    value["change"] = (((value["currentPrice"] - value.startPrice) / value.startPrice) * 100).toFixed(2);
+    value["change"] = (((value["currentPrice"] - value.startPrice) / value.startPrice) * 100).toFixed(5);
     processedCoins.push(value);
     outterDone();
   });

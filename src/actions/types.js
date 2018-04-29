@@ -30,10 +30,15 @@ export const RETRIEVE_USER_ACCOUNT = 'retrieve_user_account';
 export const CREATE_CHANNEL = 'contract_call_create_channel';
 export const MY_CHANNEL = 'contract_call_my_channel';
 export const CREATE_RACE = 'contract_call_create_race';
-export const BET_ON = "contract_place_bet_on";
-export const CLAIM_REWARD = "contract_place_claim_reward";
 export const IS_BOOKIE = 'contract_call_is_bookie';
-
+//contract race events
+export const RACE_WINNERS = "contract_race_winners";
+export const BET_ON = "contract_place_bet_on";
+export const RACE_START_PRICES = "contract_race_start_prices";
+export const RACE_END_PRICES = "contract_race_end_prices";
+export const RACE_TOTAL_AMOUNT = "contract_race_total_amount";
+export const RACE_INSPECT_COIN = "contract_race_inspect_coin";
+export const CLAIM_REWARD = "contract_place_claim_reward";
 
 //user
 export const GET_ALL_USER_RACES = 'get_all_user_races';

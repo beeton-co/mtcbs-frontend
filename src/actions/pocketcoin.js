@@ -10,7 +10,12 @@ import {
   MY_CHANNEL,
   CREATE_RACE,
   BET_ON,
-  CLAIM_REWARD
+  CLAIM_REWARD,
+  RACE_WINNERS,
+  RACE_START_PRICES,
+  RACE_END_PRICES,
+  RACE_TOTAL_AMOUNT,
+  RACE_INSPECT_COIN
 } from "./types";
 import * as utils from './utils';
 import * as sc from '../services/smartcontract';
@@ -22,8 +27,7 @@ export const web3Instance = new Web3(Web3.givenProvider);
 export const CONTRACT_NETWORK = `${process.env.REACT_APP_CONTRACT_NETWORK}`;
 const CONTRACT_CONTROLLER_ADDRESS = `${process.env.REACT_APP_POCKET_CONTRACT_CONTROLLER}`;
 const BLOCKCHAIN_GET_CALL_TIMEOUT = 15000; //15 seconds
-//const BLOCKCHAIN_CALL_TIMEOUT = BLOCKCHAIN_GET_CALL_TIMEOUT * 2; //30 seconds
-
+export const btnblockcain = {races: {}};
 const CONTRACT_CONTROLLER = loadContract2(Controller);
 const RACE_CONTRACT = loadContract2(Race);
 
@@ -134,13 +138,130 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
   };
 };
 
+export const winningCoins = (race) => {
+  return dispatch => {
+    __race(race).then(function (instance) {
+      return instance.winningCoins();
+    }).then(function (coins) {
+      console.log('winningCoins', coins);
+      raceWinners(race, coins);
+      dispatcher(dispatch, RACE_WINNERS, {coins});
+    }).catch(function (err) {
+      console.log('winningCoins', err);
+      dispatcher(dispatch, RACE_WINNERS, err);
+    });
+  }
+};
+
+export const raceStartPrices = (race) => {
+  return dispatch => {
+    __race(race).then(function (instance) {
+      return instance.startPrices();
+    }).then(function (pricesObj) {
+      console.log('startPrices', pricesObj);
+      racePrices(race, pricesObj, 'startPrices');
+      dispatcher(dispatch, RACE_START_PRICES, {pricesObj});
+    }).catch(function (err) {
+      console.log('startPrices', err);
+      dispatcher(dispatch, RACE_START_PRICES, err);
+    });
+  }
+};
+
+export const raceEndPrices = (race) => {
+  return dispatch => {
+    __race(race).then(function (instance) {
+      return instance.endPrices();
+    }).then(function (pricesObj) {
+      console.log('endPrices', pricesObj, 'endPrices');
+      racePrices(race, pricesObj, 'endPrices');
+      dispatcher(dispatch, RACE_END_PRICES, {pricesObj});
+    }).catch(function (err) {
+      console.log('endPrices', err);
+      dispatcher(dispatch, RACE_END_PRICES, err);
+    });
+  }
+};
+
+
+export const inspectCoin = (race, coinId) => {
+  return dispatch => {
+    __race(race).then(function (instance) {
+      return instance.inspectCoin(coinId);
+    }).then(function (coin) {
+
+      const _coin = {coinId:coin[0].toNumber(),
+        total:coin[1].toNumber(),
+        numOfBets:coin[2].toNumber(),
+        startPrice:coin[3].toNumber(),
+        endPrice:coin[4].toNumber()};
+
+      console.log('coin', _coin);
+      racePrices(race, _coin, 'coin');
+      dispatcher(dispatch, RACE_INSPECT_COIN, {coin:_coin});
+    }).catch(function (err) {
+      console.log('endPrices', err);
+      dispatcher(dispatch, RACE_INSPECT_COIN, err);
+    });
+  }
+};
+
+export const inspectCoin_ = (race, coinId) => {
+  return dispatch => {
+    __race(race).then(function (instance) {
+      return instance.inspectFinalCoinsOrder();
+    }).then(function (coins) {
+      const results = [];
+
+      for(let i = 0; i < coins[0].length; i++){
+
+        results.push({coinId:coins[0][i].toString(),
+          total:web3Instance.utils.fromWei(coins[1][i].toString(), "ether"),
+          numOfBets:coins[2][i].toString(),
+          startPrice:coins[3][i].toString(),
+          endPrice:coins[4][i].toString()});
+      }
+      console.log(results);
+      racePrices(race, results, 'coins');
+      dispatcher(dispatch, RACE_INSPECT_COIN, {coins:results});
+    }).catch(function (err) {
+      console.log('endPrices', err);
+      dispatcher(dispatch, RACE_INSPECT_COIN, err);
+    });
+  }
+};
+
+export const totalAmount = (race) => {
+  return dispatch => {
+    __race(race).then(function (instance) {
+      return instance.totalAmount();
+    }).then(function (amount) {
+
+      //This is a BigNumber object to somehow fails eventhough
+      //it is one of the objects accepted by fromWei
+      // (Please pass numbers as strings or BigNumber objects to avoid precision errors.)
+      //For now workaround would be the convert to number -> string
+      //const ether = web3Instance.utils.fromWei(amount, 'ether');
+      const wei = amount.toNumber();
+      const weiStr = String(wei);
+      const ether = web3Instance.utils.fromWei(weiStr, 'ether');
+      console.log('totalAmount', ether, race);
+      racePrices(race, ether, 'totalAmount');
+      dispatcher(dispatch, RACE_TOTAL_AMOUNT, ether);
+    }).catch(function (err) {
+      console.log('totalAmount', err);
+      dispatcher(dispatch, RACE_TOTAL_AMOUNT, err);
+    });
+  }
+};
+
 export const betOn = (race, coin, value, coinName) => {
   let context = sc.smartcontract.context;
   const hideMessage = message.loading(`Placing a bet on ${coinName}. This might take a couple of seconds...`);
   if (utils.nonNull(value)) {
-    context['value'] = web3Instance.utils.toWei(value, "ether");
+    context['value'] = web3Instance.utils.toWei(String(value), "ether");
   } else {//if value is undefined simply means user is using default value with is the min bet set by race creator
-    context['value'] = race.minBet;
+    context['value'] = String(race.minBet);
   }
   return dispatch => {
     let raceContract;
@@ -160,11 +281,29 @@ export const betOn = (race, coin, value, coinName) => {
         dispatcher(dispatch, BET_ON, null, err);
       });
     }).catch(function (err) {
+      console.log(err);
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, BET_ON, null, err);
     });
   }
+};
+
+export const claimReward_ = (race) => {
+  return dispatch => {
+    let raceContract;
+    __race(race.id).then(function (instance) {
+      raceContract = instance;
+      return raceContract.claimMyReward();
+    }).then(function (canClaim) {
+        console.log('canClaim',canClaim);
+        dispatcher(dispatch, CLAIM_REWARD, canClaim, null);
+    }).catch(function (err) {
+      console.log(err);
+      notification.error('Could not determine gas at this point in time. Please try again later');
+      dispatcher(dispatch, CLAIM_REWARD, null, err);
+    });
+  };
 };
 
 export const claimReward = (race) => {
@@ -174,6 +313,7 @@ export const claimReward = (race) => {
     let raceContract;
     __race(race.id).then(function (instance) {
       raceContract = instance;
+      console.log(context);
       return raceContract.claimMyReward.estimateGas(context);
     }).then(function (estimateGas) {
       context['gas'] = estimateGas;
@@ -189,6 +329,7 @@ export const claimReward = (race) => {
         dispatcher(dispatch, CLAIM_REWARD, null, err);
       });
     }).catch(function (err) {
+      console.log(err);
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, CLAIM_REWARD, null, err);
@@ -296,4 +437,20 @@ function timeoutBlockchainCall(time, type, promise) {
       }
     });
   };
+}
+
+//cache values to prevent constant communication with network
+
+function raceWinners(raceId, coins) {
+   if(utils.isNull(btnblockcain.races[raceId])){
+     btnblockcain.races[raceId] = {};
+   }
+  btnblockcain.races[raceId].winners = coins;
+}
+
+function racePrices(raceId, prices, name) {
+  if(utils.isNull(btnblockcain.races[raceId])){
+    btnblockcain.races[raceId] = {};
+  }
+  btnblockcain.races[raceId][name] = prices;
 }

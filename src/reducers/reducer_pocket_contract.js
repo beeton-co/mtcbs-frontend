@@ -5,7 +5,12 @@ import {
   CREATE_RACE,
   MY_CHANNEL,
   RETRIEVE_USER_ACCOUNT,
-  BET_ON, CLAIM_REWARD
+  BET_ON, CLAIM_REWARD,
+  RACE_WINNERS,
+  RACE_START_PRICES,
+  RACE_END_PRICES,
+  RACE_TOTAL_AMOUNT,
+  RACE_INSPECT_COIN,
 } from '../actions/types';
 
 import * as utils from '../actions/utils';
@@ -18,13 +23,23 @@ const initialState = {
   cChannelResult: undefined,
   account: {},
   betOn: undefined,
-  user: {}
+  user: {},
+  race: {}
 };
 
 export default function (state = initialState, action) {
   let result = {};
 
   switch (action.type) {
+    case RACE_WINNERS:
+    case RACE_START_PRICES:
+    case RACE_END_PRICES:
+    case RACE_TOTAL_AMOUNT:
+    case RACE_INSPECT_COIN:
+      return {
+        ...state,
+        race: action.payload
+      };
     case LOAD_CONTROLLER_CONTRACT:
       return {
         ...state,
