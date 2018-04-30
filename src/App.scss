@@ -254,6 +254,10 @@ ant-carousel .slick-slide {
     font-size: 20px;
   }
 
+  .ant-list-item-meta, .ant-list-item-content{
+    flex: 0.4 1;
+  }
+
   :global {
     .ant-card-head {
       border-bottom: none;

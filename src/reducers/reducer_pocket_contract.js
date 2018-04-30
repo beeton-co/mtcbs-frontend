@@ -7,10 +7,9 @@ import {
   RETRIEVE_USER_ACCOUNT,
   BET_ON, CLAIM_REWARD,
   RACE_WINNERS,
-  RACE_START_PRICES,
-  RACE_END_PRICES,
   RACE_TOTAL_AMOUNT,
   RACE_INSPECT_COIN,
+  RACE_COINS_INFOS,
 } from '../actions/types';
 
 import * as utils from '../actions/utils';
@@ -32,13 +31,24 @@ export default function (state = initialState, action) {
 
   switch (action.type) {
     case RACE_WINNERS:
-    case RACE_START_PRICES:
-    case RACE_END_PRICES:
+      return {
+        ...state,
+        race: {...state.race, winners:action.payload}
+      };
     case RACE_TOTAL_AMOUNT:
+      return {
+        ...state,
+        race: {...state.race, totalAmount:action.payload}
+      };
+    case RACE_COINS_INFOS:
+      return {
+        ...state,
+        race: {...state.race, coins:action.payload}
+      };
     case RACE_INSPECT_COIN:
       return {
         ...state,
-        race: action.payload
+        race: {...state.race, coin:action.payload}
       };
     case LOAD_CONTROLLER_CONTRACT:
       return {

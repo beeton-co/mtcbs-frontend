@@ -1,1 +1,1 @@
-export const smartcontract = {context:{}, controller:{}, network:undefined, account:undefined, user:{}};
+export const smartcontract = {context:{}, controller:{}, network:undefined, account:undefined, user:{}, race:{}};

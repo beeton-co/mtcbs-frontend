@@ -38,6 +38,8 @@ export const RACE_START_PRICES = "contract_race_start_prices";
 export const RACE_END_PRICES = "contract_race_end_prices";
 export const RACE_TOTAL_AMOUNT = "contract_race_total_amount";
 export const RACE_INSPECT_COIN = "contract_race_inspect_coin";
+export const RACE_COINS_INFOS = "contract_race_coin_infos";
+export const RACE_COMPLETE_INFOS = "contract_race_complete_infos";
 export const CLAIM_REWARD = "contract_place_claim_reward";
 
 //user

@@ -42,6 +42,9 @@ import {
   CONTRACT_NETWORK
 } from './actions/pocketcoin';
 
+import {
+  getRaceCompleteInfos
+} from './actions/race_contract_integration';
 
 import {
   getCoins,
@@ -193,6 +196,7 @@ function mapDispatchToProps(dispatch) {
     raceEndPrices:raceEndPrices,
     totalAmount:totalAmount,
     inspectCoin:inspectCoin,
+    getRaceCompleteInfos:getRaceCompleteInfos,
     claimReward:claimReward
   }, dispatch);
 }

@@ -15,19 +15,20 @@ import {
   RACE_START_PRICES,
   RACE_END_PRICES,
   RACE_TOTAL_AMOUNT,
-  RACE_INSPECT_COIN
+  RACE_INSPECT_COIN,
+  RACE_COINS_INFOS
 } from "./types";
 import * as utils from './utils';
 import * as sc from '../services/smartcontract';
 import {message} from 'antd';
-
+const PRECISION = 100000;
 const Web3 = require('web3');
 const TruffleContract = require("truffle-contract");
 export const web3Instance = new Web3(Web3.givenProvider);
 export const CONTRACT_NETWORK = `${process.env.REACT_APP_CONTRACT_NETWORK}`;
 const CONTRACT_CONTROLLER_ADDRESS = `${process.env.REACT_APP_POCKET_CONTRACT_CONTROLLER}`;
 const BLOCKCHAIN_GET_CALL_TIMEOUT = 15000; //15 seconds
-export const btnblockcain = {races: {}};
+const btnblockcain = {races: {}};
 const CONTRACT_CONTROLLER = loadContract2(Controller);
 const RACE_CONTRACT = loadContract2(Race);
 
@@ -140,16 +141,21 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
 
 export const winningCoins = (race) => {
   return dispatch => {
-    __race(race).then(function (instance) {
-      return instance.winningCoins();
-    }).then(function (coins) {
-      console.log('winningCoins', coins);
-      raceWinners(race, coins);
-      dispatcher(dispatch, RACE_WINNERS, {coins});
-    }).catch(function (err) {
-      console.log('winningCoins', err);
-      dispatcher(dispatch, RACE_WINNERS, err);
-    });
+    const cacheri = btnblockcain.races[race];
+    //load from cache if available.
+    if (utils.nonNull(cacheri) &&
+            utils.nonNull(cacheri.winners)) {
+      dispatcher(dispatch, RACE_WINNERS, {winners: cacheri.winners});
+    } else {
+      __race(race).then(function (instance) {
+        return instance.winningCoins();
+      }).then(function (coins) {
+        raceWinners(race, coins);
+        dispatcher(dispatch, RACE_WINNERS, {winners: btnblockcain.races[race].winners});
+      }).catch(function (err) {
+        dispatcher(dispatch, RACE_WINNERS, {err});
+      });
+    }
   }
 };
 
@@ -206,28 +212,26 @@ export const inspectCoin = (race, coinId) => {
   }
 };
 
-export const inspectCoin_ = (race, coinId) => {
+export const getRaceCoinInfos = (race) => {
   return dispatch => {
-    __race(race).then(function (instance) {
-      return instance.inspectFinalCoinsOrder();
-    }).then(function (coins) {
-      const results = [];
+    const cacheri = btnblockcain.races[race];
+    //load from cache if available.
+    if (utils.nonNull(cacheri) &&
+            utils.nonNull(cacheri.coins)) {
+      dispatcher(dispatch, RACE_WINNERS, {coins: cacheri.coins});
+    } else {
+      __race(race).then(function (instance) {
+        return instance.inspectCoins();
+      }).then(function (coins) {
+        raceCoinsInfo(race, coins);
+        console.log('{coins: btnblockcain.races[race].coins}',{coins: btnblockcain.races[race].coins});
+        dispatcher(dispatch, RACE_COINS_INFOS, {coins: btnblockcain.races[race].coins});
+      }).catch(function (err) {
+        console.log('endPrices', err);
+        dispatcher(dispatch, RACE_COINS_INFOS, err);
+      });
+    }
 
-      for(let i = 0; i < coins[0].length; i++){
-
-        results.push({coinId:coins[0][i].toString(),
-          total:web3Instance.utils.fromWei(coins[1][i].toString(), "ether"),
-          numOfBets:coins[2][i].toString(),
-          startPrice:coins[3][i].toString(),
-          endPrice:coins[4][i].toString()});
-      }
-      console.log(results);
-      racePrices(race, results, 'coins');
-      dispatcher(dispatch, RACE_INSPECT_COIN, {coins:results});
-    }).catch(function (err) {
-      console.log('endPrices', err);
-      dispatcher(dispatch, RACE_INSPECT_COIN, err);
-    });
   }
 };
 
@@ -296,8 +300,8 @@ export const claimReward_ = (race) => {
       raceContract = instance;
       return raceContract.claimMyReward();
     }).then(function (canClaim) {
-        console.log('canClaim',canClaim);
-        dispatcher(dispatch, CLAIM_REWARD, canClaim, null);
+      console.log('canClaim', canClaim);
+      dispatcher(dispatch, CLAIM_REWARD, canClaim, null);
     }).catch(function (err) {
       console.log(err);
       notification.error('Could not determine gas at this point in time. Please try again later');
@@ -442,14 +446,44 @@ function timeoutBlockchainCall(time, type, promise) {
 //cache values to prevent constant communication with network
 
 function raceWinners(raceId, coins) {
-   if(utils.isNull(btnblockcain.races[raceId])){
-     btnblockcain.races[raceId] = {};
-   }
-  btnblockcain.races[raceId].winners = coins;
+  if (utils.isNull(btnblockcain.races[raceId])) {
+    btnblockcain.races[raceId] = {};
+  }
+  const winners = [];
+  for (let i = 0; i < coins.length; i++) {
+    winners.push(coins[i].toNumber());
+  }
+  btnblockcain.races[raceId].winners = winners;
+}
+
+function raceCoinsInfo(race, coins) {
+  if (utils.isNull(btnblockcain.races[race])) {
+    btnblockcain.races[race] = {};
+  }
+
+  const results = [];
+
+  for (let i = 0; i < coins[0].length; i++) {
+    const s = coins[3][i].toNumber();
+    const e = coins[4][i].toNumber();
+    const change = (((e - s) / s) * 100).toFixed(5);
+    const end = (e / PRECISION).toFixed(5);
+    const start = (s / PRECISION).toFixed(5);
+
+    results.push({
+      coinId: coins[0][i].toString(),
+      total: web3Instance.utils.fromWei(coins[1][i].toString(), "ether"),
+      numOfBets: coins[2][i].toNumber(),
+      startPrice: start,
+      endPrice: end,
+      change: change
+    });
+  }
+  btnblockcain.races[race].coins = results;
 }
 
 function racePrices(raceId, prices, name) {
-  if(utils.isNull(btnblockcain.races[raceId])){
+  if (utils.isNull(btnblockcain.races[raceId])) {
     btnblockcain.races[raceId] = {};
   }
   btnblockcain.races[raceId][name] = prices;

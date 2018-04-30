@@ -363,6 +363,9 @@ ant-carousel .slick-slide {
   color: #fff;
   font-size: 20px; }
 
+.standardList .ant-list-item-meta, .standardList .ant-list-item-content {
+  flex: 0.4 1; }
+
 .standardList :global .ant-card-head {
   border-bottom: none; }
 

@@ -2,6 +2,17 @@ import React from 'react';
 import API from '../api';
 import * as priceengine from './priceengine';
 
+//carousel default settings
+export const CarouselDefaultSettings = {
+  dots: false,
+  arrows: true,
+  infinite: false,
+  autoplay: false,
+  speed: 500,
+  slidesToShow: 6,
+  slidesToScroll: 6
+};
+
 //an axios utility get call
 export const get = (url, asyncFunc) => {
   return dispatch => {
@@ -39,9 +50,18 @@ export const timeoutCall = function (ms, promise) {
 
 export const isNull = (object) => {
   return object === undefined || object === null;
-}
+};
+
 export const nonNull = (object) =>{
   return !isNull(object);
+};
+
+export const dispatcher = (dispatch, type, value, error) =>{
+  if (nonNull(error)) {
+    dispatch(async(type, error));
+  } else {
+    dispatch(async(type, value));
+  }
 };
 
 // Generate unique IDs for use as pseudo-private/protected names.

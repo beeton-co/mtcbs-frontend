@@ -87,7 +87,7 @@ export default class UpComingRaceView extends Component {
                   </Col>
                   <Col sm={19}>
                     <Carousel {...settings}>
-                      {races.map(r => <div className="dash-card">
+                      {races.map(r => <div className="dash-card" key={utils.id()}>
                         <DashCard key={r.id}
                                   raceId={r.id}
                                   leadingCoin=''
