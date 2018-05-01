@@ -7,6 +7,8 @@ import * as utils from '../../../../actions/utils';
 import DescriptionList from '../../../../components/DescriptionList';
 import CoinListView from '../../../Fragments/CoinListView';
 import * as coinutils from '../../../../services/coinutils';
+import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
+
 
 const {Description} = DescriptionList;
 
@@ -164,20 +166,11 @@ export default class CompletedRaceView extends Component {
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
                 {this.raceDetailView()}
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-closed">
-                      <stop
-                              offset="5%"
-                              stopColor="#4145F0"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#2AE4F6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                <GenerateSVGGradient id="gradient-circle-progress-closed"
+                                     offset1="5%"
+                                     stopColor1="#4145F0"
+                                     offset2="95%"
+                                     stopColor2="#2AE4F6"/>
               </div>
       );
 
