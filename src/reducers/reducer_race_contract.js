@@ -1,8 +1,10 @@
 import {
   RACE_COMPLETE_INFOS,
 } from '../actions/types';
-
-export default function (state = {}, action) {
+const initialState = {
+  race: {}
+};
+export default function (state = initialState, action) {
 
   const payload = action.payload;
 
@@ -10,7 +12,7 @@ export default function (state = {}, action) {
     case RACE_COMPLETE_INFOS:
       return {
         ...state,
-        info: payload
+        race: payload
       };
     default:
       return state;
