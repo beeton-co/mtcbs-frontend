@@ -17,7 +17,7 @@ export const getRaceCompleteInfos = (id) => {
 
     //load from cache if available.
     if (utils.nonNull(race)) {
-      utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, {race});
+      utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, race);
     } else {
       let raceInstance;
       //1. get coins info
@@ -74,13 +74,17 @@ function raceCoinsInfo(coins) {
     const start = (s / ethbchain.PRECISION).toFixed(5);
 
     results.push({
-      coinId: coins[0][i].toString(),
+      coinId: coins[0][i].toNumber(),
       total: ethbchain.web3Instance.utils.fromWei(coins[1][i].toString(), "ether"),
       numOfBets: coins[2][i].toNumber(),
       startPrice: start,
       endPrice: end,
       change: change
     });
+
   }
+  results.sort(function (a, b) {
+    return b.change - a.change;
+  });
   return results;
 }
