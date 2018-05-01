@@ -113,17 +113,22 @@ export default class CompletedRaceView extends Component {
   renderClaimRewardButton() {
     const race = this.getDetailedRace();
     if (this.state.loadedRaceInfo) {
-      const winners = this.props.econtract.race.winners;
+      const winningCoins = this.props.contract.race.winningCoins;
       const descriptions = [];
-      descriptions.push(<Description key={utils.id()}><Button onClick={(event) => this.props.claimReward(race)} ghost>Claim
-        Reward</Button></Description>);
-      if (utils.nonNull(winners)) {
+
+      descriptions.push(<Description key={utils.id()}>
+        <Button onClick={(event) => this.props.claimReward(race)} ghost>Claim Reward</Button>
+      </Description>);
+
+      if (utils.nonNull(winningCoins) && winningCoins.length > 0) {
         descriptions.push(
-                <Description term="Winner(s)" key={utils.id()}>{utils.renderCoinAvatars(winners)}</Description>);
+                <Description term="Winner(s)" key={utils.id()}>{utils.renderCoinAvatars(winningCoins)}</Description>);
       }
       return (<Card>
-        <DescriptionList size="large" col="2" style={{marginBottom: 32}}>
+        <DescriptionList size="large" col="4" style={{marginBottom: 32}}>
+          <Description term=""/>
           {descriptions}
+          <Description term=""/>
         </DescriptionList>
       </Card>);
     }
