@@ -1,28 +1,69 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 
-export default class CountDownTimer extends Component {
+export default class CountDownTimer extends PureComponent {
   constructor(props) {
     super(props);
 
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
-    let startTime = this.props.startTime;
+    this.resetTimer = this.resetTimer.bind(this);
+    let startTime = props.startTime ? props.startTime : 0;
+
     let currentTime = Math.round(new Date().getTime() / 1000);
-    let endTime = startTime + this.props.duration;
+    let endTime = startTime + (props.duration ? props.duration : 0 );
 
     let remaining = (endTime - currentTime);
     if(remaining < 0){
-      this.state = {time: {}, seconds: this.props.duration};
+      this.state = {time: {}, seconds: (props.duration ? props.duration : 0 )};
     }else{
       this.state = {time: {}, seconds: remaining};
     }
     this.timer = 0;
+    this.disable = false;
   }
 
   state = {
     time: {},
-    seconds: 0
+    seconds: 0,
+    disable:false
   };
+
+  componentWillReceiveProps(nextProps) {
+    this.resetTimer(nextProps);
+  }
+
+  componentWillUnmount(){
+    this.disable = true;
+    clearInterval(this.timer);
+  }
+
+  resetTimer(props) {
+
+    if(this.timer !== 0){
+      clearInterval(this.timer);
+    }
+    this.timer = 0;
+
+    let startTime = props.startTime ? props.startTime : 0;
+
+    let currentTime = Math.round(new Date().getTime() / 1000);
+    let endTime = startTime + (props.duration ? props.duration : 0 );
+
+    let remaining = (endTime - currentTime);
+    if(remaining < 0){
+      this.setState({time: {}, seconds: (props.duration ? props.duration : 0 )});
+    }else{
+      this.setState({time: {}, seconds: remaining});
+    }
+
+    this.disable = false;
+    if(!this.props.static){
+
+      if (this.state.seconds > 0){
+        this.startTimer();
+      }
+    }
+  }
 
   secondsToTime(secs) {
     // Time calculations for days, hours, minutes and seconds
@@ -62,6 +103,9 @@ export default class CountDownTimer extends Component {
 
   countDown() {
 
+    if(this.state.disable){
+      return;
+    }
 
     let currentTime = Math.round(new Date().getTime() / 1000);
 
