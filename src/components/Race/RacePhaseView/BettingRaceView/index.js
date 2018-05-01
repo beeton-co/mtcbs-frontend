@@ -4,6 +4,13 @@ import DashCard from "../../../DashCard";
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import * as notification from '../../../../services/notification';
+import {RaceCarousel} from '../../RaceCarousel';
+
+import DescriptionList from '../../../../components/DescriptionList';
+import CoinListView from '../../../Fragments/CoinListView';
+import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
+import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
+
 
 const ListItemMeta = List.Item.Meta;
 const ListItem = List.Item;
@@ -16,7 +23,6 @@ export default class BettingRaceView extends Component {
     this.raceDetailView = this.raceDetailView.bind(this);
     this.getCoinName = this.getCoinName.bind(this);
     this.getCoinSymbol = this.getCoinSymbol.bind(this);
-    this.leadingCoin = this.leadingCoin.bind(this);
     this.selectCoin = this.selectCoin.bind(this);
     this.placeBet = this.placeBet.bind(this);
     this.props.getRacesByStatus('betting', 0);
@@ -29,6 +35,42 @@ export default class BettingRaceView extends Component {
 
   eventHandler(id) {
     this.setState({raceDetailId: id});
+  }
+
+
+  render() {
+    let raceResult = this.props.races;
+    let races = [];
+    if (raceResult.length > 0) {
+      if (utils.isNull(raceResult[0].betting)) {
+        this.props.getRacesByStatus('betting', 0);
+      } else {
+        races = raceResult[0].betting.hits;
+      }
+    }
+    if (races && (races.length > 0)) {
+      return (
+              <div style={{marginTop: 50}}>
+                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
+                <Divider style={{marginBottom: 50}}/>
+                {this.raceDetailView()}
+                <GenerateSVGGradient id="gradient-circle-progress-open"
+                                     offset1="5%"
+                                     stopColor1="#F60"
+                                     offset2="95%"
+                                     stopColor2="#FF6"/>
+
+                <GenerateSVGGradient id="gradient-circle-progress-closed"
+                                     offset1="5%"
+                                     stopColor1="#4145F0"
+                                     offset2="95%"
+                                     stopColor2="#2AE4F6"/>
+              </div>
+      );
+
+    }
+    //TODO message about empty races.
+    return (<div></div>);
   }
 
   getCoinName(id) {
@@ -119,16 +161,6 @@ export default class BettingRaceView extends Component {
     );
   }
 
-  leadingCoin(race) {
-    if (priceengine.hasPrice(race.id)) {
-      const prices = priceengine.getPriceInfo(race.id);
-      return prices.coins[0].symbol;
-    } else {
-      const name = this.getCoinName(race.coinIds[0]);
-      return name.length > 4 ? name.substring(0, 4) : name;
-    }
-  }
-
   getRace(props, raceDetailId) {
     let raceResult = props.races;
     let races = [];
@@ -155,110 +187,31 @@ export default class BettingRaceView extends Component {
       return (<div></div>);
     }
     if (priceengine.getAvailableCoins().length === 0) {
-
       return (<div className="standardList">
-        <Card bordered={false} style={{marginTop: 24}} bodyStyle={{padding: '0 32px 40px 32px'}}>
-          <List className="listCard" size="large" rowKey="id" loading={true}/>
-        </Card>
+        <CoinListView loading={true}
+                      empty={true}
+                      amount={false}
+                      bets={false}
+                      change={false}
+                      endPrice={false}
+                      startPrice={false}
+                      avatarOnly={true}/>
       </div>);
     }
     else if (!priceengine.hasPrice(race.id)) {
       this.props.getDetailRaceCoins('betting', race.id);
       return (<div className="standardList">
-        <Card bordered={false} style={{marginTop: 24}} bodyStyle={{padding: '0 32px 40px 32px'}}>
-          <List className="listCard" size="large" rowKey="id" loading={true} dataSource={race.coinIds}
-                renderItem={item => (
-                        <ListItem>
-                          <ListItemMeta title=" " description={this.getCoinName(item + 1)} avatar={
-                            <Avatar src={`/coin-svg/${priceengine.getCoinSymbol(item).toLowerCase()}.svg`} shape="square" size="large"/>}/>
-
-                        </ListItem>
-                )}
-          />
-        </Card>
+        <CoinListView loading={true}
+                      coins={race.coinIds}
+                      amount={false}
+                      bets={false}
+                      change={false}
+                      endPrice={false}
+                      startPrice={false}
+                      avatarOnly={true}/>
       </div>);
     } else {
       return this.coinsDetailView(priceengine.getPriceInfo(race.id));
     }
-  }
-
-  render() {
-    let raceResult = this.props.races;
-    let races = [];
-    if (raceResult.length > 0) {
-      if (utils.isNull(raceResult[0].betting)) {
-        this.props.getRacesByStatus('betting', 0);
-      } else {
-        races = raceResult[0].betting.hits;
-      }
-    }
-    if (races && (races.length > 0)) {
-      const settings = {
-        dots: false,
-        arrows: true,
-        infinite: true,
-        autoplay: false,
-        speed: 500,
-        slidesToShow: 6,
-        slidesToScroll: 1
-      };
-      //TODO replace leadingCoin with the coin with the highest odds
-      return (
-              <div style={{marginTop: 50}}>
-                <Row>
-                  <Col sm={1}>
-                  </Col>
-                  <Col sm={19}>
-                    <Carousel {...settings}>
-                      {races.map(r => <div className="dash-card" key={utils.id()}>
-                        <DashCard key={r.id}
-                                  raceId={r.id}
-                                  leadingCoin=''
-                                  cardClickEventHandler={this.eventHandler}
-                                  coinImg={r.coinIds[0]}
-                                  participatingCoins={r.coinIds}
-                                  bStartTime={r.bStartTime}
-                                  startTime={r.startTime}
-                                  duration={r.duration} {...this.props} /></div>)}
-                    </Carousel></Col>
-                  <Col sm={1}>
-                  </Col>
-                </Row>
-                <Divider style={{marginBottom: 50}}/>
-                {this.raceDetailView()}
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-open">
-                      <stop
-                              offset="5%"
-                              stopColor="#F60"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#FF6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-closed">
-                      <stop
-                              offset="5%"
-                              stopColor="#4145F0"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#2AE4F6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-      );
-
-    }
-    //TODO message about empty races.
-    return (<div></div>);
   }
 }
