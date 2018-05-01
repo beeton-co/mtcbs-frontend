@@ -2,11 +2,10 @@ import React, {Component} from 'react';
 import {Divider} from 'antd';
 import * as utils from '../../../../actions/utils';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
-import DescriptionList from '../../../../components/DescriptionList';
 import {RaceCarousel} from '../../RaceCarousel';
 import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
 import {EmptyRaceView} from '../../EmptyRaceView';
-const { Description } = DescriptionList;
+
 
 export default class UpComingRaceView extends Component {
 

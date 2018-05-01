@@ -7,10 +7,6 @@ const ListItemMeta = List.Item.Meta;
 const ListItem = List.Item;
 
 export default class CoinListView extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillReceiveProps(nextProps) {
     const {amount, startPrice, endPrice, change, bets} = nextProps;
     this.setState({

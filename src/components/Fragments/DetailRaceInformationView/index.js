@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Card, Divider} from 'antd';
 import CountDownTimer from "../../CountDownTimer";
 import DescriptionList from '../../../components/DescriptionList';

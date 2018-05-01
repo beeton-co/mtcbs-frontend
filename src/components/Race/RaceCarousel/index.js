@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import DashCard from "../../DashCard";
 import {Carousel, Row, Col} from 'antd';
 import * as priceengine from '../../../actions/priceengine';
