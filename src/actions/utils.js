@@ -88,12 +88,16 @@ export const id =  () => {
   return '_' + Math.random().toString(36).substr(2, 9);
 };
 
-export const renderCoinAvatars = (coinIds) => {
-  let coins = [];
+export const renderCoinAvatars = (coins) => {
+  let results = [];
 
-  for (let i = 0; i < coinIds.length; i++){
-    coins.push(<img className="avatar dash-logo" key={`coin-${coinIds[i]}`} alt="dash-logo"
-                    src={process.env.PUBLIC_URL + `/coin-svg/${priceengine.getCoinSymbol(coinIds[i]).toLowerCase()}.svg`} />)
+  for (let i = 0; i < coins.length; i++){
+    let id = coins[i];
+    if (nonNull(coins[i].id)){
+      id = coins[i].id;
+    }
+    results.push(<img className="avatar dash-logo" key={`coin-${id}`} alt="dash-logo"
+                    src={process.env.PUBLIC_URL + `/coin-svg/${priceengine.getCoinSymbol(id).toLowerCase()}.svg`} />)
   }
-  return coins;
+  return results;
 };

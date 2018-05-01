@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Carousel, Divider, Card, Row, Col, List, Button} from 'antd';
-import DashCard from "../../../DashCard";
+import {Divider, Card, Button} from 'antd';
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
+import {RaceCarousel} from '../../RaceCarousel';
 
 import DescriptionList from '../../../../components/DescriptionList';
 import CoinListView from '../../../Fragments/CoinListView';
-import * as coinutils from '../../../../services/coinutils';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
 
@@ -18,7 +17,6 @@ export default class CompletedRaceView extends Component {
     super(props);
     this.eventHandler = this.eventHandler.bind(this);
     this.raceDetailView = this.raceDetailView.bind(this);
-    this.leadingCoin = this.leadingCoin.bind(this);
     this.getDetailedRace = this.getDetailedRace.bind(this);
     this.renderClaimRewardButton = this.renderClaimRewardButton.bind(this);
     this.props.getRacesByStatus('completed', 0);
@@ -46,32 +44,22 @@ export default class CompletedRaceView extends Component {
 
 
   render() {
+    let races;
+    let raceResult = this.props.races;
 
-    let races = this.getRaces(this.props);
+    if (raceResult.length > 0) {
+      if (utils.isNull(raceResult[0].completed)) {
+        this.props.getRacesByStatus('completed', 0);
+      } else {
+        races = raceResult[0].completed.hits;
+      }
+    }
 
     if (utils.nonNull(races) && (races.length > 0)) {
 
       return (
               <div style={{marginTop: 50}}>
-                <Row>
-                  <Col sm={1}>
-                  </Col>
-                  <Col sm={19}>
-                    <Carousel {...utils.CarouselDefaultSettings}>
-                      {races.map(r => <div className="dash-card" key={utils.id()}>
-                        <DashCard key={r.id}
-                                  raceId={r.id}
-                                  leadingCoin={this.leadingCoin(r)}
-                                  cardClickEventHandler={this.eventHandler}
-                                  coinImg={r.coinIds[0]}
-                                  participatingCoins={r.coinIds}
-                                  bStartTime={r.bStartTime}
-                                  startTime={r.startTime}
-                                  duration={r.duration} {...this.props} /></div>)}
-                    </Carousel></Col>
-                  <Col sm={1}>
-                  </Col>
-                </Row>
+                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
                 {this.raceDetailView()}
@@ -88,16 +76,6 @@ export default class CompletedRaceView extends Component {
     return (<div></div>);
   }
 
-  leadingCoin(race) {
-    if (priceengine.hasPrice(race.id)) {
-      const prices = priceengine.getPriceInfo(race.id);
-      return prices.coins[0].symbol;
-    } else {
-      const name = coinutils.getCoinName(race.coinIds[0]);
-      return name.length > 4 ? name.substring(0, 4) : name;
-    }
-  }
-
   raceDetailView() {
 
     const race = this.getDetailedRace();
@@ -105,26 +83,31 @@ export default class CompletedRaceView extends Component {
     if (race === undefined) {
       return (<div></div>);
     } else if (priceengine.getAvailableCoins().length === 0) {
-
       return (<div className="standardList">
-        <Card bordered={false} style={{marginTop: 24}} bodyStyle={{padding: '0 32px 40px 32px'}}>
-          <List className="listCard" size="large" rowKey="id" loading={true}/>
-        </Card>
+        <CoinListView loading={true}
+                      empty={true}
+                      amount={false}
+                      bets={false}
+                      change={false}
+                      endPrice={false}
+                      startPrice={false}
+                      avatarOnly={true}/>
       </div>);
     }
     else if (!this.state.loadedRaceInfo) {
-      return (<div className="standardList"><CoinListView loading={true}
-                                                          coins={race.coinIds}
-                                                          amount={false}
-                                                          bets={false}
-                                                          change={false}
-                                                          endPrice={false}
-                                                          startPrice={false}
-                                                          idBase={1}/></div>);
+      return (<div className="standardList">
+        <CoinListView loading={true}
+                      coins={race.coinIds}
+                      amount={false}
+                      bets={false}
+                      change={false}
+                      endPrice={false}
+                      startPrice={false}
+                      idBase={1}/></div>);
     } else {
       return (<div className="standardList">
-        <CoinListView loading={false} coins={this.props.contract.race.coins}/>
-        <DetailRaceInformationView race={race} col={1} size="small"/>
+        <CoinListView loading={false} coins={this.props.contract.race.coins} priceClass="finishedListContentItem"/>
+        <DetailRaceInformationView race={race} col={1} size="small" coins={race.coinIds}/>
       </div>);
     }
   }
@@ -141,18 +124,6 @@ export default class CompletedRaceView extends Component {
         if (races[i].id === raceId) {
           return races[i];
         }
-      }
-    }
-    return null;
-  }
-
-  getRaces(props) {
-    let raceResult = props.races;
-    if (raceResult.length > 0) {
-      if (utils.isNull(raceResult[0].completed)) {
-        props.getRacesByStatus('completed', 0);
-      } else {
-        return raceResult[0].completed.hits;
       }
     }
     return null;
