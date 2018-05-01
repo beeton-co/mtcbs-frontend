@@ -4,7 +4,7 @@ import DashCard from "../../../DashCard";
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import CountDownTimer from '../../../CountDownTimer';
-
+import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import DescriptionList from '../../../../components/DescriptionList';
 
 const { Description } = DescriptionList;
@@ -193,34 +193,17 @@ export default class RunningRaceView extends Component {
                 </Row>
                 <Divider style={{marginBottom: 50}}/>
                 {this.raceDetailView()}
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-open">
-                      <stop
-                              offset="5%"
-                              stopColor="#F60"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#FF6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-closed">
-                      <stop
-                              offset="5%"
-                              stopColor="#4145F0"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#2AE4F6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                <GenerateSVGGradient id="gradient-circle-progress-open"
+                                     offset1="5%"
+                                     stopColor1="#F60"
+                                     offset2="95%"
+                                     stopColor2="#FF6"/>
+
+                <GenerateSVGGradient id="gradient-circle-progress-closed"
+                                     offset1="5%"
+                                     stopColor1="#4145F0"
+                                     offset2="95%"
+                                     stopColor2="#2AE4F6"/>
               </div>
       );
 
