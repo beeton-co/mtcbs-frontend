@@ -364,7 +364,10 @@ ant-carousel .slick-slide {
   font-size: 20px; }
 
 .standardList .ant-list-item-meta, .standardList .ant-list-item-content {
-  flex: 0.4 1; }
+  flex: 0.3 1; }
+
+.standardList .ant-list-item-content {
+  flex: 0.5 1; }
 
 .standardList :global .ant-card-head {
   border-bottom: none; }
@@ -412,9 +415,9 @@ ant-carousel .slick-slide {
   .standardList .listContent .listContentItem {
     color: #fff;
     display: inline-block;
-    text-align: left;
+    text-align: center;
     vertical-align: middle;
-    font-size: 20px;
+    font-size: 14px;
     margin-left: 50px; }
     .standardList .listContent .listContentItem > span {
       line-height: 20px; }
