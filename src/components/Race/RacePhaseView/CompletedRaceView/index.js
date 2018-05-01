@@ -8,7 +8,7 @@ import DescriptionList from '../../../../components/DescriptionList';
 import CoinListView from '../../../Fragments/CoinListView';
 import * as coinutils from '../../../../services/coinutils';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
-
+import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
 
 const {Description} = DescriptionList;
 
@@ -42,6 +42,50 @@ export default class CompletedRaceView extends Component {
     this.setState({raceDetailId: id});
     //Dispatch evens to race contracts to fetch current values;
     this.props.getRaceCompleteInfos(id);
+  }
+
+
+  render() {
+
+    let races = this.getRaces(this.props);
+
+    if (utils.nonNull(races) && (races.length > 0)) {
+
+      return (
+              <div style={{marginTop: 50}}>
+                <Row>
+                  <Col sm={1}>
+                  </Col>
+                  <Col sm={19}>
+                    <Carousel {...utils.CarouselDefaultSettings}>
+                      {races.map(r => <div className="dash-card" key={utils.id()}>
+                        <DashCard key={r.id}
+                                  raceId={r.id}
+                                  leadingCoin={this.leadingCoin(r)}
+                                  cardClickEventHandler={this.eventHandler}
+                                  coinImg={r.coinIds[0]}
+                                  participatingCoins={r.coinIds}
+                                  bStartTime={r.bStartTime}
+                                  startTime={r.startTime}
+                                  duration={r.duration} {...this.props} /></div>)}
+                    </Carousel></Col>
+                  <Col sm={1}>
+                  </Col>
+                </Row>
+                <Divider style={{marginBottom: 50}}/>
+                {this.renderClaimRewardButton()}
+                {this.raceDetailView()}
+                <GenerateSVGGradient id="gradient-circle-progress-closed"
+                                     offset1="5%"
+                                     stopColor1="#4145F0"
+                                     offset2="95%"
+                                     stopColor2="#2AE4F6"/>
+              </div>
+      );
+
+    }
+    //TODO message about empty races.
+    return (<div></div>);
   }
 
   leadingCoin(race) {
@@ -78,8 +122,10 @@ export default class CompletedRaceView extends Component {
                                                           startPrice={false}
                                                           idBase={1}/></div>);
     } else {
-      return (<div className="standardList"><CoinListView loading={false}
-                                                          coins={this.props.contract.race.coins}/></div>);
+      return (<div className="standardList">
+        <CoinListView loading={false} coins={this.props.contract.race.coins}/>
+        <DetailRaceInformationView race={race} col={1} size="small"/>
+      </div>);
     }
   }
 
@@ -136,46 +182,4 @@ export default class CompletedRaceView extends Component {
     }
   }
 
-  render() {
-
-    let races = this.getRaces(this.props);
-
-    if (utils.nonNull(races) && (races.length > 0)) {
-
-      return (
-              <div style={{marginTop: 50}}>
-                <Row>
-                  <Col sm={1}>
-                  </Col>
-                  <Col sm={19}>
-                    <Carousel {...utils.CarouselDefaultSettings}>
-                      {races.map(r => <div className="dash-card" key={utils.id()}>
-                        <DashCard key={r.id}
-                                  raceId={r.id}
-                                  leadingCoin={this.leadingCoin(r)}
-                                  cardClickEventHandler={this.eventHandler}
-                                  coinImg={r.coinIds[0]}
-                                  participatingCoins={r.coinIds}
-                                  bStartTime={r.bStartTime}
-                                  startTime={r.startTime}
-                                  duration={r.duration} {...this.props} /></div>)}
-                    </Carousel></Col>
-                  <Col sm={1}>
-                  </Col>
-                </Row>
-                <Divider style={{marginBottom: 50}}/>
-                {this.renderClaimRewardButton()}
-                {this.raceDetailView()}
-                <GenerateSVGGradient id="gradient-circle-progress-closed"
-                                     offset1="5%"
-                                     stopColor1="#4145F0"
-                                     offset2="95%"
-                                     stopColor2="#2AE4F6"/>
-              </div>
-      );
-
-    }
-    //TODO message about empty races.
-    return (<div></div>);
-  }
 }
