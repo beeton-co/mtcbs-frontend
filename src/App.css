@@ -535,13 +535,6 @@ ant-carousel .slick-slide {
 .myraces-container > .title, .myraces-container .details, .myraces-container .term, .myraces-container .detail, .myraces-container .descriptionList .title {
   color: #000; }
 
-.slick-arrow {
-  color: #fff  !important;
-  background: none !important; }
-
-.slick-prev:before, .slick-next:before {
-  color: red; }
-
 .runningListContentItem {
   background: linear-gradient(120deg, #020024 0%, #0ea9c9 35%, #00d4ff 100%); }
 
@@ -688,3 +681,10 @@ ant-carousel .slick-slide {
   color: #000 !important;
   height: 40px;
   width: 40px; }
+
+.slick-prev:before, .slick-next:before {
+  color: red !important; }
+
+.slick-arrow {
+  color: #fff  !important;
+  background: none !important; }

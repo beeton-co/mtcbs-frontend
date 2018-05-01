@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import {Carousel, Divider, Card, Row, Col, List, Avatar, InputNumber, Button} from 'antd';
-import DashCard from "../../../DashCard";
+import {Divider, Card,List, Avatar, InputNumber, Button} from 'antd';
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import * as notification from '../../../../services/notification';
 import {RaceCarousel} from '../../RaceCarousel';
 
-import DescriptionList from '../../../../components/DescriptionList';
 import CoinListView from '../../../Fragments/CoinListView';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';

@@ -522,15 +522,6 @@ ant-carousel .slick-slide {
   }
 }
 
-.slick-arrow {
-  color: #fff  !important;
-  background: none !important;
-}
-
-.slick-prev:before, .slick-next:before{
-  color:red;
-}
-
 .runningListContentItem{
   background: linear-gradient(120deg, rgba(2,0,36,1) 0%, rgba(14,169,201,1) 35%, rgba(0,212,255,1) 100%);
 }
@@ -705,4 +696,14 @@ ant-carousel .slick-slide {
   height: 40px;
   width: 40px;
 
+}
+
+.slick-prev:before, .slick-next:before {
+  color:red !important;
+}
+
+
+.slick-arrow {
+  color: #fff  !important;
+  background: none !important;
 }
