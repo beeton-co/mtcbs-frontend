@@ -162,7 +162,8 @@ function mapStateToProps(state) {
     coin: state.coin,
     rcd: state.rcd,
     bets: state.bets,
-    econtract: state.econtract
+    econtract: state.econtract,
+    contract: state.contract,
   }
 }
 

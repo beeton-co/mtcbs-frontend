@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {reducer as form} from 'redux-form';
 import Races from './reducer_races';
-import RaceInfo from './reducer_race_contract';
+import Contract from './reducer_race_contract';
 import Channels from './reducer_channels';
 import Bookie from './reducer_bookie';
 import Coins from './reducer_coins';
@@ -14,7 +14,7 @@ import Profile from './reducer_user_profile';
 const rootReducer = combineReducers({
   form,
   races: Races,
-  raceContract: RaceInfo,
+  contract: Contract,
   channels: Channels,
   coins: Coins,
   rcd: CoinDetails,//race coins detail

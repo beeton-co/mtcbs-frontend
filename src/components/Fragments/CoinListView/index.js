@@ -9,31 +9,35 @@ const ListItem = List.Item;
 export default class CoinListView extends Component {
   constructor(props) {
     super(props);
-    if(utils.nonNull(this.props.amount)){
-      this.state.amount = this.props.amount
-    }
-    if(utils.nonNull(this.props.startPrice)){
-      this.state.startPrice = this.props.startPrice
-    }
-    if(utils.nonNull(this.props.endPrice)){
-      this.state.endPrice = this.props.endPrice
-    }
-    if(utils.nonNull(this.props.change)){
-      this.state.change = this.props.change
-    }
-    if(utils.nonNull(this.props.bets)){
-      this.state.bets = this.props.bets;
-    }
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {amount, startPrice, endPrice, change, bets} = nextProps;
+    this.setState({
+      amount: this.getFlag(amount),
+      startPrice: this.getFlag(startPrice),
+      endPrice: this.getFlag(endPrice),
+      change: this.getFlag(change),
+      bets: this.getFlag(bets)
+    });
   }
 
   state = {
     amount: true,
     bets: true,
     change: true,
-    endPrice:true,
-    startPrice:true,
+    endPrice: true,
+    startPrice: true,
     idBase: 0
   };
+
+  getFlag(flag) {
+    if (utils.isNull(flag)) {
+      return true;
+    }
+    return flag;
+  }
 
   render() {
     const {coins, loading} = this.props;
@@ -59,7 +63,6 @@ export default class CoinListView extends Component {
   }
 
   getCoinName(coin) {
-
     if (utils.nonNull(coin.symbol)) {
       return coin.symbol.toLowerCase();
     }
@@ -69,23 +72,23 @@ export default class CoinListView extends Component {
     return priceengine.getCoinSymbol(coin);
   }
 
-  renderAmount(coin) {
-    if (this.state.amount) {
-      return (
-              <div className="listContentItem">
-                <span>Total Amount</span>
-                <p>{coin.total}</p>
-              </div>
-      );
-    }
-  }
-
   renderBets(coin) {
     if (this.state.bets) {
       return (
               <div className="listContentItem">
                 <span>Number of Bets</span>
                 <p>{coin.numOfBets}</p>
+              </div>
+      );
+    }
+  }
+
+  renderAmount(coin) {
+    if (this.state.amount) {
+      return (
+              <div className="listContentItem">
+                <span>Total Amount</span>
+                <p>{coin.total}</p>
               </div>
       );
     }

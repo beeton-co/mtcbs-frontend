@@ -28,11 +28,11 @@ export default class CompletedRaceView extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-
-    const {raceInfo} = nextProps;
-    if (utils.nonNull(raceInfo) && utils.nonNull(raceInfo.loaded) && raceInfo.loaded) {
-      console.log(nextProps);
+    const {race} = nextProps.contract;
+    if (utils.nonNull(race) && utils.nonNull(race.loaded) && race.loaded) {
       this.setState({loadedRaceInfo: true});
+    }else{
+      this.setState({loadedRaceInfo: false});
     }
   }
 
@@ -77,7 +77,7 @@ export default class CompletedRaceView extends Component {
                                                           idBase={1}/></div>);
     } else {
       return (<div className="standardList"><CoinListView loading={false}
-                                                          coins={this.props.raceInfo.coins}/></div>);
+                                                          coins={this.props.contract.race.coins}/></div>);
     }
   }
 
