@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {Divider} from 'antd';
-import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import DescriptionList from '../../../../components/DescriptionList';
 import {RaceCarousel} from '../../RaceCarousel';
 import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
+import {EmptyRaceView} from '../../EmptyRaceView';
 const { Description } = DescriptionList;
 
 export default class UpComingRaceView extends Component {
@@ -66,7 +66,6 @@ export default class UpComingRaceView extends Component {
       );
 
     }
-    //TODO message about empty races.
-    return (<div></div>);
+    return (<EmptyRaceView type="info" message="Upcoming races" description="On upcoming races? We got you covered, already in the process of adding new races!"/>);
   }
 }

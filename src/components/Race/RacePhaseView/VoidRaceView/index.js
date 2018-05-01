@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
-import {Carousel, Divider, Card, Row, Col} from 'antd';
-import DashCard from "../../../DashCard";
-import * as priceengine from '../../../../actions/priceengine';
+import {Divider} from 'antd';
 import * as utils from '../../../../actions/utils';
-import DescriptionList from '../../../../components/DescriptionList';
+import {EmptyRaceView} from '../../EmptyRaceView';
+import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
+import {RaceCarousel} from '../../RaceCarousel';
+import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
 
-const { Description } = DescriptionList;
 
 export default class UpComingRaceView extends Component {
 
   constructor(props) {
     super(props);
     this.eventHandler = this.eventHandler.bind(this);
-    this.getCoinName = this.getCoinName.bind(this);
     this.props.getRacesByStatus('void', 0);
   }
   state = {
@@ -20,29 +19,7 @@ export default class UpComingRaceView extends Component {
   };
 
   eventHandler(id) {
-    this.props.inspectCoin(id, 1);
-    this.props.totalAmount(id);
     this.setState({raceDetailId: id});
-  }
-
-  getCoinName(id) {
-    for (let i = 0; i < priceengine.getAvailableCoins().length; i++) {
-      if (priceengine.getAvailableCoins()[i].id === id) {
-        return priceengine.getAvailableCoins()[i].name;
-      }
-    }
-    return '';
-  }
-
-  renderParticipatingCoins(coinArray){
-    let coins = [];
-
-    for (let i = 0; i < coinArray.length; i++){
-      coins.push(<img className="avatar dash-logo" key={`coin-${coinArray[i]}`} alt="dash-logo"
-                      src={process.env.PUBLIC_URL + `/coin-svg/${priceengine.getCoinSymbol(coinArray[i]).toLowerCase()}.svg`} />)
-    }
-
-    return coins;
   }
 
   render() {
@@ -56,16 +33,6 @@ export default class UpComingRaceView extends Component {
       }
     }
     if (utils.nonNull(races) && (races.length > 0)) {
-      const settings = {
-        dots: false,
-        arrows: true,
-        infinite: false,
-        autoplay: false,
-        speed: 500,
-        slidesToShow: 6,
-        slidesToScroll: 6
-      };
-
       let race = undefined;
 
       if (races.length > 0) {
@@ -77,75 +44,27 @@ export default class UpComingRaceView extends Component {
           }
         }
       }
-
-      const startTime = new Date(race.startTime *1000).toLocaleString();
-      const endTime = new Date((race.startTime +race.duration) *1000).toLocaleString();
-      const bstartTime = new Date(race.bStartTime *1000).toLocaleString();
       return (
               <div style={{marginTop: 50}}>
-                <Row>
-                  <Col sm={1}>
-                  </Col>
-                  <Col sm={19}>
-                    <Carousel {...settings}>
-                      {races.map(r => <div className="dash-card" key={utils.id()}>
-                        <DashCard key={r.id}
-                                  raceId={r.id}
-                                  leadingCoin=''
-                                  cardClickEventHandler={this.eventHandler}
-                                  coinImg={r.coinIds[0]}
-                                  participatingCoins={r.coinIds}
-                                  bStartTime={r.bStartTime}
-                                  startTime={r.startTime}
-                                  duration={r.duration} {...this.props} /></div>)}
-                    </Carousel></Col>
-                  <Col sm={1}>
-                  </Col>
-                </Row>
+                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 100}}/>
-                <Card>
-                  <DescriptionList size="large" col="2" title="Race Information" style={{ marginBottom: 32 }}>
-                    <Description term="Race Name">Combination of ...</Description>
-                    <Description term="Betting start time">{bstartTime}</Description>
-                    <Description term="Race start time">{startTime}</Description>
-                    <Description term="Race end time">{endTime}</Description>
-                    <Description term="Number Of Coins">{race.coinIds.length}</Description>
-                    <Description term="Coins">{this.renderParticipatingCoins(race.coinIds)}</Description>
-                  </DescriptionList>
-                </Card>
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-open">
-                      <stop
-                              offset="5%"
-                              stopColor="#F60"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#FF6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <svg height="0" width="0">
-                  <defs>
-                    <linearGradient id="gradient-circle-progress-closed">
-                      <stop
-                              offset="5%"
-                              stopColor="#4145F0"
-                      />
-                      <stop
-                              offset="95%"
-                              stopColor="#2AE4F6"
-                      />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                <DetailRaceInformationView race={race} col={1} size="small" coins={race.coinIds}/>
+
+                <GenerateSVGGradient id="gradient-circle-progress-open"
+                                     offset1="5%"
+                                     stopColor1="#F60"
+                                     offset2="95%"
+                                     stopColor2="#FF6"/>
+
+                <GenerateSVGGradient id="gradient-circle-progress-closed"
+                                     offset1="5%"
+                                     stopColor1="#4145F0"
+                                     offset2="95%"
+                                     stopColor2="#2AE4F6"/>
               </div>
       );
 
     }
-    //TODO message about empty races.
-    return (<div></div>);
+    return (<EmptyRaceView type="info" message="Void races" description="Great! we are working very hard to make sure there are no void races."/>);
   }
 }

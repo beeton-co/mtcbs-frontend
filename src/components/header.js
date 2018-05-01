@@ -86,7 +86,7 @@ class Header extends Component {
       </Menu.Item>
       <Menu.Item className="nav-item" key="races-void">
         <Link className="nav-link" to="/races/void">
-          Voided
+          Void
         </Link>
       </Menu.Item>
     </SubMenu>);

@@ -3,6 +3,7 @@ import {Divider, Card, Button} from 'antd';
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import {RaceCarousel} from '../../RaceCarousel';
+import {EmptyRaceView} from '../../EmptyRaceView';
 
 import DescriptionList from '../../../../components/DescriptionList';
 import CoinListView from '../../../Fragments/CoinListView';
@@ -72,8 +73,7 @@ export default class CompletedRaceView extends Component {
       );
 
     }
-    //TODO message about empty races.
-    return (<div></div>);
+    return (<EmptyRaceView type="info" message="Completed Races" description="No completed races at the moment. Please visit page at a later point."/>);
   }
 
   raceDetailView() {

@@ -7,7 +7,7 @@ import {RaceCarousel} from '../../RaceCarousel';
 
 import CoinListView from '../../../Fragments/CoinListView';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
-import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
+import {EmptyRaceView} from '../../EmptyRaceView';
 
 
 const ListItemMeta = List.Item.Meta;
@@ -67,8 +67,7 @@ export default class BettingRaceView extends Component {
       );
 
     }
-    //TODO message about empty races.
-    return (<div></div>);
+    return (<EmptyRaceView type="info" message="Open for Betting" description="No races for you to bet on? This is the cooling down phase, grab a drink because races have already been queued up in the pipeline."/>);
   }
 
   getCoinName(id) {
