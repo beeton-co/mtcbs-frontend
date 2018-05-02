@@ -239,11 +239,11 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "hasWinnings",
+      "name": "myWinnings",
       "outputs": [
         {
-          "name": "claim",
-          "type": "bool"
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
