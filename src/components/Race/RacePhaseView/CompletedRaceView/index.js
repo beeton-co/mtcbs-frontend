@@ -87,6 +87,7 @@ export default class CompletedRaceView extends Component {
       if (utils.nonNull(props.contract) &&
               utils.nonNull(props.contract.race)){
         if(this.props.contract.race.canClaim) {
+          message.info(`Congratulations! Your reward is ${props.contract.race.myWinnings}`, 15)
           setTimeout(() => {
             const race = this.getDetailedRace();
             this.props.claimReward(race);
