@@ -41,7 +41,6 @@ export const getRaceCompleteInfos = (id) => {
           winningCoins: winningCoins,
           myWinnings: ether
         }));
-        console.log(race_blockchain_cache[id]);
       }).catch(function (err) {
         console.log(err);
         utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, err);
