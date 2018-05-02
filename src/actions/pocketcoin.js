@@ -10,7 +10,6 @@ import {
   MY_CHANNEL,
   CREATE_RACE,
   BET_ON,
-  CLAIM_REWARD,
   RACE_WINNERS,
   RACE_START_PRICES,
   RACE_END_PRICES,
@@ -20,6 +19,7 @@ import {
 } from "./types";
 import * as utils from './utils';
 import * as sc from '../services/smartcontract';
+
 import {message} from 'antd';
 const PRECISION = 100000;
 const Web3 = require('web3');
@@ -291,54 +291,6 @@ export const betOn = (race, coin, value, coinName) => {
       dispatcher(dispatch, BET_ON, null, err);
     });
   }
-};
-
-export const claimReward_ = (race) => {
-  return dispatch => {
-    let raceContract;
-    __race(race.id).then(function (instance) {
-      raceContract = instance;
-      return raceContract.claimMyReward();
-    }).then(function (canClaim) {
-      console.log('canClaim', canClaim);
-      dispatcher(dispatch, CLAIM_REWARD, canClaim, null);
-    }).catch(function (err) {
-      console.log(err);
-      notification.error('Could not determine gas at this point in time. Please try again later');
-      dispatcher(dispatch, CLAIM_REWARD, null, err);
-    });
-  };
-};
-
-export const claimReward = (race) => {
-  let context = sc.smartcontract.context;
-  const hideMessage = message.loading(`Claiming reward. This might take a couple of seconds...`);
-  return dispatch => {
-    let raceContract;
-    __race(race.id).then(function (instance) {
-      raceContract = instance;
-      console.log(context);
-      return raceContract.claimMyReward.estimateGas(context);
-    }).then(function (estimateGas) {
-      context['gas'] = estimateGas;
-      raceContract.claimMyReward(context)
-              .then(function (tx, error) {
-                console.log(tx, error);
-                hideMessage();
-                //TODO message
-                dispatcher(dispatch, CLAIM_REWARD, {race: race.id, amount: tx}, error);
-              }).catch(function (err) {
-        hideMessage();
-        //TODO message
-        dispatcher(dispatch, CLAIM_REWARD, null, err);
-      });
-    }).catch(function (err) {
-      console.log(err);
-      hideMessage();
-      notification.error('Could not determine gas at this point in time. Please try again later');
-      dispatcher(dispatch, CLAIM_REWARD, null, err);
-    });
-  };
 };
 
 export const myChannel = () => {
