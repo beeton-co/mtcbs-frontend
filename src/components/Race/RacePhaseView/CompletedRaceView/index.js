@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Divider, Card, Button} from 'antd';
+import {Divider, Card, Button, message} from 'antd';
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import {RaceCarousel} from '../../RaceCarousel';
 import {EmptyRaceView} from '../../EmptyRaceView';
-
+import {WinnerConfetti} from '../../../../components/WinnerConfetti';
 import DescriptionList from '../../../../components/DescriptionList';
 import CoinListView from '../../../Fragments/CoinListView';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
@@ -26,13 +26,17 @@ export default class CompletedRaceView extends Component {
   state = {
     raceDetailId: null,
     loadedRaceInfo: false,
+    hasWinnings: false,
+    claimed: false,
+    clickedClaimReward: false,
   };
 
   componentWillReceiveProps(nextProps) {
     const {race} = nextProps.contract;
     if (utils.nonNull(race) && utils.nonNull(race.loaded) && race.loaded) {
-      this.setState({loadedRaceInfo: true});
-    }else{
+      const winnings = race.myWinnings > 0;
+      this.setState({loadedRaceInfo: true, hasWinnings:winnings});
+    } else {
       this.setState({loadedRaceInfo: false});
     }
   }
@@ -60,6 +64,7 @@ export default class CompletedRaceView extends Component {
 
       return (
               <div style={{marginTop: 50}}>
+                {this.renderConfetti()}
                 <RaceCarousel races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
@@ -73,7 +78,27 @@ export default class CompletedRaceView extends Component {
       );
 
     }
-    return (<EmptyRaceView type="info" message="Completed Races" description="No completed races at the moment. Please visit page at a later point."/>);
+    return (
+            <EmptyRaceView type="info" message="Completed Races" description="No completed races at the moment. Please visit page at a later point."/>);
+  }
+
+  renderConfetti(props) {
+    if (this.state.hasWinnings && this.state.clickedClaimReward ){
+      if (utils.nonNull(props.contract) &&
+              utils.nonNull(props.contract.race)){
+        if(this.props.contract.race.canClaim) {
+          setTimeout(() => {
+            const race = this.getDetailedRace();
+            this.props.claimReward(race);
+          }, 0);
+
+          return (<WinnerConfetti recycle={false}/>);
+        }else{
+          message.success('Reward already claimed.', 15);
+        }
+
+      }
+    }
   }
 
   raceDetailView() {
@@ -130,13 +155,16 @@ export default class CompletedRaceView extends Component {
   }
 
   renderClaimRewardButton() {
-    const race = this.getDetailedRace();
+
     if (this.state.loadedRaceInfo) {
       const winningCoins = this.props.contract.race.winningCoins;
       const descriptions = [];
 
       descriptions.push(<Description key={utils.id()}>
-        <Button onClick={(event) => this.props.claimReward(race)} ghost>Claim Reward</Button>
+        <Button onClick={(event) => {
+          event.preventDefault();
+          this.setState({clickedClaimReward: true});
+        }} ghost>Claim Reward</Button>
       </Description>);
 
       if (utils.nonNull(winningCoins) && winningCoins.length > 0) {
