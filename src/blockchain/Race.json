@@ -8,8 +8,8 @@
           "type": "address"
         },
         {
-          "name": "channelId",
-          "type": "uint256"
+          "name": "_raceOwner",
+          "type": "address"
         },
         {
           "name": "_name",
@@ -68,11 +68,6 @@
         },
         {
           "indexed": false,
-          "name": "channelId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
           "name": "bettor",
           "type": "address"
         },
@@ -118,6 +113,50 @@
       "type": "event"
     },
     {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "ClaimReward",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "RaceOwnerPercentage",
+      "type": "event"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -156,10 +195,6 @@
         },
         {
           "name": "coinValues",
-          "type": "uint256[]"
-        },
-        {
-          "name": "orderedCoinIds",
           "type": "uint256[]"
         },
         {
@@ -241,42 +276,6 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "endPrices",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256[]"
-        },
-        {
-          "name": "",
-          "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "startPrices",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256[]"
-        },
-        {
-          "name": "",
-          "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -455,93 +454,6 @@
         {
           "name": "",
           "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "inspectFinalCoinsOrder",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256[]"
-        },
-        {
-          "name": "",
-          "type": "uint256[]"
-        },
-        {
-          "name": "",
-          "type": "uint256[]"
-        },
-        {
-          "name": "",
-          "type": "uint256[]"
-        },
-        {
-          "name": "",
-          "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "cId",
-          "type": "uint256"
-        }
-      ],
-      "name": "inspectCoinId",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "cId",
-          "type": "uint256"
-        }
-      ],
-      "name": "inspectCoinStartPrice",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "cId",
-          "type": "uint256"
-        }
-      ],
-      "name": "inspectCoinEndPrice",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
         }
       ],
       "payable": false,

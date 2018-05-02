@@ -101,6 +101,11 @@
         },
         {
           "indexed": false,
+          "name": "channelId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
           "name": "exclusive",
           "type": "bool"
         }
