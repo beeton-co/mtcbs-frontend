@@ -13,7 +13,7 @@ export const getRaceCompleteInfos = (id) => {
     let coins = [];
     let winningCoins = [];
     const race = race_blockchain_cache[id];
-
+    let hasReward = false;
     //load from cache if available.
     if (utils.nonNull(race)) {
       utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, race);
@@ -30,6 +30,9 @@ export const getRaceCompleteInfos = (id) => {
         return raceInstance.winningCoins();
       }).then(function (_winningCoins) {
         winningCoins = raceWinners(_winningCoins);
+        return raceInstance.hasClaimedReward();
+      }).then(function (_hasReward) {
+        hasReward = _hasReward;
         return raceInstance.myWinnings(sc.smartcontract.context);
       }).then(function (_myWinnings) {
 
@@ -39,7 +42,8 @@ export const getRaceCompleteInfos = (id) => {
           coins: coins,
           loaded: true,
           winningCoins: winningCoins,
-          myWinnings: ether
+          myWinnings: ether,
+          canClaim:hasReward
         }));
       }).catch(function (err) {
         console.log(err);
