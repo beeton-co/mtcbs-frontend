@@ -32,17 +32,17 @@ export const getRaceCompleteInfos = (id) => {
       }).then(function (_winningCoins) {
         winningCoins = raceWinners(_winningCoins);
 
-        return raceInstance.hasWinnings();
-      }).then(function (_hasWinnings) {
-
-        hasWinnings = _hasWinnings;
+        return raceInstance.myWinnings();
+      }).then(function (_myWinnings) {
+        const ether = ethbchain.web3Instance.utils.fromWei(_myWinnings, 'ether');
         utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, (race_blockchain_cache[id] = {
           id: id,
           coins: coins,
           loaded: true,
           winningCoins: winningCoins,
-          hasWinnings: hasWinnings
+          myWinnings: ether
         }));
+        console.log(race_blockchain_cache[id]);
       }).catch(function (err) {
         console.log(err);
         utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, err);
