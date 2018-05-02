@@ -30,7 +30,7 @@ export const getRaceCompleteInfos = (id) => {
         return raceInstance.winningCoins();
       }).then(function (_winningCoins) {
         winningCoins = raceWinners(_winningCoins);
-        return raceInstance.hasClaimedReward();
+        return raceInstance.hasClaimedReward(sc.smartcontract.context);
       }).then(function (_hasReward) {
         hasReward = _hasReward;
         return raceInstance.myWinnings(sc.smartcontract.context);
