@@ -12,7 +12,6 @@ export const getRaceCompleteInfos = (id) => {
 
     let coins = [];
     let winningCoins = [];
-    let hasWinnings = false;
     const race = race_blockchain_cache[id];
 
     //load from cache if available.
