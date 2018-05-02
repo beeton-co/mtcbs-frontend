@@ -4,7 +4,7 @@ import {
 import * as utils from './utils';
 
 import * as ethbchain from './network_integration';
-
+import * as sc from '../services/smartcontract';
 const race_blockchain_cache = {};
 
 export const getRaceCompleteInfos = (id) => {
@@ -30,10 +30,10 @@ export const getRaceCompleteInfos = (id) => {
         return raceInstance.winningCoins();
       }).then(function (_winningCoins) {
         winningCoins = raceWinners(_winningCoins);
-
-        return raceInstance.myWinnings();
+        return raceInstance.myWinnings(sc.smartcontract.context);
       }).then(function (_myWinnings) {
-        const ether = ethbchain.web3Instance.utils.fromWei(_myWinnings, 'ether');
+
+        const ether = ethbchain.web3Instance.utils.fromWei(_myWinnings.toString(), 'ether');
         utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, (race_blockchain_cache[id] = {
           id: id,
           coins: coins,
@@ -47,7 +47,6 @@ export const getRaceCompleteInfos = (id) => {
         utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, err);
       });
     }
-
   }
 };
 
