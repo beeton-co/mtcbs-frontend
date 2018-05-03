@@ -36,7 +36,7 @@ export default class RunningRaceView extends Component {
     if (races && (races.length > 0)) {
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='running' races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.raceDetailView()}
                 <GenerateSVGGradient id="gradient-circle-progress-open"

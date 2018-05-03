@@ -46,7 +46,7 @@ export default class UpComingRaceView extends Component {
       }
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='void' races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 100}}/>
                 <DetailRaceInformationView race={race} col={1} size="small" coins={race.coinIds}/>
 

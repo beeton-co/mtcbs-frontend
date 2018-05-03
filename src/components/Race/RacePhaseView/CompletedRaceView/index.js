@@ -120,7 +120,7 @@ export default class CompletedRaceView extends Component {
       return (
               <div style={{marginTop: 50}}>
                 {this.renderConfetti(this.props)}
-                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='completed' races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
                 {this.raceDetailView()}

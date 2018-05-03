@@ -6,16 +6,15 @@ import * as pe from '../../actions/priceengine';
 class DashCard extends Component {
   constructor(props) {
     super(props);
-    let startTime = this.props.bStartTime;
+    let startTime = this.props.startTime;
+    let endTime = this.props.endTime;
     let currentTime = Math.round(new Date().getTime() / 1000);
-    let betting = true;
-    let endTime = this.props.startTime;
+    let inprogress = true;
+
     let clickable = this.props.cardClickEventHandler !== undefined;
     const callback = this.props.completedCallback;
     if (currentTime >= endTime) {
-      startTime = this.props.startTime;
-      betting = false;
-      endTime = startTime + this.props.duration;
+      inprogress = false;
     }
 
     let totalSeconds = (endTime - startTime);
@@ -39,7 +38,7 @@ class DashCard extends Component {
         percent: currentPercent,
         active: 'active',
         showInfo: true,
-        betting
+        inprogress
       };
     } else if (currentTime >= endTime) {
       this.state = {
@@ -51,7 +50,7 @@ class DashCard extends Component {
         percent: 1,
         active: 'success',
         showInfo: true,
-        betting
+        inprogress
       };
     }
     if (!clickable) {
@@ -72,7 +71,7 @@ class DashCard extends Component {
     percent: 0.0,
     active: 'active',
     showInfo: false,
-    betting: false,
+    inprogress: false,
     clickableClsName: '',
     disable : false,
     completedCallback: undefined,
@@ -128,14 +127,13 @@ class DashCard extends Component {
     let currentTime = Math.round(new Date().getTime() / 1000);
 
     if (currentTime === this.props.startTime) {
-      let endTime = this.props.startTime + this.props.duration;
-      let currentSecondsRemaining = (endTime - currentTime);
+      let currentSecondsRemaining = (this.props.endTime - currentTime);
 
       this.setState({
         seconds: currentSecondsRemaining,
         fraction: (1 / this.props.duration),
         percent: 0,
-        betting: false
+        inprogress: false
       })
     } else {
       // Remove one second, set state so a re-render happens.
@@ -154,7 +152,6 @@ class DashCard extends Component {
     // Check if we're at zero.
     if (seconds === 0) {
       if(this.state.completedCallback) {
-        console.log('DashCard this.state.completedCallback()');
         this.state.completedCallback();
       }
       clearInterval(this.timer);
@@ -164,7 +161,7 @@ class DashCard extends Component {
         percent: 1,
         active: 'success',
         showInfo: true,
-        betting: false
+        inprogress: false
       });
     }
   }
@@ -201,7 +198,7 @@ class DashCard extends Component {
                                   format={() => {return `${this.state.time.h} : ${this.state.time.m} : ${this.state.time.s}`}}
                                   showInfo={this.state.showInfo}
                                   status={this.state.active}
-                                  className={`dash-progress ${this.state.betting ? 'betting-open' : 'betting-closed'} `}
+                                  className={`dash-progress ${this.state.inprogress ? 'betting-open' : 'betting-closed'} `}
                           />
                           <div className="participating-coins AvatarStack">
                             <div className="AvatarStack-body" aria-label="coin, coin, and coin">

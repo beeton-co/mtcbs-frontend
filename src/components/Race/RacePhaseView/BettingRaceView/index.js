@@ -8,7 +8,7 @@ import {RaceCarousel} from '../../RaceCarousel';
 import CoinListView from '../../../Fragments/CoinListView';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import {EmptyRaceView} from '../../EmptyRaceView';
-
+import DashCard from "../../../../components/DashCard";
 
 const ListItemMeta = List.Item.Meta;
 const ListItem = List.Item;
@@ -46,10 +46,13 @@ export default class BettingRaceView extends Component {
         races = raceResult[0].betting.hits;
       }
     }
+    races = this.getFilterRaces(races);
     if (races && (races.length > 0)) {
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='betting' races={races} eventHandler={this.eventHandler} completedCallback={() => {
+                  this.setState(this.state)
+                }}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.raceDetailView()}
                 <GenerateSVGGradient id="gradient-circle-progress-open"
@@ -210,5 +213,17 @@ export default class BettingRaceView extends Component {
     } else {
       return this.coinsDetailView(priceengine.getPriceInfo(race.id));
     }
+  }
+
+  getFilterRaces(races) {
+
+    if(utils.nonNull(races) && races.length > 0){
+
+      function comparator(race) {
+        return race.startTime > new Date().getTime() / 1000;
+      }
+      return races.filter(comparator);
+    }
+    return races;
   }
 }

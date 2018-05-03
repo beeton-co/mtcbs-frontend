@@ -6,9 +6,9 @@ import * as utils from '../../../actions/utils';
 
 
 export const RaceCarousel = (props) => {
-  const {races, eventHandler} = props;
+  const {races, eventHandler, completedCallback, phase} = props;
 
-  const leadingCoin = (race) =>{
+  const leadingCoin = (race) => {
     if (priceengine.hasPrice(race.id)) {
       const prices = priceengine.getPriceInfo(race.id);
       return prices.coins[0].symbol;
@@ -24,6 +24,36 @@ export const RaceCarousel = (props) => {
     }
   };
 
+  const getStartTime = (race) => {
+    if (phase === 'upcoming') {
+      return new Date().getTime() / 1000;
+    } else if (phase === 'betting') {
+      return race.bStartTime;
+    } else { //phase === 'running' or phase === 'completed' at this point
+      return race.startTime;
+    }
+  };
+
+  const getEndTime = (race) => {
+    if (phase === 'upcoming') {
+      return race.bStartTime;
+    } else if (phase === 'betting') {
+      return race.startTime;
+    } else {//phase === 'running' or phase === 'completed' at this point
+      return race.startTime + race.duration;
+    }
+  };
+
+  const getDuration = (race) => {
+    if (phase === 'upcoming') {
+      return (race.bStartTime - new Date().getTime() / 1000) > 0 ? (race.bStartTime - new Date().getTime() / 1000) : 0;
+    } else if (phase === 'betting') {
+      return race.startTime - race.bStartTime;
+    } else {//phase === 'running' or phase === 'completed' at this point
+      return race.duration;
+    }
+  };
+
   return (
           <Row>
             <Col sm={1}>
@@ -32,14 +62,15 @@ export const RaceCarousel = (props) => {
               <Carousel {...utils.CarouselDefaultSettings}>
                 {races.map(r => <div className="dash-card" key={utils.id()}>
                   <DashCard key={r.id}
+                            completedCallback={completedCallback}
                             raceId={r.id}
                             leadingCoin={leadingCoin(r)}
                             cardClickEventHandler={eventHandler}
                             coinImg={r.coinIds[0]}
                             participatingCoins={r.coinIds}
-                            bStartTime={r.bStartTime}
-                            startTime={r.startTime}
-                            duration={r.duration} {...this.props} /></div>)}
+                            endTime={getEndTime(r)}
+                            startTime={getStartTime(r)}
+                            duration={getDuration(r)} {...this.props} /></div>)}
               </Carousel></Col>
             <Col sm={1}>
             </Col>
