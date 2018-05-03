@@ -41,6 +41,8 @@ export const RACE_INSPECT_COIN = "contract_race_inspect_coin";
 export const RACE_COINS_INFOS = "contract_race_coin_infos";
 export const RACE_COMPLETE_INFOS = "contract_race_complete_infos";
 export const CLAIM_REWARD = "contract_place_claim_reward";
+export const CLAIM_REWARD_CONFETTI = "contract_place_claim_reward_confetti";
+export const HAS_REWARD = "contract_race_has_reward";
 
 //user
 export const GET_ALL_USER_RACES = 'get_all_user_races';
