@@ -7,7 +7,7 @@ const {Description} = DescriptionList;
 
 
 export const DetailRaceInformationView = (props) => {
-  const {race, col, size, coins, enableCountDown} = props;
+  const {race, col, size, coins, enableCountDown, startTime, duration} = props;
   let timerStatic = true;
   if(enableCountDown) {
     timerStatic = false;
@@ -25,7 +25,7 @@ export const DetailRaceInformationView = (props) => {
       <Description term="Race name">{race.name}</Description>
       <Description term="Betting start time">{new Date(race.bStartTime * 1000).toLocaleString()}</Description>
       <Description term="Race start time">{new Date(race.startTime * 1000).toLocaleString()}</Description>
-      <Description term="Race Duration"><CountDownTimer static={timerStatic} duration={race.duration} startTime={race.startTime}/></Description>
+      <Description term="Race Duration"><CountDownTimer static={timerStatic} duration={duration} startTime={startTime}/></Description>
       {renderCoins()}
     </DescriptionList>
   </Card>);

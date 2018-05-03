@@ -34,7 +34,6 @@ import {
   winningCoins,
   myChannel,
   createRace,
-  claimReward,
   raceEndPrices,
   raceStartPrices,
   totalAmount,
@@ -43,7 +42,8 @@ import {
 } from './actions/pocketcoin';
 
 import {
-  getRaceCompleteInfos
+  getRaceCompleteInfos,
+  claimReward,
 } from './actions/race_contract_integration';
 
 import {

@@ -27,22 +27,83 @@ export default class CompletedRaceView extends Component {
     raceDetailId: null,
     loadedRaceInfo: false,
     hasWinnings: false,
+    hasClaimed: false,
     claimed: false,
     clickedClaimReward: false,
+    messageOpen: false,
+    confetti: false
   };
 
   componentWillReceiveProps(nextProps) {
     const {race} = nextProps.contract;
-    if (utils.nonNull(race) && utils.nonNull(race.loaded) && race.loaded) {
-      const winnings = race.myWinnings > 0;
-      this.setState({loadedRaceInfo: true, hasWinnings:winnings});
+
+    if (utils.nonNull(race)) {
+      if (utils.nonNull(race.loaded) && race.loaded) {
+        const winnings = race.myWinnings > 0;
+        const confetti = utils.nonNull(race.confetti) ? race.confetti : false;
+        const hasClaimed = utils.nonNull(race.hasClaimed) ? race.hasClaimed : false;
+        this.setState({loadedRaceInfo: true, hasWinnings: winnings, hasClaimed: hasClaimed, confetti: confetti});
+        console.log('nextProps', nextProps, {
+          loadedRaceInfo: true,
+          hasWinnings: winnings,
+          hasClaimed: hasClaimed,
+          confetti: confetti
+        });
+      } else if (race.confetti) {
+        this.setState({confetti: true});
+      }
     } else {
       this.setState({loadedRaceInfo: false});
     }
   }
 
+  componentDidUpdate() {
+    let ccr = this.state.clickedClaimReward;
+    let messageOpen = this.state.messageOpen;
+    let claimed = this.state.claimed;
+    let hasWinnings = this.state.hasWinnings;
+    let confetti = false;
+    if (this.state.clickedClaimReward) {
+      if (this.props.contract.race.claimRewardExecuted) {
+        ccr = false;
+        if (this.state.hasClaimed && !this.state.claimed) {
+          claimed = true;
+          message.info(`Congratulations! Your reward is ${this.props.contract.race.myWinnings} ether`, 10);
+        } else {
+          messageOpen = true;
+          const self = this;
+          if (!self.state.messageOpen) {
+            message.info('Reward already claimed.', 1, function () {
+              self.setState({messageOpen: false});
+            });
+          }
+
+        }
+        hasWinnings = false;
+
+        this.setState({
+          clickedClaimReward: ccr,
+          messageOpen: messageOpen,
+          claimed: claimed,
+          hasWinnings: hasWinnings,
+          confetti: confetti,
+        });
+      } else if (!this.state.hasWinnings) { // use doesnt have a winning.
+        message.info('No rewards for this race.', 1);
+      }
+    }
+
+    const race = this.getDetailedRace();
+    let raceDetailId = this.state.raceDetailId;
+    if (utils.nonNull(race) && utils.isNull(this.state.raceDetailId)) {
+      raceDetailId = race.id;
+      this.props.getRaceCompleteInfos(race.id);
+      this.setState({raceDetailId: race.id});
+    }
+  }
+
   eventHandler(id) {
-    this.setState({raceDetailId: id});
+    this.setState({raceDetailId: id, clickedClaimReward: false});
     //Dispatch evens to race contracts to fetch current values;
     this.props.getRaceCompleteInfos(id);
   }
@@ -64,7 +125,7 @@ export default class CompletedRaceView extends Component {
 
       return (
               <div style={{marginTop: 50}}>
-                {this.renderConfetti()}
+                {this.renderConfetti(this.props)}
                 <RaceCarousel races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
@@ -82,28 +143,14 @@ export default class CompletedRaceView extends Component {
             <EmptyRaceView type="info" message="Completed Races" description="No completed races at the moment. Please visit page at a later point."/>);
   }
 
+
   renderConfetti(props) {
-    if (this.state.hasWinnings && this.state.clickedClaimReward ){
-      if (utils.nonNull(props.contract) &&
-              utils.nonNull(props.contract.race)){
-        if(this.props.contract.race.canClaim) {
-          message.info(`Congratulations! Your reward is ${props.contract.race.myWinnings}`, 15)
-          setTimeout(() => {
-            const race = this.getDetailedRace();
-            this.props.claimReward(race);
-          }, 0);
-
-          return (<WinnerConfetti recycle={false}/>);
-        }else{
-          message.success('Reward already claimed.', 15);
-        }
-
-      }
+    if (this.state.confetti) {
+      return (<WinnerConfetti recycle={false}/>);
     }
   }
 
   raceDetailView() {
-
     const race = this.getDetailedRace();
 
     if (race === undefined) {
@@ -165,6 +212,11 @@ export default class CompletedRaceView extends Component {
         <Button onClick={(event) => {
           event.preventDefault();
           this.setState({clickedClaimReward: true});
+          if (this.state.hasWinnings) {
+            console.log('claim reward');
+            const race = this.getDetailedRace();
+            this.props.claimReward(race);
+          }
         }} ghost>Claim Reward</Button>
       </Description>);
 

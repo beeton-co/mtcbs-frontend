@@ -99,11 +99,6 @@ export default function (state = initialState, action) {
         ...state,
         betOn: action.payload
       };
-    case CLAIM_REWARD:
-      return {
-        ...state,
-        reward: action.payload
-      };
     case RETRIEVE_USER_ACCOUNT:
 
       if (utils.nonNull(action.payload.value)) {
