@@ -12,7 +12,7 @@ class DashCard extends Component {
     let betting = true;
     let endTime = this.props.startTime;
     let clickable = this.props.cardClickEventHandler !== undefined;
-
+    const callback = this.props.completedCallback;
     if (currentTime >= endTime) {
       startTime = this.props.startTime;
       betting = false;
@@ -31,6 +31,7 @@ class DashCard extends Component {
       currentPercent = currentSecondsPast / totalSeconds;
 
       this.state = {
+        completedCallback:callback,
         disableTime:true,
         clickable: clickable,
         time: {},
@@ -43,6 +44,7 @@ class DashCard extends Component {
       };
     } else if (currentTime >= endTime) {
       this.state = {
+        completedCallback:callback,
         clickable: clickable,
         time: {},
         seconds: 0,
@@ -72,7 +74,9 @@ class DashCard extends Component {
     active: 'active',
     showInfo: false,
     betting: false,
-    clickableClsName: ''
+    clickableClsName: '',
+    disable : false,
+    completedCallback: undefined,
   };
 
 
@@ -111,6 +115,10 @@ class DashCard extends Component {
     }
   }
 
+  componentWillUnmount(){
+    clearInterval(this.timer);
+  }
+
   startTimer() {
     if (this.timer === 0) {
       this.timer = setInterval(this.countDown, 1000);
@@ -146,6 +154,10 @@ class DashCard extends Component {
 
     // Check if we're at zero.
     if (seconds === 0) {
+      if(this.state.completedCallback) {
+        console.log('DashCard this.state.completedCallback()');
+        this.state.completedCallback();
+      }
       clearInterval(this.timer);
       this.setState({
         time: this.secondsToTime(0),
@@ -177,7 +189,6 @@ class DashCard extends Component {
   }
 
   render() {
-
     return (
             <a href="javascript:void(0)" className={this.state.clickableClsName} onClick={this.onClickEventHandler}>
               <Card
