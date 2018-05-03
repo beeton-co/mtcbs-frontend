@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Card, Progress, Avatar} from 'antd';
+import {Card, Progress} from 'antd';
 import * as pe from '../../actions/priceengine';
 
-const Meta = Card.Meta;
 
 class DashCard extends Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class DashCard extends Component {
     let currentPercent = 0;
 
 
-    if (currentTime >= startTime && endTime >= currentTime || currentSecondsPast < 0.0) {
+    if ((currentTime >= startTime && endTime >= currentTime) || (currentSecondsPast < 0.0)) {
       //if currentSecondsPast is < 0 it means we are probably dealing with up coming
       currentSecondsPast = currentSecondsPast  < 0.0 ? 0.0 : currentSecondsPast;
       currentPercent = currentSecondsPast / totalSeconds;
