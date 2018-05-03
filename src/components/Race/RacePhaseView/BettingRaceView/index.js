@@ -8,7 +8,6 @@ import {RaceCarousel} from '../../RaceCarousel';
 import CoinListView from '../../../Fragments/CoinListView';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import {EmptyRaceView} from '../../EmptyRaceView';
-import DashCard from "../../../../components/DashCard";
 
 const ListItemMeta = List.Item.Meta;
 const ListItem = List.Item;
