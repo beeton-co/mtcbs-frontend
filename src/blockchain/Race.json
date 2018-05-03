@@ -263,10 +263,10 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "hasClaimedReward",
+      "name": "rewardClaimed",
       "outputs": [
         {
-          "name": "",
+          "name": "alreadyClaimed",
           "type": "bool"
         }
       ],
