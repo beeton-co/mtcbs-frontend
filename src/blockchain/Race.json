@@ -127,6 +127,11 @@
         },
         {
           "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
           "name": "amount",
           "type": "uint256"
         },
@@ -151,6 +156,11 @@
           "indexed": false,
           "name": "user",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
         },
         {
           "indexed": false,
