@@ -230,9 +230,9 @@ function roundTo(n, digits) {
     digits = 0;
   }
 
-  var multiplicator = Math.pow(10, digits);
+  const multiplicator = Math.pow(10, digits);
   n = parseFloat((n * multiplicator).toFixed(11));
-  var test = (Math.round(n) / multiplicator);
+  const test = (Math.round(n) / multiplicator);
   return +(test.toFixed(digits));
 }
 
