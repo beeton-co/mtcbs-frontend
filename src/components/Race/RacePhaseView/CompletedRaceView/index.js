@@ -43,12 +43,6 @@ export default class CompletedRaceView extends Component {
         const confetti = utils.nonNull(race.confetti) ? race.confetti : false;
         const hasClaimed = utils.nonNull(race.hasClaimed) ? race.hasClaimed : false;
         this.setState({loadedRaceInfo: true, hasWinnings: winnings, hasClaimed: hasClaimed, confetti: confetti});
-        console.log('nextProps', nextProps, {
-          loadedRaceInfo: true,
-          hasWinnings: winnings,
-          hasClaimed: hasClaimed,
-          confetti: confetti
-        });
       } else if (race.confetti) {
         this.setState({confetti: true});
       }
@@ -213,7 +207,6 @@ export default class CompletedRaceView extends Component {
           event.preventDefault();
           this.setState({clickedClaimReward: true});
           if (this.state.hasWinnings) {
-            console.log('claim reward');
             const race = this.getDetailedRace();
             this.props.claimReward(race);
           }

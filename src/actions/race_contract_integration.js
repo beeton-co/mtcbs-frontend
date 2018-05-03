@@ -1,10 +1,15 @@
 import {
-  RACE_COMPLETE_INFOS
+  RACE_COMPLETE_INFOS,
+  CLAIM_REWARD,
+  CLAIM_REWARD_CONFETTI
 } from "./types";
+import {message} from 'antd';
 import * as utils from './utils';
-
+import * as notification from '../services/notification';
 import * as ethbchain from './network_integration';
 import * as sc from '../services/smartcontract';
+
+
 const race_blockchain_cache = {};
 
 export const getRaceCompleteInfos = (id) => {
@@ -13,7 +18,7 @@ export const getRaceCompleteInfos = (id) => {
     let coins = [];
     let winningCoins = [];
     const race = race_blockchain_cache[id];
-    let hasReward = false;
+    let canClaim = false;
     //load from cache if available.
     if (utils.nonNull(race)) {
       utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, race);
@@ -30,9 +35,9 @@ export const getRaceCompleteInfos = (id) => {
         return raceInstance.winningCoins();
       }).then(function (_winningCoins) {
         winningCoins = raceWinners(_winningCoins);
-        return raceInstance.hasClaimedReward(sc.smartcontract.context);
-      }).then(function (_hasReward) {
-        hasReward = _hasReward;
+        return raceInstance.rewardClaimed(sc.smartcontract.context);
+      }).then(function (hasClaimed) {
+        canClaim = !hasClaimed;
         return raceInstance.myWinnings(sc.smartcontract.context);
       }).then(function (_myWinnings) {
 
@@ -43,14 +48,54 @@ export const getRaceCompleteInfos = (id) => {
           loaded: true,
           winningCoins: winningCoins,
           myWinnings: ether,
-          canClaim:hasReward
+          canClaim:canClaim,
         }));
       }).catch(function (err) {
-        console.log(err);
         utils.dispatcher(dispatch, RACE_COMPLETE_INFOS, err);
       });
     }
   }
+};
+
+
+export const claimReward = (race) => {
+  let context = sc.smartcontract.context;
+
+  return dispatch => {
+    let raceContract;
+    ethbchain.__race(race.id).then(function (instance) {
+      raceContract = instance;
+      return raceContract.claimMyReward.estimateGas(context);
+    }).then(function (estimateGas) {
+      context['gas'] = estimateGas;
+      let r = race_blockchain_cache[race.id];
+      if(utils.isNull(r)){
+        r = {};
+      }
+      r.confetti = true;
+      utils.dispatcher(dispatch, CLAIM_REWARD_CONFETTI, r, null);
+
+      const hideMessage = message.loading(`Claiming reward. This might take a couple of seconds...`);
+      raceContract.claimMyReward(context)
+              .then(function (tx, error) {
+                hideMessage();
+                let cachedRace = race_blockchain_cache[race.id];
+                if(utils.isNull(cachedRace)) {
+                  cachedRace ={};
+                }
+                cachedRace.hasClaimed = true;
+                cachedRace.claimRewardExecuted = true;
+                utils.dispatcher(dispatch, CLAIM_REWARD, cachedRace, error);
+              }).catch(function (err) {
+        hideMessage();
+        utils.dispatcher(dispatch, CLAIM_REWARD, {}, err);
+      });
+    }).catch(function (err) {
+      let r = race_blockchain_cache[race.id];
+      r.claimRewardExecuted = true;
+      utils.dispatcher(dispatch, CLAIM_REWARD, r, null);
+    });
+  };
 };
 
 //cache values to prevent constant communication with network
