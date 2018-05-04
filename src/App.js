@@ -44,6 +44,7 @@ import {
 import {
   getRaceCompleteInfos,
   claimReward,
+  claimConfetti,
 } from './actions/race_contract_integration';
 
 import {
@@ -198,7 +199,8 @@ function mapDispatchToProps(dispatch) {
     totalAmount:totalAmount,
     inspectCoin:inspectCoin,
     getRaceCompleteInfos:getRaceCompleteInfos,
-    claimReward:claimReward
+    claimReward:claimReward,
+    claimConfetti:claimConfetti
   }, dispatch);
 }
 

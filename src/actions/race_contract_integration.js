@@ -72,7 +72,6 @@ export const claimReward = (race) => {
       if(utils.isNull(r)){
         r = {};
       }
-      r.confetti = true;
       utils.dispatcher(dispatch, CLAIM_REWARD_CONFETTI, r, null);
 
       const hideMessage = message.loading(`Claiming reward. This might take a couple of seconds...`);
@@ -83,17 +82,42 @@ export const claimReward = (race) => {
                 if(utils.isNull(cachedRace)) {
                   cachedRace ={};
                 }
-                cachedRace.hasClaimed = true;
-                cachedRace.claimRewardExecuted = true;
+                cachedRace.confetti = false;
+                cachedRace.disableConfetti = true;
                 utils.dispatcher(dispatch, CLAIM_REWARD, cachedRace, error);
+                message.info(`Congratulations! Your reward is ${cachedRace.myWinnings} ether`, 10);
               }).catch(function (err) {
         hideMessage();
         utils.dispatcher(dispatch, CLAIM_REWARD, {}, err);
       });
     }).catch(function (err) {
       let r = race_blockchain_cache[race.id];
-      r.claimRewardExecuted = true;
+      r.disableConfetti = true;
       utils.dispatcher(dispatch, CLAIM_REWARD, r, null);
+    });
+  };
+};
+
+export const claimConfetti = (race) => {
+  let context = sc.smartcontract.context;
+  return dispatch => {
+    let raceContract;
+    ethbchain.__race(race.id).then(function (instance) {
+      raceContract = instance;
+      return raceContract.claimMyReward.estimateGas(context);
+    }).then(function (estimateGas) {
+      let r = race_blockchain_cache[race.id];
+      if(utils.isNull(r)){
+        r = {};
+      }
+      r.confetti = true;
+      r.disableConfetti = false;
+      utils.dispatcher(dispatch, CLAIM_REWARD_CONFETTI, r, null);
+    }).catch(function (err) {
+      let r = race_blockchain_cache[race.id];
+      r.confetti = false;
+      r.disableConfetti = true;
+      utils.dispatcher(dispatch, CLAIM_REWARD_CONFETTI, r, null);
     });
   };
 };

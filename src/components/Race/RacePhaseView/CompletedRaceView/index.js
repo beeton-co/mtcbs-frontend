@@ -13,113 +13,57 @@ import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformatio
 const {Description} = DescriptionList;
 
 export default class CompletedRaceView extends Component {
-
   constructor(props) {
     super(props);
     this.eventHandler = this.eventHandler.bind(this);
-    this.raceDetailView = this.raceDetailView.bind(this);
-    this.getDetailedRace = this.getDetailedRace.bind(this);
-    this.renderClaimRewardButton = this.renderClaimRewardButton.bind(this);
+    this.claimRewardHandler = this.claimRewardHandler.bind(this);
     this.props.getRacesByStatus('completed', 0);
   }
 
   state = {
     raceDetailId: null,
-    loadedRaceInfo: false,
+    contractResult: {},
     hasWinnings: false,
-    hasClaimed: false,
-    claimed: false,
-    clickedClaimReward: false,
-    messageOpen: false,
-    confetti: false
+    claimedReward: false,
   };
 
   componentWillReceiveProps(nextProps) {
     const {race} = nextProps.contract;
+    let winnings = false;
 
     if (utils.nonNull(race)) {
-      if (utils.nonNull(race.loaded) && race.loaded) {
-        const winnings = race.myWinnings > 0;
-        const confetti = utils.nonNull(race.confetti) ? race.confetti : false;
-        const hasClaimed = utils.nonNull(race.hasClaimed) ? race.hasClaimed : false;
-        this.setState({loadedRaceInfo: true, hasWinnings: winnings, hasClaimed: hasClaimed, confetti: confetti});
-      } else if (race.confetti) {
-        this.setState({confetti: true});
+      if (race.loaded) {
+        winnings = race.myWinnings > 0;
       }
+      let claimedReward = false;
+      if(this.state.claimedReward) {
+        claimedReward = true;
+      }
+      if (race.confetti && !this.state.claimedReward) {
+        claimedReward = true;
+        const race = this.getDetailedRace();
+        this.props.claimReward(race);
+      }
+      this.setState({contractResult: race, hasWinnings: winnings, claimedReward: claimedReward});
     } else {
-      this.setState({loadedRaceInfo: false});
+      this.setState({contractResult: {}});
     }
   }
 
-  componentDidUpdate() {
-    let ccr = this.state.clickedClaimReward;
-    let messageOpen = this.state.messageOpen;
-    let claimed = this.state.claimed;
-    let hasWinnings = this.state.hasWinnings;
-    let confetti = false;
-    if (this.state.clickedClaimReward) {
-      if (this.props.contract.race.claimRewardExecuted) {
-        ccr = false;
-        if (this.state.hasClaimed && !this.state.claimed) {
-          claimed = true;
-          message.info(`Congratulations! Your reward is ${this.props.contract.race.myWinnings} ether`, 10);
-        } else {
-          messageOpen = true;
-          const self = this;
-          if (!self.state.messageOpen) {
-            message.info('Reward already claimed.', 1, function () {
-              self.setState({messageOpen: false});
-            });
-          }
-
-        }
-        hasWinnings = false;
-
-        this.setState({
-          clickedClaimReward: ccr,
-          messageOpen: messageOpen,
-          claimed: claimed,
-          hasWinnings: hasWinnings,
-          confetti: confetti,
-        });
-      } else if (!this.state.hasWinnings) { // use doesnt have a winning.
-        message.info('No rewards for this race.', 1);
-      }
-    }
-
+  componentDidUpdate(){
     const race = this.getDetailedRace();
-    let raceDetailId = this.state.raceDetailId;
     if (utils.nonNull(race) && utils.isNull(this.state.raceDetailId)) {
-      raceDetailId = race.id;
       this.props.getRaceCompleteInfos(race.id);
       this.setState({raceDetailId: race.id});
     }
   }
 
-  eventHandler(id) {
-    this.setState({raceDetailId: id, clickedClaimReward: false});
-    //Dispatch evens to race contracts to fetch current values;
-    this.props.getRaceCompleteInfos(id);
-  }
-
-
   render() {
-    let races;
-    let raceResult = this.props.races;
-
-    if (raceResult.length > 0) {
-      if (utils.isNull(raceResult[0].completed)) {
-        this.props.getRacesByStatus('completed', 0);
-      } else {
-        races = raceResult[0].completed.hits;
-      }
-    }
-
-    if (utils.nonNull(races) && (races.length > 0)) {
-
+    const races = this.getRaces(this.props);
+    if (races && races.length > 0) {
       return (
               <div style={{marginTop: 50}}>
-                {this.renderConfetti(this.props)}
+                {this.renderConfetti()}
                 <RaceCarousel phase='completed' races={races} eventHandler={this.eventHandler}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
@@ -130,18 +74,10 @@ export default class CompletedRaceView extends Component {
                                      offset2="95%"
                                      stopColor2="#2AE4F6"/>
               </div>
-      );
-
+      )
     }
     return (
             <EmptyRaceView type="info" message="Completed Races" description="No completed races at the moment. Please visit page at a later point."/>);
-  }
-
-
-  renderConfetti(props) {
-    if (this.state.confetti) {
-      return (<WinnerConfetti recycle={false}/>);
-    }
   }
 
   raceDetailView() {
@@ -161,7 +97,7 @@ export default class CompletedRaceView extends Component {
                       avatarOnly={true}/>
       </div>);
     }
-    else if (!this.state.loadedRaceInfo) {
+    else if (!this.state.contractResult.loaded) {
       return (<div className="standardList">
         <CoinListView loading={true}
                       coins={race.coinIds}
@@ -179,10 +115,66 @@ export default class CompletedRaceView extends Component {
     }
   }
 
+  renderConfetti() {
+    if (this.state.contractResult &&
+            this.state.contractResult.confetti &&
+            (utils.nonNull(this.state.contractResult.disableConfetti) && !this.state.contractResult.disableConfetti)) {
+      return (<WinnerConfetti recycle={false}/>);
+    }
+  }
+
+  renderClaimRewardButton() {
+    if (this.state.contractResult.loaded) {
+      const winningCoins = this.state.contractResult.winningCoins;
+      const descriptions = [];
+
+      descriptions.push(<Description key={utils.id()}><Button onClick={this.claimRewardHandler} ghost>Claim Reward</Button></Description>);
+      if (utils.nonNull(winningCoins) && winningCoins.length > 0) {
+        descriptions.push(<Description term="Winner(s)" key={utils.id()}>{utils.renderCoinAvatars(winningCoins)}</Description>);
+      }
+
+      return (<Card>
+        <DescriptionList size="large" col="4" style={{marginBottom: 32}}>
+          <Description term=""/>
+          {descriptions}
+          <Description term=""/>
+        </DescriptionList>
+      </Card>);
+    }
+  }
+
+  claimRewardHandler(event) {
+    event.preventDefault();
+
+    if (this.state.hasWinnings) {
+      const race = this.getDetailedRace();
+      this.props.claimConfetti(race);
+    }
+  }
+
+  eventHandler(id) {
+    //Dispatch evens to race contracts to fetch current values;
+    this.props.getRaceCompleteInfos(id);
+    this.setState({raceDetailId: id});
+  }
+
+  getRaces(props) {
+    let raceResult = props.races;
+
+    if (utils.nonNull(raceResult) && raceResult.length > 0) {
+      if (utils.isNull(raceResult[0].completed)) {
+        this.props.getRacesByStatus('completed', 0);
+      } else {
+        return raceResult[0].completed.hits;
+      }
+    }
+    return [];
+  }
+
   getDetailedRace() {
     let raceResult = this.props.races;
     let races = [];
-    if (raceResult.length > 0) {
+    if (raceResult && raceResult.length > 0) {
       races = raceResult[0].completed.hits;
     }
     if (utils.nonNull(races) && races.length > 0) {
@@ -195,36 +187,4 @@ export default class CompletedRaceView extends Component {
     }
     return null;
   }
-
-  renderClaimRewardButton() {
-
-    if (this.state.loadedRaceInfo) {
-      const winningCoins = this.props.contract.race.winningCoins;
-      const descriptions = [];
-
-      descriptions.push(<Description key={utils.id()}>
-        <Button onClick={(event) => {
-          event.preventDefault();
-          this.setState({clickedClaimReward: true});
-          if (this.state.hasWinnings) {
-            const race = this.getDetailedRace();
-            this.props.claimReward(race);
-          }
-        }} ghost>Claim Reward</Button>
-      </Description>);
-
-      if (utils.nonNull(winningCoins) && winningCoins.length > 0) {
-        descriptions.push(
-                <Description term="Winner(s)" key={utils.id()}>{utils.renderCoinAvatars(winningCoins)}</Description>);
-      }
-      return (<Card>
-        <DescriptionList size="large" col="4" style={{marginBottom: 32}}>
-          <Description term=""/>
-          {descriptions}
-          <Description term=""/>
-        </DescriptionList>
-      </Card>);
-    }
-  }
-
 }
