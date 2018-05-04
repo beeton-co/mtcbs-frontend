@@ -175,7 +175,12 @@ export default class CompletedRaceView extends Component {
     let raceResult = this.props.races;
     let races = [];
     if (raceResult && raceResult.length > 0) {
-      races = raceResult[0].completed.hits;
+
+      if (utils.isNull(raceResult[0].completed)) {
+        this.props.getRacesByStatus('completed', 0);
+      } else {
+        races = raceResult[0].completed.hits;
+      }
     }
     if (utils.nonNull(races) && races.length > 0) {
       const raceId = utils.isNull(this.state.raceDetailId) ? races[0].id : this.state.raceDetailId;
