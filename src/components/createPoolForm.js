@@ -39,7 +39,7 @@ const coins = [
 let CreatePoolForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;
    function handleExclusive(state) {
-      console.log(state);
+
    }
   return (
 

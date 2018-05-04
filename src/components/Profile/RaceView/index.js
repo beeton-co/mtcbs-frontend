@@ -32,7 +32,7 @@ const columns = [{
 export default class RacesView extends PureComponent {
   constructor(props) {
     super(props);
-    console.log(this.props);
+
     if (this.props.items) {
       this.state.loading = false;
       this.state.races = this.props.items;

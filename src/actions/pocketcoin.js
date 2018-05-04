@@ -164,11 +164,10 @@ export const raceStartPrices = (race) => {
     __race(race).then(function (instance) {
       return instance.startPrices();
     }).then(function (pricesObj) {
-      console.log('startPrices', pricesObj);
       racePrices(race, pricesObj, 'startPrices');
       dispatcher(dispatch, RACE_START_PRICES, {pricesObj});
     }).catch(function (err) {
-      console.log('startPrices', err);
+
       dispatcher(dispatch, RACE_START_PRICES, err);
     });
   }
@@ -179,11 +178,9 @@ export const raceEndPrices = (race) => {
     __race(race).then(function (instance) {
       return instance.endPrices();
     }).then(function (pricesObj) {
-      console.log('endPrices', pricesObj, 'endPrices');
       racePrices(race, pricesObj, 'endPrices');
       dispatcher(dispatch, RACE_END_PRICES, {pricesObj});
     }).catch(function (err) {
-      console.log('endPrices', err);
       dispatcher(dispatch, RACE_END_PRICES, err);
     });
   }
@@ -201,12 +198,10 @@ export const inspectCoin = (race, coinId) => {
         numOfBets:coin[2].toNumber(),
         startPrice:coin[3].toNumber(),
         endPrice:coin[4].toNumber()};
-
-      console.log('coin', _coin);
       racePrices(race, _coin, 'coin');
       dispatcher(dispatch, RACE_INSPECT_COIN, {coin:_coin});
     }).catch(function (err) {
-      console.log('endPrices', err);
+
       dispatcher(dispatch, RACE_INSPECT_COIN, err);
     });
   }
@@ -224,10 +219,10 @@ export const getRaceCoinInfos = (race) => {
         return instance.inspectCoins();
       }).then(function (coins) {
         raceCoinsInfo(race, coins);
-        console.log('{coins: btnblockcain.races[race].coins}',{coins: btnblockcain.races[race].coins});
+
         dispatcher(dispatch, RACE_COINS_INFOS, {coins: btnblockcain.races[race].coins});
       }).catch(function (err) {
-        console.log('endPrices', err);
+
         dispatcher(dispatch, RACE_COINS_INFOS, err);
       });
     }
@@ -249,11 +244,11 @@ export const totalAmount = (race) => {
       const wei = amount.toNumber();
       const weiStr = String(wei);
       const ether = web3Instance.utils.fromWei(weiStr, 'ether');
-      console.log('totalAmount', ether, race);
+
       racePrices(race, ether, 'totalAmount');
       dispatcher(dispatch, RACE_TOTAL_AMOUNT, ether);
     }).catch(function (err) {
-      console.log('totalAmount', err);
+
       dispatcher(dispatch, RACE_TOTAL_AMOUNT, err);
     });
   }
@@ -285,7 +280,7 @@ export const betOn = (race, coin, value, coinName) => {
         dispatcher(dispatch, BET_ON, null, err);
       });
     }).catch(function (err) {
-      console.log(err);
+
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, BET_ON, null, err);
