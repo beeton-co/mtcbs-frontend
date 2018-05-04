@@ -3,7 +3,9 @@ import {
   GET_BETS_FOR_STATUS_BY_BETTOR,
   GET_BETS_FOR_RACE,
   GET_ALL_USER_RACES,
-  GET_ALL_USER_BETS
+  GET_ALL_USER_BETS,
+  GET_CLAIMED_REWARD,
+  GET_PAYOUT_REWARD
 } from './types';
 
 import * as utils from './utils'
@@ -29,6 +31,24 @@ export const getUserBets = (userId) => {
   return getUserData(`user/bets/${userId}`, getUserBetsAsync);
 };
 
+export const getUserClaimRewards = (userId) => {
+  return dispatch => {
+    API.get(`user/claimreward/${userId}`)
+            .then(response => {
+              dispatch(getClaimedRewardsAsync(response.data));
+            });
+  };
+};
+
+export const getUserPayOutReward = (userId) => {
+  return dispatch => {
+    API.get(`user/payout/${userId}`)
+            .then(response => {
+              dispatch(getPayOutRewardsAsync(response.data));
+            });
+  };
+};
+
 function getUserBetsAsync(bets) {
   return utils.async(GET_ALL_USER_BETS, bets);
 }
@@ -43,6 +63,14 @@ function getUserBetsWithStatusAsync(bets) {
 
 function getRaceBetsAsync(bets) {
   return utils.async(GET_BETS_FOR_RACE, bets);
+}
+
+function getClaimedRewardsAsync(rewards) {
+  return utils.async(GET_CLAIMED_REWARD, rewards);
+}
+
+function getPayOutRewardsAsync(rewards) {
+  return utils.async(GET_PAYOUT_REWARD, rewards);
 }
 
 // const betsAsync = (type, payload) => {

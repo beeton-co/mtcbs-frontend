@@ -56,6 +56,14 @@ export const nonNull = (object) =>{
   return !isNull(object);
 };
 
+export const redirect = (props) => {
+  const {econtract} = props;
+  if (isNull(econtract.user) || isNull(econtract.account) || isNull(econtract.account.default)) {
+    return true;
+  }
+  return false;
+};
+
 export const dispatcher = (dispatch, type, value, error) =>{
   if (nonNull(error)) {
     dispatch(async(type, error));

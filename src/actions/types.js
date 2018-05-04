@@ -22,6 +22,8 @@ export const GET_DETAIL_RACE_COIN_INFORMATION = "get_detail_race_coin_informatio
 export const GET_BETS_BY_BETTOR = 'get_bets_by_bettor';
 export const GET_BETS_FOR_STATUS_BY_BETTOR = 'get_bets_for_status_by_bettor';
 export const GET_BETS_FOR_RACE = 'get_bets_for_race';
+export const GET_CLAIMED_REWARD = 'get_claimed_reward';
+export const GET_PAYOUT_REWARD = "get_payout_reward";
 
 //contract
 export const LOAD_CONTROLLER_CONTRACT = 'load_controller_contract';

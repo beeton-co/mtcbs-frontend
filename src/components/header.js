@@ -28,6 +28,11 @@ class Header extends Component {
           My Bets
         </Link>
       </Menu.Item>
+      <Menu.Item className="nav-item" key="my-rewards">
+        <Link className="nav-link" to="/profile/rewards">
+          My Claimed Rewards
+        </Link>
+      </Menu.Item>
     </SubMenu>);
   }
 
@@ -43,6 +48,11 @@ class Header extends Component {
                 <Menu.Item className="nav-item" key="cmgmt-races">
                   <Link className="nav-link" to="/profile/cmgmt/races">
                     My Races
+                  </Link>
+                </Menu.Item>
+                <Menu.Item className="nav-item" key="cmgmt-payout">
+                  <Link className="nav-link" to="/profile/cmgmt/payout">
+                    My Payout
                   </Link>
                 </Menu.Item>
               </SubMenu>

@@ -21,7 +21,9 @@ import {
   getUserBets,
   getUserRaces,
   getUserBetsWithStatus,
-  getRaceBets
+  getRaceBets,
+  getUserClaimRewards,
+  getUserPayOutReward
 } from './actions/bets';
 
 
@@ -200,7 +202,9 @@ function mapDispatchToProps(dispatch) {
     inspectCoin:inspectCoin,
     getRaceCompleteInfos:getRaceCompleteInfos,
     claimReward:claimReward,
-    claimConfetti:claimConfetti
+    claimConfetti:claimConfetti,
+    getUserClaimRewards:getUserClaimRewards,
+    getUserPayOutReward:getUserPayOutReward
   }, dispatch);
 }
 
