@@ -18,11 +18,11 @@ class Header extends Component {
 
   profileLinks(){
     return (<SubMenu key="profile" title={<span><Icon type="form"/><span>My Profile</span></span>}>
-      <Menu.Item className="nav-item" key="my-bet-races">
+      {/*<Menu.Item className="nav-item" key="my-bet-races">
         <Link className="nav-link" to="/profile/races">
           Bet Races
         </Link>
-      </Menu.Item>
+      </Menu.Item>*/}
       <Menu.Item className="nav-item" key="my-bets">
         <Link className="nav-link" to="/profile/bets">
           My Bets

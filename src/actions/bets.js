@@ -28,7 +28,12 @@ export const getUserRaces = (userId) => {
 };
 
 export const getUserBets = (userId) => {
-  return getUserData(`user/bets/${userId}`, getUserBetsAsync);
+  return dispatch => {
+    API.get(`user/bets/${userId}`)
+            .then(response => {
+              dispatch(getUserBetsAsync(response.data.entity));
+            });
+  };
 };
 
 export const getUserClaimRewards = (userId) => {
@@ -72,36 +77,6 @@ function getClaimedRewardsAsync(rewards) {
 function getPayOutRewardsAsync(rewards) {
   return utils.async(GET_PAYOUT_REWARD, rewards);
 }
-
-// const betsAsync = (type, payload) => {
-//
-//     let payloadArray = [];
-//     let bettorRaceList = payload;
-//
-//     Object.keys(bettorRaceList.hits).forEach(function (key) {
-//
-//         if(bettorRaceList.hits[key].running !== undefined) {
-//             let thisRace = bettorRaceList.hits[key].running[0].race;
-//             let placedBet = bettorRaceList.hits[key].running;
-//             let totalBets = {};
-//             for (let i = 0; i < placedBet.length; i++) {
-//                 if (!(`${placedBet[i].coinId}` in totalBets)){
-//                     totalBets[`${placedBet[i].coinId}`] = placedBet[i].amount
-//                 }else{
-//                     totalBets[`${placedBet[i].coinId}`] += placedBet[i].amount
-//                 }
-//             }
-//             let payloadHash = {id: bettorRaceList.hits[key].running[0].id ,'Bets': totalBets, 'Race': thisRace};
-//             payloadArray.push(payloadHash);
-//         }
-//     });
-//
-//     return {
-//         type: type,
-//         payload: payloadArray
-//     };
-// };
-
 export const getUserData = (uri, asyncFunc) => {
   return dispatch => {
     API.get(uri)

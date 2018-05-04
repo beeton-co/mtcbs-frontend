@@ -167,6 +167,7 @@ function mapStateToProps(state) {
     bets: state.bets,
     econtract: state.econtract,
     contract: state.contract,
+    profile: state.profile,
   }
 }
 

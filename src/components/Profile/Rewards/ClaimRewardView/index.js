@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import * as utils from "../../../../actions/utils";
 import {Redirect} from 'react-router-dom';
 import Rewards from '../../Rewards';
+import {Row} from 'antd'
 
 
 export default class ClaimRewardView extends PureComponent {
@@ -26,6 +27,16 @@ export default class ClaimRewardView extends PureComponent {
         value['key'] = count++;
       });
     }
-    return (<Rewards data={data} channelOwner={false} title="Claimed Rewards" {...this.props}/>);
+    return (
+            <Row>
+              <Row>
+                <div style={{marginTop: 50, marginBottom: 25,fontSize: 24, fontWeight: 500, color: "#fff", textTransform: "uppercase"}}>
+                  Claimed Rewards
+                </div>
+              </Row>
+              <Row>
+                <Rewards data={data} channelOwner={false} title="Claimed Rewards" {...this.props}/>
+              </Row>
+            </Row>);
   }
 }
