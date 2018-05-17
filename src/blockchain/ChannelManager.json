@@ -1,5 +1,5 @@
 {
-  "contractName": "MTCBSController",
+  "contractName": "ChannelManager",
   "abi": [
     {
       "inputs": [],
@@ -33,7 +33,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "name": "id",
           "type": "uint256"
         },
@@ -51,6 +51,11 @@
           "indexed": false,
           "name": "description",
           "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "subdomain",
+          "type": "string"
         }
       ],
       "name": "ChannelCreated",
@@ -60,7 +65,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "name": "addr",
           "type": "address"
         },
@@ -121,6 +126,10 @@
           "type": "string"
         },
         {
+          "name": "subdomain",
+          "type": "string"
+        },
+        {
           "name": "description",
           "type": "string"
         }
@@ -134,20 +143,6 @@
       ],
       "payable": true,
       "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "createHouseChannel",
-      "outputs": [
-        {
-          "name": "chId",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -177,7 +172,7 @@
           "type": "address"
         },
         {
-          "name": "expirationDate",
+          "name": "account",
           "type": "uint256"
         }
       ],
@@ -212,7 +207,7 @@
           "type": "uint256"
         },
         {
-          "name": "expirationDate",
+          "name": "account",
           "type": "uint256"
         }
       ],
@@ -242,41 +237,7 @@
           "type": "uint256"
         },
         {
-          "name": "expirationDate",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "houseChannel",
-      "outputs": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "disable",
-          "type": "bool"
-        },
-        {
-          "name": "channelOwner",
-          "type": "address"
-        },
-        {
-          "name": "expirationDate",
-          "type": "uint256"
-        },
-        {
-          "name": "id",
+          "name": "account",
           "type": "uint256"
         }
       ],
@@ -357,6 +318,29 @@
     },
     {
       "constant": false,
+      "inputs": [],
+      "name": "reloadAccount",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "cost",
+          "type": "uint256"
+        }
+      ],
+      "name": "raceCostValue",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
       "inputs": [
         {
           "name": "name",
@@ -432,34 +416,6 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [],
-      "name": "renewSubscription",
-      "outputs": [
-        {
-          "name": "renewed",
-          "type": "bool"
-        }
-      ],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "subExpirationDate",
-      "outputs": [
-        {
-          "name": "expirationDate",
-          "type": "uint256"
-        }
-      ],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
       "constant": true,
       "inputs": [],
       "name": "myRaces",
@@ -481,20 +437,6 @@
         {
           "name": "",
           "type": "address[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "isBookie",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
         }
       ],
       "payable": false,
