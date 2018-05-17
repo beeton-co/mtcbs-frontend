@@ -56,6 +56,10 @@ import {
   getDetailRaceCoins,
 } from './actions/priceengine';
 
+import{
+  isSubDomainAvailable
+} from './actions/subdomain_manager_integration';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -205,7 +209,8 @@ function mapDispatchToProps(dispatch) {
     claimReward:claimReward,
     claimConfetti:claimConfetti,
     getUserClaimRewards:getUserClaimRewards,
-    getUserPayOutReward:getUserPayOutReward
+    getUserPayOutReward:getUserPayOutReward,
+    isSubDomainAvailable:isSubDomainAvailable
   }, dispatch);
 }
 

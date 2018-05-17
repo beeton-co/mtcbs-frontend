@@ -1,5 +1,6 @@
-import Controller from '../blockchain/Controller.json';
+import ChannelManager from '../blockchain/ChannelManager.json';
 import Race from '../blockchain/Race.json';
+import SubDomainManager from '../blockchain/SubDomainManager.json';
 import {
   DETECT_ETHEREUM_NETWORK,
   LOAD_CONTROLLER_CONTRACT,
@@ -17,8 +18,9 @@ const BLOCKCHAIN_GET_CALL_TIMEOUT = 15000; //15 seconds
 export const PRECISION = 100000;
 export const web3Instance = new Web3(Web3.givenProvider);
 export const CONTRACT_NETWORK = `${process.env.REACT_APP_CONTRACT_NETWORK}`;
-export const CONTRACT_CONTROLLER = loadContract2(Controller);
+export const CONTRACT_CONTROLLER = loadContract2(ChannelManager);
 export const RACE_CONTRACT = loadContract2(Race);
+export const SUBDOMAIN_MANAGER_CONTRACT = loadContract2(SubDomainManager);
 
 // // detects network client is trying to use to connect with. this call is a time out call should in case
 // // detection takes longer than 15 seconds.
@@ -43,6 +45,10 @@ export const __controller = () => {
 
 export const __race = (race) =>{
   return RACE_CONTRACT.at(race);
+};
+
+export const __subdomainManager = (sdm) =>{
+  return SUBDOMAIN_MANAGER_CONTRACT.at(sdm);
 };
 
 

@@ -1,4 +1,4 @@
-import Controller from '../blockchain/Controller.json';
+import ChannelManager from '../blockchain/ChannelManager.json';
 import Race from '../blockchain/Race.json';
 import * as notification from '../services/notification';
 import {
@@ -29,7 +29,7 @@ export const CONTRACT_NETWORK = `${process.env.REACT_APP_CONTRACT_NETWORK}`;
 const CONTRACT_CONTROLLER_ADDRESS = `${process.env.REACT_APP_POCKET_CONTRACT_CONTROLLER}`;
 const BLOCKCHAIN_GET_CALL_TIMEOUT = 15000; //15 seconds
 const btnblockcain = {races: {}};
-const CONTRACT_CONTROLLER = loadContract2(Controller);
+const CONTRACT_CONTROLLER = loadContract2(ChannelManager);
 const RACE_CONTRACT = loadContract2(Race);
 
 // detects network client is trying to use to connect with. this call is a time out call should in case
@@ -50,7 +50,7 @@ export const retrieveAccount = () => {
 };
 
 
-export const createChannel = (name, description) => {
+export const createChannel = (name, description, subdomain) => {
   const hideMessage = message.loading(`Creating '${name}' channel. This might take a couple of seconds...`);
   let context = sc.smartcontract.context;
   context['value'] = web3Instance.utils.toWei("1", "ether");
@@ -58,11 +58,11 @@ export const createChannel = (name, description) => {
     let controller;
     __controller().then(function (instance) {
       controller = instance;
-      return controller.createChannel.estimateGas(name, description, context);
+      return controller.createChannel.estimateGas(name, subdomain, description, context);
     }).then(function (estimateGas) {
 
       context['gas'] = estimateGas;
-      controller.createChannel(name, description, context)
+      controller.createChannel(name, subdomain, description, context)
               .then(function (tx, error) {
                 hideMessage();
                 if (utils.nonNull(error)) {
@@ -131,7 +131,6 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
       }
 
     }).catch(function (err) {
-      console.log(err);
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, CREATE_RACE, null, err);

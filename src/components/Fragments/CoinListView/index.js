@@ -36,7 +36,7 @@ export default class CoinListView extends Component {
 
   render() {
 
-    const {coins, loading, priceClass, avatarsOnly, empty} = this.props;
+    const {coins, loading, priceClass, avatarsOnly, empty, running} = this.props;
     let priceCls = priceClass;
     if(utils.isNull(priceCls)){
       priceCls ='';
@@ -74,7 +74,7 @@ export default class CoinListView extends Component {
                         {this.renderAmount(coin)}
                         {this.renderBets(coin)}
                         {this.renderStartPrice(coin, priceCls)}
-                        {this.renderEndPrice(coin, priceCls)}
+                        {this.renderEndPrice(coin, priceCls, running)}
                         {this.renderChange(coin, priceCls)}
                       </div>
                     </ListItem>
@@ -147,9 +147,16 @@ export default class CoinListView extends Component {
     }
   }
 
-  renderEndPrice(coin, priceCls) {
+  renderEndPrice(coin, priceCls, running) {
     const priceClass = priceCls + " listContentItem";
-    if (this.state.endPrice) {
+    if (running){
+      return (
+              <div className={priceClass}>
+                <span>Real Time Price*</span>
+                <p>{coin.currentPrice}</p>
+              </div>
+      );
+    }else if(this.state.endPrice) {
       return (
               <div className={priceClass}>
                 <span>End Price</span>

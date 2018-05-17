@@ -10,6 +10,7 @@ import {
   RACE_TOTAL_AMOUNT,
   RACE_INSPECT_COIN,
   RACE_COINS_INFOS,
+  IS_SDM_AVAILABLE,
 } from '../actions/types';
 
 import * as utils from '../actions/utils';
@@ -20,6 +21,7 @@ const initialState = {
   network: {},
   cRaceResult: undefined,
   cChannelResult: undefined,
+  sdm: {},
   account: {},
   betOn: undefined,
   user: {},
@@ -72,6 +74,12 @@ export default function (state = initialState, action) {
         ...state,
         cChannelResult: action.payload
       };
+    case IS_SDM_AVAILABLE:
+      return {
+        ...state,
+        sdm: action.payload
+      };
+
     case CREATE_RACE:
       return {
         ...state,

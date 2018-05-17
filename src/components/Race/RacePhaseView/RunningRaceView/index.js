@@ -110,6 +110,7 @@ export default class RunningRaceView extends Component {
                               coins={data.coins}
                               amount={false}
                               bets={false}
+                              running={true}
                               priceClass="runningListContentItem"/>
                 <DetailRaceInformationView race={race} col={1} size="large" coins={data.coins}/>
               </div>

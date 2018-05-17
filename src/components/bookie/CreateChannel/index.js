@@ -10,10 +10,13 @@ export default class CreateChannel extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAvailability = this.handleAvailability.bind(this);
   }
 
   state ={
-    redirect: false
+    redirect: false,
+    availableLoading:false,
+    icon:''
   };
 
   componentWillReceiveProps(nextProps) {
@@ -21,15 +24,33 @@ export default class CreateChannel extends Component {
             utils.nonNull(nextProps.econtract.cChannelResult.tx)){
       this.setState({redirect:true});
     }
+    if(utils.nonNull(nextProps.econtract.sdm.available)){
+      const available = nextProps.econtract.sdm.available;
+
+      if(available) {
+        this.setState({availableLoading:false, available:available, icon:'check'});
+      }else{
+        this.setState({availableLoading:false, available:available, icon:'danger'});
+      }
+    }
+
+    if(utils.nonNull(nextProps.econtract.sdm.error)){
+      //TODO error message.
+    }
   }
 
   handleSubmit = (data) => {
     const {econtract} = this.props;
     if (utils.nonNull(econtract.account) && utils.nonNull(econtract.account.default)){
-      this.props.createChannel(data.channelName, data.description);
+      this.props.createChannel(data.channelName, data.description, data.subdomain);
     }else{
       notification.warn('No account could be identified. Please authenticate via metamask (https://www.metamask.io)')
     }
+  };
+
+  handleAvailability = (subdomain) => {
+    this.props.isSubDomainAvailable(subdomain);
+    this.setState({availableLoading:true});
   };
 
   render() {
@@ -39,7 +60,11 @@ export default class CreateChannel extends Component {
     }
     return (<Card  style={{marginTop: 32}} bordered={false}>
       <div className="pocket-form">
-        <CreateChannelValidationForm onSubmit={this.handleSubmit}/>
+        <CreateChannelValidationForm
+                onSubmit={this.handleSubmit}
+                onAvailable={this.handleAvailability}
+                icon={this.state.icon}
+                loading={this.state.availableLoading}/>
       </div>
     </Card>);
   }
