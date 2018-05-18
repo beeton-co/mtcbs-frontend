@@ -100,7 +100,7 @@ export function getCoinSymbol(coinId) {
 export function getCachedCoin(coinId) {
   const coins = getAvailableCoins();
   for (let i = 0; i < coins.length; i++) {
-    if (coins[i].id === parseInt(coinId)) {
+    if (coins[i].id === parseInt(coinId, 10)) {
       return coins[i];
     }
   }

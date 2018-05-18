@@ -1,43 +1,22 @@
 import ChannelManager from '../blockchain/ChannelManager.json';
 import Race from '../blockchain/Race.json';
 import SubDomainManager from '../blockchain/SubDomainManager.json';
-import {
-  DETECT_ETHEREUM_NETWORK,
-  LOAD_CONTROLLER_CONTRACT,
-  RETRIEVE_USER_ACCOUNT,
 
-} from "./types";
 
-import * as utils from './utils';
+//import * as utils from './utils';
 
 const Web3 = require('web3');
 const TruffleContract = require("truffle-contract");
 const CONTRACT_CONTROLLER_ADDRESS = `${process.env.REACT_APP_POCKET_CONTRACT_CONTROLLER}`;
-const BLOCKCHAIN_GET_CALL_TIMEOUT = 15000; //15 seconds
+
 
 export const PRECISION = 100000;
 export const web3Instance = new Web3(Web3.givenProvider);
-export const CONTRACT_NETWORK = `${process.env.REACT_APP_CONTRACT_NETWORK}`;
+
 export const CONTRACT_CONTROLLER = loadContract2(ChannelManager);
 export const RACE_CONTRACT = loadContract2(Race);
 export const SUBDOMAIN_MANAGER_CONTRACT = loadContract2(SubDomainManager);
 
-// // detects network client is trying to use to connect with. this call is a time out call should in case
-// // detection takes longer than 15 seconds.
-// export const detectNetwork = () => {
-//   return timeoutBlockchainGetCall(DETECT_ETHEREUM_NETWORK,
-//           web3Instance.eth.net.getNetworkType);
-// };
-//
-// //action to load controller contract
-// export const loadControllerContract = () => {
-//   return utils.async(LOAD_CONTROLLER_CONTRACT, {});
-// };
-//
-// export const retrieveAccount = () => {
-//   return timeoutBlockchainGetCall(RETRIEVE_USER_ACCOUNT,
-//           web3Instance.eth.getAccounts);
-// };
 
 export const __controller = () => {
   return CONTRACT_CONTROLLER.at(CONTRACT_CONTROLLER_ADDRESS);
@@ -52,16 +31,6 @@ export const __subdomainManager = (sdm) =>{
 };
 
 
-// function loadContract(address, abi) {
-//   let contract = undefined;
-//   if (web3Instance.currentProvider !== null) {
-//     let contractWrapper = TruffleContract(abi);
-//     contractWrapper.setProvider(web3Instance.currentProvider);
-//     contract = contractWrapper.at(address);
-//   }
-//   return contract;
-// }
-
 function loadContract2(abi) {
   let contract = undefined;
   if (web3Instance.currentProvider !== null) {
@@ -72,7 +41,7 @@ function loadContract2(abi) {
   return contract;
 }
 
-
+/*
 function timeoutBlockchainGetCall(type, blockchainMethod) {
   let networkPromise = new Promise((resolve, reject) => {
     try {
@@ -113,3 +82,4 @@ function timeoutBlockchainCall(time, type, promise) {
     });
   };
 }
+*/

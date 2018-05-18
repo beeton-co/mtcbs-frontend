@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Divider, Card, Button, message} from 'antd';
+import {Divider, Card, Button} from 'antd';
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import {RaceCarousel} from '../../RaceCarousel';

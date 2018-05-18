@@ -112,8 +112,9 @@ export const SubDomainAvailableControl = (props) => {
       md: {span: 23},
     },
   };
-  let subdomainValue = '';
+
   let self = this;
+  self.subdomainValue = '';
 
   //const OnChange = (event, newValue, previousValue, name) => {
   const OnChange = (event, newValue) => {

@@ -5,7 +5,7 @@ import {
 } from "./types";
 import {message} from 'antd';
 import * as utils from './utils';
-import * as notification from '../services/notification';
+//import * as notification from '../services/notification';
 import * as ethbchain from './network_integration';
 import * as sc from '../services/smartcontract';
 
