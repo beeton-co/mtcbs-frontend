@@ -12,7 +12,7 @@ import {EmptyRaceView} from '../../EmptyRaceView';
 const ListItemMeta = List.Item.Meta;
 const ListItem = List.Item;
 
-export default class BettingRaceView extends Component {
+  export default class BettingRaceView extends Component {
 
   constructor(props) {
     super(props);

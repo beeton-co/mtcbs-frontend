@@ -53,7 +53,6 @@ export const RaceCarousel = (props) => {
       return race.duration;
     }
   };
-
   return (
           <Row>
             <Col sm={1}>
@@ -62,6 +61,8 @@ export const RaceCarousel = (props) => {
               <Carousel {...utils.CarouselDefaultSettings}>
                 {races.map(r => <div className="dash-card" key={utils.id()}>
                   <DashCard key={r.id}
+                            title={r.name}
+                            numericId={r.numericId}
                             completedCallback={completedCallback}
                             raceId={r.id}
                             leadingCoin={leadingCoin(r)}

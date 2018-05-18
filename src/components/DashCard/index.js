@@ -185,9 +185,10 @@ class DashCard extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
             <a href="javascript:void(0)" className={this.state.clickableClsName} onClick={this.onClickEventHandler}>
-              <Card
+              <Card   title={this.props.title}
                       className="dash-card"
                       // style={{ width: 160px }}
                       cover={
@@ -213,7 +214,7 @@ class DashCard extends Component {
               ]}>
                 {/*<Meta avatar={<Avatar src="http://introtocrypto.com/wp-content/uploads/2017/08/ether@2x.png"/>}  title="Etherium" />*/}
                 <div className="payout-card-flex">
-                  <p></p>
+                  <p>{this.props.numericId}</p>
                   <img alt="card-arr" className="card-arr" src={process.env.PUBLIC_URL + "/angle-double-right.svg"}/>
                   <p className="payout-card-value">{this.props.leadingCoin}</p>
                 </div>
