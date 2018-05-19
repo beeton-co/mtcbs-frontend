@@ -44,7 +44,7 @@ export default class CreateChannel extends Component {
     if (utils.nonNull(econtract.account) && utils.nonNull(econtract.account.default)){
       this.props.createChannel(data.channelName, data.description, data.subdomain);
     }else{
-      notification.warn('No account could be identified. Please authenticate via metamask (https://www.metamask.io)')
+      notification.warn('No account could be identified. Please authenticate via Metamask (https://www.metamask.io)')
     }
   };
 

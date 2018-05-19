@@ -39,7 +39,7 @@ class Header extends Component {
   channelManagementLinks() {
     if (sc.smartcontract.user.channelOwner) {
       return (
-              <SubMenu key="channelManagement" title={<span><Icon type="form"/><span>Channel Management</span></span>}>
+              <SubMenu key="channelManagement" title={<span><Icon type="form"/><span>Booth Management</span></span>}>
                 <Menu.Item className="nav-item" key="create-race">
                   <Link className="nav-link" to="/profile/cmgmt/createrace">
                     Create Race
@@ -65,7 +65,7 @@ class Header extends Component {
       return (
               <Menu.Item className="nav-item" key={3}>
                 <Link className="nav-link" to="/createchannel">
-                  <span><Icon type="form"/><span>Become a Channel Owner</span></span>
+                  <span><Icon type="form"/><span>Become a Booth Owner</span></span>
                 </Link>
               </Menu.Item>
       );

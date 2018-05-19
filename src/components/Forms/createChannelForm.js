@@ -17,9 +17,9 @@ let ChannelForm = (props) => {
   const {handleSubmit, loading, onAvailable, icon} = props;
 
   return (<form onSubmit={handleSubmit}>
-    <Field {...defaultFormItemLayout} name="channelName" component={TextField} label="Channel Name" validate={[required]}/>
+    <Field {...defaultFormItemLayout} name="channelName" component={TextField} label="Booth Name" validate={[required]}/>
     <SubDomainAvailableControl loading={loading} handleClick={onAvailable} icon={icon}/>
-    <Field {...defaultFormItemLayout} name="description" component={TextAreaField} rows={6} label="Channel Description" validate={[required]}/>
+    <Field {...defaultFormItemLayout} name="description" component={TextAreaField} rows={6} label="Booth Description" validate={[required]}/>
     <Field name="ctrlBtns" component={ControlButtons} />
   </form>);
 };

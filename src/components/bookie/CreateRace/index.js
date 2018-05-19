@@ -30,15 +30,15 @@ class CreateRace extends Component {
 
   handleCreateRace(form) {
     const minBet = utils.isNull(form.minBet) ? MIN_BET : form.minBet;
-    // if (this.state.coins.length < 3) {
-    //   message.error('Minimum number of coin violation! At least 3 coins needed for a race.', 600);
-    // } else if (this.state.coins.length > 10) {
-    //   message.error('Maximum number of coins reached! At most 10 coins can take part in a race.', 600);
-    // } else if(this.state.duration < HOUR){
-    //   message.error('Shortest race duration is an hour!', 600);
-    // }else if (parseFloat(minBet) < MIN_BET){
-    //   message.error(`Minimum bet for a race cannot be below ${MIN_BET}`, 600);
-    // }else{
+    if (this.state.coins.length < 3) {
+      message.error('Minimum number of coin violation! At least 3 coins needed for a race.', 600);
+    } else if (this.state.coins.length > 10) {
+      message.error('Maximum number of coins reached! At most 10 coins can take part in a race.', 600);
+    } else if(this.state.duration < HOUR){
+      message.error('Shortest race duration is an hour!', 600);
+    }else if (parseFloat(minBet) < MIN_BET){
+      message.error(`Minimum bet for a race cannot be below ${MIN_BET}`, 600);
+    }else{
       let currentTime = Math.round(new Date().getTime() / 1000);
       const bettingStartTime = Math.floor(form.bettingStartTime.getTime() / 1000);
       const raceStartTime = Math.floor(form.raceStartTime.getTime() / 1000);
@@ -46,18 +46,18 @@ class CreateRace extends Component {
       const diff = bettingStartTime - currentTime;
 
 
-      // if (diff <= HOUR){
-      //   notification.info('You cannot create a race that starts (both bet placement and race) in less than an hour from now.');
-      //   return;
-      // }
-      //
-      // if (raceStartTime <= (bettingStartTime + QUARTER_HOUR)) {
-      //   notification.info("Race can't be created. At least 15 minutes is required for people to place their bets!");
-      //   return;
-      // }
-      //this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, this.state.duration, minNumOfBets, false);
-    this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, 3*60, minNumOfBets, false);
-    //}
+      if (diff <= HOUR){
+        notification.info('You cannot create a race that starts (both bet placement and race) in less than an hour from now.');
+        return;
+      }
+
+      if (raceStartTime <= (bettingStartTime + QUARTER_HOUR)) {
+        notification.info("Race can't be created. At least 15 minutes is required for people to place their bets!");
+        return;
+      }
+      this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, this.state.duration, minNumOfBets, false);
+    //this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, 3*60, minNumOfBets, false);
+    }
   }
 
   selectValueChanged(value) {
