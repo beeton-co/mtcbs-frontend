@@ -19,9 +19,14 @@ class Header extends Component {
   renderFAQs() {
     return (
             <SubMenu key="faqs" title={<span><Icon type="question-circle-o"/><span>FAQ</span></span>}>
-              <Menu.Item className="nav-item" key="create-race">
+              <Menu.Item className="nav-item" key="get-test-ether">
                 <Link className="nav-link" to="/faq/getether">
                   Get Test Ether
+                </Link>
+              </Menu.Item>
+              <Menu.Item className="nav-item" key="faq-claim-reward">
+                <Link className="nav-link" to="/faq/claimreward">
+                  Claim Reward
                 </Link>
               </Menu.Item>
             </SubMenu>
