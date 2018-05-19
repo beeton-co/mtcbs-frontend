@@ -14,6 +14,9 @@ import ChannelOwnerRacesView from './Profile/ChannelOwnerRacesView';
 import ClaimRewardView from './Profile/Rewards/ClaimRewardView';
 import PayOutView from './Profile/Rewards/PayOutView';
 
+
+import GetEther from './FAQ/GetEther';
+
 const renderMergedProps = (component, ...rest) => {
     const finalProps = Object.assign({}, ...rest);
     return (
@@ -53,6 +56,8 @@ const Main = (props) => (
             <PropsRoute path='/profile/cmgmt/payout' component={PayOutView} {...props}   />
             <PropsRoute path='/profile/cmgmt/createrace' component={CreateRace} {...props}   />
             <PropsRoute path='/profile/cmgmt/races' component={ChannelOwnerRacesView} {...props}   />
+
+            <PropsRoute path='/faq/getether' component={GetEther} {...props}   />
           </Switch>
         </main>
 )

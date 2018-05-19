@@ -691,3 +691,21 @@ ant-carousel .slick-slide {
 
 .rewards-table {
   color: #fff; }
+
+.faq-title {
+  font-size: 24px;
+  font-weight: 500;
+  text-transform: uppercase; }
+
+.faq-text {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 14px; }
+
+.faq {
+  color: #fff;
+  margin-top: 50px;
+  margin-left: 30px; }
+
+.faq-block {
+  padding-top: 50px; }

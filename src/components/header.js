@@ -16,8 +16,20 @@ class Header extends Component {
     });
   };
 
+  renderFAQs() {
+    return (
+            <SubMenu key="faqs" title={<span><Icon type="question-circle-o"/><span>FAQ</span></span>}>
+              <Menu.Item className="nav-item" key="create-race">
+                <Link className="nav-link" to="/faq/getether">
+                  Get Test Ether
+                </Link>
+              </Menu.Item>
+            </SubMenu>
+    );
+  }
+
   profileLinks(){
-    return (<SubMenu key="profile" title={<span><Icon type="form"/><span>My Profile</span></span>}>
+    return (<SubMenu key="profile" title={<span><Icon type="profile"/><span>My Profile</span></span>}>
       {/*<Menu.Item className="nav-item" key="my-bet-races">
         <Link className="nav-link" to="/profile/races">
           Bet Races
@@ -39,7 +51,7 @@ class Header extends Component {
   channelManagementLinks() {
     if (sc.smartcontract.user.channelOwner) {
       return (
-              <SubMenu key="channelManagement" title={<span><Icon type="form"/><span>Booth Management</span></span>}>
+              <SubMenu key="channelManagement" title={<span><Icon type="setting"/><span>Booth Management</span></span>}>
                 <Menu.Item className="nav-item" key="create-race">
                   <Link className="nav-link" to="/profile/cmgmt/createrace">
                     Create Race
@@ -112,6 +124,7 @@ class Header extends Component {
               {this.channelManagementLinks()}
               {this.renderRaceLinks()}
               {this.profileLinks()}
+              {this.renderFAQs()}
             </Menu>
     );
   }

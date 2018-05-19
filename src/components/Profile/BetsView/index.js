@@ -52,7 +52,7 @@ export default class BetsView extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const {profile} = nextProps;
-    if (utils.nonNull(profile)) {
+    if (utils.nonNull(profile.bets)) {
       if (utils.nonNull(profile.bets['running']) ||
               utils.nonNull(profile.bets['completed']) ||
               utils.nonNull(profile.bets['betting']) ||
@@ -85,7 +85,6 @@ export default class BetsView extends PureComponent {
     if (utils.redirect(this.props)) {
       return <Redirect to='/home' {...this.props} />;
     }
-
     return (
             <div className="card-container">
               <div style={{ marginTop: 50, fontSize: 24, fontWeight: 500, color:"#fff", textTransform: "uppercase" }}>My Bets</div>
