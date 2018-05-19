@@ -47,9 +47,10 @@ const ListItem = List.Item;
     }
     races = this.getFilterRaces(races);
     if (races && (races.length > 0)) {
+      const selectedRaceId = this.state.raceDetailId === null ? races[0].id : this.state.raceDetailId;
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel phase='betting' races={races} eventHandler={this.eventHandler} completedCallback={() => {
+                <RaceCarousel phase='betting' selectedRaceId={selectedRaceId} races={races} eventHandler={this.eventHandler} completedCallback={() => {
                   this.setState(this.state)
                 }}/>
                 <Divider style={{marginBottom: 50}}/>

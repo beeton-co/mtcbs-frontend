@@ -6,7 +6,7 @@ import * as utils from '../../../actions/utils';
 
 
 export const RaceCarousel = (props) => {
-  const {races, eventHandler, completedCallback, phase} = props;
+  const {races, eventHandler, completedCallback, phase, selectedRaceId} = props;
 
   const leadingCoin = (race) => {
     if (priceengine.hasPrice(race.id)) {
@@ -61,6 +61,7 @@ export const RaceCarousel = (props) => {
               <Carousel {...utils.CarouselDefaultSettings}>
                 {races.map(r => <div className="dash-card" key={utils.id()}>
                   <DashCard key={r.id}
+                            selectedRaceId={selectedRaceId}
                             title={r.name}
                             numericId={r.numericId}
                             completedCallback={completedCallback}

@@ -34,9 +34,10 @@ export default class RunningRaceView extends Component {
       }
     }
     if (races && (races.length > 0)) {
+      const selectedRaceId = this.state.raceDetailId === null ? races[0].id : this.state.raceDetailId;
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel phase='running' races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='running' races={races} eventHandler={this.eventHandler} selectedRaceId={selectedRaceId}/>
                 <Divider style={{marginBottom: 50}}/>
                 {this.raceDetailView()}
                 <GenerateSVGGradient id="gradient-circle-progress-open"

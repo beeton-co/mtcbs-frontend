@@ -48,7 +48,7 @@ export default class UpComingRaceView extends Component {
 
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel phase='upcoming' races={races} eventHandler={this.eventHandler} completedCallback={() => {
+                <RaceCarousel phase='upcoming' selectedRaceId={raceId} races={races} eventHandler={this.eventHandler} completedCallback={() => {
                   this.setState(this.state)
                 }}/>
                 <Divider style={{marginBottom: 100}}/>

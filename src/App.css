@@ -709,3 +709,6 @@ ant-carousel .slick-slide {
 
 .faq-block {
   padding-top: 50px; }
+
+.selected-dash-card {
+  border: 4px solid rgba(255, 203, 83, 0.96); }

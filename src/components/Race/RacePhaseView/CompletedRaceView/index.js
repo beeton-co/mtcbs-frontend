@@ -61,10 +61,11 @@ export default class CompletedRaceView extends Component {
   render() {
     const races = this.getRaces(this.props);
     if (races && races.length > 0) {
+      const selectedRaceId = this.state.raceDetailId === null ? races[0].id : this.state.raceDetailId;
       return (
               <div style={{marginTop: 50}}>
                 {this.renderConfetti()}
-                <RaceCarousel phase='completed' races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='completed' races={races} eventHandler={this.eventHandler} selectedRaceId={selectedRaceId} />
                 <Divider style={{marginBottom: 50}}/>
                 {this.renderClaimRewardButton()}
                 {this.raceDetailView()}

@@ -14,6 +14,7 @@ export default class UpComingRaceView extends Component {
     this.eventHandler = this.eventHandler.bind(this);
     this.props.getRacesByStatus('void', 0);
   }
+
   state = {
     raceDetailId: null
   };
@@ -26,27 +27,26 @@ export default class UpComingRaceView extends Component {
     let raceResult = this.props.races;
     let races = [];
     if (raceResult.length > 0) {
-      if(utils.isNull(raceResult[0].void)){
+      if (utils.isNull(raceResult[0].void)) {
         this.props.getRacesByStatus('void', 0);
-      }else{
+      } else {
         races = raceResult[0].void.hits;
       }
     }
     if (utils.nonNull(races) && (races.length > 0)) {
       let race = undefined;
 
-      if (races.length > 0) {
-        const raceId = utils.isNull(this.state.raceDetailId) ? races[0].id : this.state.raceDetailId;
-        for (let i = 0; i < races.length; i++) {
-          if (races[i].id === raceId) {
-            race = races[i];
-            break;
-          }
+      const raceId = utils.isNull(this.state.raceDetailId) ? races[0].id : this.state.raceDetailId;
+      for (let i = 0; i < races.length; i++) {
+        if (races[i].id === raceId) {
+          race = races[i];
+          break;
         }
       }
+
       return (
               <div style={{marginTop: 50}}>
-                <RaceCarousel phase='void' races={races} eventHandler={this.eventHandler}/>
+                <RaceCarousel phase='void' races={races} eventHandler={this.eventHandler} selectedRaceId={raceId}/>
                 <Divider style={{marginBottom: 100}}/>
                 <DetailRaceInformationView race={race} col={1} size="small" coins={race.coinIds}/>
 
@@ -65,6 +65,7 @@ export default class UpComingRaceView extends Component {
       );
 
     }
-    return (<EmptyRaceView type="info" message="Void races" description="Great! we are working very hard to make sure there are no void races."/>);
+    return (
+            <EmptyRaceView type="info" message="Void races" description="Great! we are working very hard to make sure there are no void races."/>);
   }
 }

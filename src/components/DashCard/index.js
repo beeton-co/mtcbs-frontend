@@ -185,11 +185,11 @@ class DashCard extends Component {
   }
 
   render() {
-    console.log(this.props);
+    const dashCardClsName = "dash-card" + (this.props.raceId===this.props.selectedRaceId ? ' selected-dash-card':'');
     return (
             <a href="javascript:void(0)" className={this.state.clickableClsName} onClick={this.onClickEventHandler}>
               <Card   title={this.props.title}
-                      className="dash-card"
+                      className={dashCardClsName}
                       // style={{ width: 160px }}
                       cover={
                         <div>
