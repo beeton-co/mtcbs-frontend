@@ -57,7 +57,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "name": "self",
           "type": "address"
         },
@@ -89,7 +89,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "name": "self",
           "type": "address"
         },
@@ -116,7 +116,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "name": "race",
           "type": "address"
         },
@@ -148,7 +148,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "name": "race",
           "type": "address"
         },
@@ -174,6 +174,28 @@
         }
       ],
       "name": "RaceOwnerPercentage",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "self",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "TransferUnclaimed",
       "type": "event"
     },
     {
@@ -257,6 +279,15 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [],
+      "name": "transferUnclaimed",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "myWinnings",
@@ -315,94 +346,30 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "coinIds",
+      "name": "raceInfo",
       "outputs": [
         {
-          "name": "",
+          "name": "coinIds",
           "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "totalAmount",
-      "outputs": [
+        },
         {
-          "name": "",
+          "name": "minBet",
           "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "minBet",
-      "outputs": [
+        },
         {
-          "name": "",
+          "name": "startTime",
           "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "startTime",
-      "outputs": [
+        },
         {
-          "name": "",
+          "name": "duration",
           "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "duration",
-      "outputs": [
+        },
         {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "completed",
-      "outputs": [
+          "name": "status",
+          "type": "uint8"
+        },
         {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "voided",
-      "outputs": [
-        {
-          "name": "",
+          "name": "exclusive",
           "type": "bool"
         }
       ],
@@ -420,41 +387,6 @@
       ],
       "name": "totalAmountFor",
       "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "cId",
-          "type": "uint256"
-        }
-      ],
-      "name": "inspectCoin",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "name": "",
-          "type": "uint256"
-        },
         {
           "name": "",
           "type": "uint256"
