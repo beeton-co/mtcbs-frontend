@@ -29,6 +29,16 @@ class Header extends Component {
                   Claim Reward
                 </Link>
               </Menu.Item>
+              <Menu.Item className="nav-item" key="faq-become-a-both-owner">
+                <Link className="nav-link" to="/faq/become_boothowner">
+                  Become a booth owner
+                </Link>
+              </Menu.Item>
+              <Menu.Item className="nav-item" key="faq-create-a-race">
+                <Link className="nav-link" to="/faq/creating_a_race">
+                  Create a race
+                </Link>
+              </Menu.Item>
             </SubMenu>
     );
   }
@@ -62,11 +72,11 @@ class Header extends Component {
                     Create Race
                   </Link>
                 </Menu.Item>
-                <Menu.Item className="nav-item" key="cmgmt-races">
+                {/*<Menu.Item className="nav-item" key="cmgmt-races">
                   <Link className="nav-link" to="/profile/cmgmt/races">
                     My Races
                   </Link>
-                </Menu.Item>
+                </Menu.Item>*/}
                 <Menu.Item className="nav-item" key="cmgmt-payout">
                   <Link className="nav-link" to="/profile/cmgmt/payout">
                     My Payout

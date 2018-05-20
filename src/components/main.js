@@ -17,6 +17,8 @@ import PayOutView from './Profile/Rewards/PayOutView';
 
 import GetEther from './FAQ/GetEther';
 import ClaimReward from './FAQ/ClaimReward';
+import BoothOwner from './FAQ/BoothOwner';
+import CreatingARace from './FAQ/CreatingARace';
 
 const renderMergedProps = (component, ...rest) => {
     const finalProps = Object.assign({}, ...rest);
@@ -60,6 +62,8 @@ const Main = (props) => (
 
             <PropsRoute path='/faq/getether' component={GetEther} {...props}   />
             <PropsRoute path='/faq/claimreward' component={ClaimReward} {...props}   />
+            <PropsRoute path='/faq/become_boothowner' component={BoothOwner} {...props}   />
+            <PropsRoute path='/faq/creating_a_race' component={CreatingARace} {...props}   />
           </Switch>
         </main>
 )
