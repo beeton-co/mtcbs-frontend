@@ -16,10 +16,8 @@ export const isSubDomainAvailable = (subdomain) => {
       sdmInstance = instance;
       return sdmInstance.isAvailable(subdomain);
     }).then(function (available) {
-      console.log(available);
       utils.dispatcher(dispatch, IS_SDM_AVAILABLE, {available: available});
     }).catch(function (err) {
-      console.log(err);
       utils.dispatcher(dispatch, IS_SDM_AVAILABLE, {error: err});
     });
   };

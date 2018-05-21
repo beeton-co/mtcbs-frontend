@@ -13,14 +13,14 @@ export const RaceCarousel = (props) => {
       const prices = priceengine.getPriceInfo(race.id);
       return prices.coins[0].symbol;
     } else {
-      let name = '';
+      let coin = undefined;
       for (let i = 0; i < priceengine.getAvailableCoins().length; i++) {
         if (priceengine.getAvailableCoins()[i].id === race.coinIds[0]) {
-          name = priceengine.getAvailableCoins()[i].name;
+          coin = priceengine.getAvailableCoins()[i];
           break;
         }
       }
-      return name.length > 4 ? name.substring(0, 4) : name;
+      return coin === undefined ? '' : coin.symbol;
     }
   };
 
