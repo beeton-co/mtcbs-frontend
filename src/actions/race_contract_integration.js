@@ -11,7 +11,7 @@ import * as sc from '../services/smartcontract';
 
 
 const race_blockchain_cache = {};
-
+export const winning_coins = {};
 export const getRaceCompleteInfos = (id) => {
   return dispatch => {
 
@@ -35,6 +35,7 @@ export const getRaceCompleteInfos = (id) => {
         return raceInstance.winningCoins();
       }).then(function (_winningCoins) {
         winningCoins = raceWinners(_winningCoins);
+        winning_coins[id] = winningCoins;
         return raceInstance.rewardClaimed(sc.smartcontract.context);
       }).then(function (hasClaimed) {
         canClaim = !hasClaimed;

@@ -3,13 +3,20 @@ import DashCard from "../../DashCard";
 import {Carousel, Row, Col} from 'antd';
 import * as priceengine from '../../../actions/priceengine';
 import * as utils from '../../../actions/utils';
-
+import * as race_contract from '../../../actions/race_contract_integration';
 
 export const RaceCarousel = (props) => {
   const {races, eventHandler, completedCallback, phase, selectedRaceId} = props;
 
   const leadingCoin = (race) => {
-    if (priceengine.hasPrice(race.id)) {
+    if(phase === 'completed' && utils.nonNull(race_contract.winning_coins[race.id])){
+      const winningCoins = race_contract.winning_coins[race.id];
+      for (let i = 0; i < priceengine.getAvailableCoins().length; i++) {
+        if (priceengine.getAvailableCoins()[i].id === winningCoins[0]) {
+          return priceengine.getAvailableCoins()[i].symbol;
+        }
+      }
+    }else if (priceengine.hasPrice(race.id)) {
       const prices = priceengine.getPriceInfo(race.id);
       return prices.coins[0].symbol;
     } else {
