@@ -13,7 +13,7 @@ export default class MyBetRacesView extends PureComponent {
   }
   render() {
     if (utils.redirect(this.props)) {
-      return <Redirect to='/home' {...this.props} />;
+      return <Redirect to='/' {...this.props} />;
     }
 
 

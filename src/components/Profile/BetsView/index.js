@@ -1,10 +1,12 @@
 import React, {PureComponent} from 'react';
-import {Tabs, Table} from 'antd';
+import {Tabs,Collapse,  Table} from 'antd';
 import * as utils from "../../../actions/utils";
 import {Redirect} from 'react-router-dom'
 import * as coin from '../../../actions/pocketcoin';
 
+
 const TabPane = Tabs.TabPane;
+const Panel = Collapse.Panel;
 
 const columns = [{
   title: 'Coin',
@@ -69,26 +71,47 @@ export default class BetsView extends PureComponent {
 
   renderBetsTableFor(status) {
     let bets = [];
-    if (utils.nonNull(this.state.bets)) {
-      if (utils.nonNull(this.state.bets[status])) {
+    if (utils.nonNull(this.state.bets) && utils.nonNull(this.state.bets[status])) {
+
         bets = this.state.bets[status];
-        let count = 0;
-        bets.forEach(function (value) {
-          value['key'] = count++;
-        })
-      }
+        let groups = [];
+        bets.forEach(function (bet) {
+          bet['key'] = utils.id();
+          let group = groups[bet.raceName];
+          if(utils.isNull(group)){
+            group = groups[bet.raceName] = [];
+          }
+          group.push(bet);
+        });
+        let result = [];
+        for (let key in groups) {
+          // check also if property is not inherited from prototype
+          if (groups.hasOwnProperty(key)) {
+            const groupBets = groups[key];
+            //
+            result.push(
+                      <Collapse accordion key={utils.id()}>
+                        <Panel header={key} key={utils.id()}>
+                          <Table loading={false} dataSource={groupBets} columns={columns}/>
+                        </Panel>
+                    </Collapse>);
+          }
+        }
+        return result;
+    }else{
+      return (<Table loading={false} dataSource={[]} columns={columns}/>);
     }
-    return (<Table loading={this.state.loading} dataSource={bets} columns={columns}/>);
+
   }
 
   render() {
     if (utils.redirect(this.props)) {
-      return <Redirect to='/home' {...this.props} />;
+      return <Redirect to='/' {...this.props} />;
     }
     return (
             <div className="card-container">
               <div style={{ marginTop: 50, fontSize: 24, fontWeight: 500, color:"#fff", textTransform: "uppercase" }}>My Bets</div>
-              <Tabs type="card" defaultActiveKey="completed-bets" style={{width: "100%", height: "100%", marginTop: 100}}>
+              <Tabs type="card" defaultActiveKey="completed-bets" style={{width: "100%", height: "100%", marginTop: 100, overflowY: "scroll"}}>
                 <TabPane tab="Completed" key="completed-bets">{this.renderBetsTableFor('completed')}</TabPane>
                 <TabPane tab="Running" key="running-bets">{this.renderBetsTableFor('running')}</TabPane>
                 <TabPane tab="Betting" key="betting-bets">{this.renderBetsTableFor('betting')}</TabPane>
