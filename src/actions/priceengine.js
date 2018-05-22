@@ -12,15 +12,19 @@ const PRECISION = 100000;
 const UPDATE_INTERVAL = 5 * 60 * 1000;
 
 export const getDetailRaceCoins = (status, race) => {
-  const coins = priceEngine["prices"][race];
-  let available = utils.nonNull(coins);
-
+  const data = priceEngine["prices"][race];
+  let available = utils.nonNull(data);
+  let lastUpdate = 0;
+  if (available){
+    lastUpdate = data["lastUpdate"];
+    available = lastUpdate + (20 * 1000) < new Date().getTime();
+  }
   if (status === 'running') {
     //load from contract
     return dispatch => {
       //dont perform any server request if already available in local cache
       if (available) {
-        dispatch(getDetailCoinsAsync(coins));
+        dispatch(getDetailCoinsAsync(data));
       } else {
         API.get(`coins/detail/${race}`)
                 .then(response => {
@@ -34,7 +38,7 @@ export const getDetailRaceCoins = (status, race) => {
     return dispatch => {
       //dont perform any server request if already available in locale cache
       if (available) {
-        dispatch(getDetailCoinsAsync(coins));
+        dispatch(getDetailCoinsAsync(data));
       } else {
         API.get(`coins/detail/${race}`)
                 .then(response => {

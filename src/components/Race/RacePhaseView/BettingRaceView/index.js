@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Divider, Card,List, Avatar, InputNumber, Button} from 'antd';
+import {Divider, Card, List, Avatar, InputNumber, Button} from 'antd';
 import * as priceengine from '../../../../actions/priceengine';
 import * as utils from '../../../../actions/utils';
 import * as notification from '../../../../services/notification';
@@ -12,7 +12,7 @@ import {EmptyRaceView} from '../../EmptyRaceView';
 const ListItemMeta = List.Item.Meta;
 const ListItem = List.Item;
 
-  export default class BettingRaceView extends Component {
+export default class BettingRaceView extends Component {
 
   constructor(props) {
     super(props);
@@ -34,6 +34,27 @@ const ListItem = List.Item;
     this.setState({raceDetailId: id});
   }
 
+  componentDidMount() {
+    //periodically update tickers
+    const self = this;
+    const fetchTicker = () =>{
+      const race = self.getRace(self.props, self.state.raceDetailId);
+      if(race){
+        self.props.getDetailRaceCoins('betting', race.id);
+        const now = new Date().getTime();
+        const diff = race.startTime - race.bStartTime;
+        if ((race.bStartTime + diff) > now) {
+          clearInterval(this.fetchTickerInterval);
+        }
+      }
+    };
+
+    this.fetchTickerInterval = setInterval(fetchTicker, 20*1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.fetchTickerInterval);
+  }
 
   render() {
     let raceResult = this.props.races;
@@ -70,7 +91,8 @@ const ListItem = List.Item;
       );
 
     }
-    return (<EmptyRaceView type="info" message="Open for Betting" description="No races for you to bet on? This is the cooling down phase, grab a drink because races have already been queued up in the pipeline."/>);
+    return (
+            <EmptyRaceView type="info" message="Open for Betting" description="No races for you to bet on? This is the cooling down phase, grab a drink because races have already been queued up in the pipeline."/>);
   }
 
   getCoinName(id) {
@@ -81,6 +103,7 @@ const ListItem = List.Item;
     }
     return '';
   }
+
   getCoinSymbol(id) {
     for (let i = 0; i < this.state.coins.length; i++) {
       if (this.state.coins[i].id === id) {
@@ -96,16 +119,16 @@ const ListItem = List.Item;
     this.setState({selectedCoins: selectedCoins});
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     let newRaces = nextProps.races;
-    if(this.props.races !== newRaces){
+    if (this.props.races !== newRaces) {
       let races = [];
       if (newRaces.length > 0) {
         races = newRaces[0].betting.hits;
       }
       if (utils.nonNull(races) && races.length > 0) {
         if (utils.isNull(this.state.raceDetailId)) {
-          this.setState({raceDetailId:races[0].id});
+          this.setState({raceDetailId: races[0].id});
         }
       }
     }
@@ -117,9 +140,9 @@ const ListItem = List.Item;
     const race = this.getRace(this.props, this.state.raceDetailId);
     const coinName = this.getCoinName(coin);
 
-    if(utils.isNull(race)){
+    if (utils.isNull(race)) {
       notification.info("Can't place this bet. Race is unknown!");
-    }else{
+    } else {
       this.props.betOn(race, coin, value, coinName);
     }
   }
@@ -160,20 +183,19 @@ const ListItem = List.Item;
             </div>
     );
   }
-
   getRace(props, raceDetailId) {
+
     let raceResult = props.races;
-    let races = [];
-    if (raceResult.length > 0) {
-      races = raceResult[0].betting.hits;
-    }
     let race = undefined;
-    if (races.length > 0) {
-      const raceId = utils.isNull(raceDetailId) ? races[0].id : raceDetailId;
-      for (let i = 0; i < races.length; i++) {
-        if (races[i].id === raceId) {
-          race = races[i];
-          break;
+    if (utils.nonNull(raceResult) && raceResult.length > 0) {
+      let races = raceResult[0].betting.hits;
+      if (utils.nonNull(races) && races.length > 0) {
+        const raceId = utils.isNull(raceDetailId) ? races[0].id : raceDetailId;
+        for (let i = 0; i < races.length; i++) {
+          if (races[i].id === raceId) {
+            race = races[i];
+            break;
+          }
         }
       }
     }
@@ -217,11 +239,12 @@ const ListItem = List.Item;
 
   getFilterRaces(races) {
 
-    if(utils.nonNull(races) && races.length > 0){
+    if (utils.nonNull(races) && races.length > 0) {
 
       function comparator(race) {
         return race.startTime > new Date().getTime() / 1000;
       }
+
       return races.filter(comparator);
     }
     return races;

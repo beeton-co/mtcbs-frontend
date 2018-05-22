@@ -28,6 +28,14 @@ class CreateRace extends Component {
   componentWillReceiveProps(nextProps) {
   }
 
+  handleCreateRace_(form) {
+    const minBet = utils.isNull(form.minBet) ? MIN_BET : form.minBet;
+    const bettingStartTime = Math.floor(form.bettingStartTime.getTime() / 1000);
+    const raceStartTime = Math.floor(form.raceStartTime.getTime() / 1000);
+    const minNumOfBets = utils.nonNull(form.minNumOfBets) ? form.minNumOfBets: this.state.minNumOfBets;
+    this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, 3*60, minNumOfBets, false);
+  }
+
   handleCreateRace(form) {
     const minBet = utils.isNull(form.minBet) ? MIN_BET : form.minBet;
     if (this.state.coins.length < 3) {
@@ -56,7 +64,6 @@ class CreateRace extends Component {
         return;
       }
       this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, this.state.duration, minNumOfBets, false);
-    //this.props.createRace(form.poolName, this.state.coins, String(minBet), bettingStartTime, raceStartTime, 3*60, minNumOfBets, false);
     }
   }
 

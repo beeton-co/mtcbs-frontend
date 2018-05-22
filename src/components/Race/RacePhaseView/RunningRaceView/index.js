@@ -23,16 +23,29 @@ export default class RunningRaceView extends Component {
     this.setState({raceDetailId: id});
   }
 
-  render() {
-    let raceResult = this.props.races;
-    let races = [];
-    if (raceResult.length > 0) {
-      if(utils.isNull(raceResult[0].running)){
-        this.props.getRacesByStatus('running', 0);
-      }else{
-        races = raceResult[0].running.hits;
+  componentDidMount() {
+    //periodically update tickers
+    const self = this;
+    const fetchTicker = () =>{
+      const race = self.getRace(self.props, self.state.raceDetailId);
+      if(race){
+        self.props.getDetailRaceCoins('running', race.id);
+        if ((race.startTime + race.duration) > new Date().getTime()) {
+          clearInterval(this.fetchTickerInterval);
+        }
       }
-    }
+    };
+
+    this.fetchTickerInterval = setInterval(fetchTicker, 20*1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.fetchTickerInterval);
+  }
+
+  render() {
+    const races = this.getRaces(this.props);
+
     if (races && (races.length > 0)) {
       const selectedRaceId = this.state.raceDetailId === null ? races[0].id : this.state.raceDetailId;
       return (
@@ -117,5 +130,35 @@ export default class RunningRaceView extends Component {
               </div>
       );
     }
+  }
+  getRace(props, raceDetailId) {
+    let raceResult = props.races;
+    let race = undefined;
+    if (utils.nonNull(raceResult) && raceResult.length > 0) {
+      let races = raceResult[0].running.hits;
+      if (utils.nonNull(races) && races.length > 0) {
+        const raceId = utils.isNull(raceDetailId) ? races[0].id : raceDetailId;
+        for (let i = 0; i < races.length; i++) {
+          if (races[i].id === raceId) {
+            race = races[i];
+            break;
+          }
+        }
+      }
+    }
+    return race;
+  }
+
+  getRaces(props) {
+    let raceResult = props.races;
+    let races = [];
+    if (utils.nonNull(raceResult) && raceResult.length > 0) {
+      if(utils.isNull(raceResult[0].running)){
+        props.getRacesByStatus('running', 0);
+      }else{
+        races = raceResult[0].running.hits;
+      }
+    }
+    return races;
   }
 }
