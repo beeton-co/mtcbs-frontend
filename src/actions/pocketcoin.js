@@ -21,6 +21,7 @@ import * as utils from './utils';
 import * as sc from '../services/smartcontract';
 
 import {message} from 'antd';
+
 const PRECISION = 100000;
 const Web3 = require('web3');
 const TruffleContract = require("truffle-contract");
@@ -95,11 +96,11 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
       controller = instance;
       if (exclusive) {
         return controller.createExclusiveRace.estimateGas(name,
-                coins, mBet, bStartTime, rStartTime,
+                coins, mBet, rStartTime, bStartTime,
                 duration, minNumOfBets, sc.smartcontract.context);
       }
-      return controller.createRace.estimateGas(name, coins, mBet, bStartTime,
-              rStartTime, duration, minNumOfBets,
+      return controller.createRace.estimateGas(name, coins, mBet,
+              rStartTime, bStartTime, duration, minNumOfBets,
               sc.smartcontract.context);
     }).then(function (estimateGas) {
       let context = sc.smartcontract.context;
@@ -131,6 +132,7 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
       }
 
     }).catch(function (err) {
+      console.log(err);
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, CREATE_RACE, null, err);
@@ -192,13 +194,15 @@ export const inspectCoin = (race, coinId) => {
       return instance.inspectCoin(coinId);
     }).then(function (coin) {
 
-      const _coin = {coinId:coin[0].toNumber(),
-        total:coin[1].toNumber(),
-        numOfBets:coin[2].toNumber(),
-        startPrice:coin[3].toNumber(),
-        endPrice:coin[4].toNumber()};
+      const _coin = {
+        coinId: coin[0].toNumber(),
+        total: coin[1].toNumber(),
+        numOfBets: coin[2].toNumber(),
+        startPrice: coin[3].toNumber(),
+        endPrice: coin[4].toNumber()
+      };
       racePrices(race, _coin, 'coin');
-      dispatcher(dispatch, RACE_INSPECT_COIN, {coin:_coin});
+      dispatcher(dispatch, RACE_INSPECT_COIN, {coin: _coin});
     }).catch(function (err) {
 
       dispatcher(dispatch, RACE_INSPECT_COIN, err);

@@ -34,7 +34,6 @@ import {
   createChannel,
   betOn,
   winningCoins,
-  myChannel,
   createRace,
   raceEndPrices,
   raceStartPrices,
@@ -42,6 +41,10 @@ import {
   inspectCoin,
   CONTRACT_NETWORK
 } from './actions/pocketcoin';
+
+import {
+  myBooth
+} from './actions/booth_contract_integration';
 
 import {
   getRaceCompleteInfos,
@@ -100,7 +103,7 @@ class App extends Component {
 
       }
     }
-
+    console.log(nextProps);
   }
 
   handleContractEvent(nextProps, props, state) {
@@ -123,7 +126,7 @@ class App extends Component {
             state.account.loaded && !state.account.error && !state.loadingMyChannel){
       let context = {};
       context['from'] = econtract.account.default;
-      props.myChannel();
+      props.myBooth();
       this.setState({loadingMyChannel: true})
     }
   }
@@ -187,7 +190,7 @@ function mapDispatchToProps(dispatch) {
     getChannels: getChannels,
     getCoins: getCoins,
     getCoin: getCoin,
-    myChannel:myChannel,
+    myBooth:myBooth,
     getCoinsForIds: getCoinsForIds,
     getDetailRaceCoins: getDetailRaceCoins,
     getUserBets: getUserBets,

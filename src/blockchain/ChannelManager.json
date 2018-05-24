@@ -135,185 +135,9 @@
         }
       ],
       "name": "createChannel",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
+      "outputs": [],
       "payable": true,
       "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "id",
-          "type": "uint256"
-        }
-      ],
-      "name": "channelForId",
-      "outputs": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "disable",
-          "type": "bool"
-        },
-        {
-          "name": "channelOwner",
-          "type": "address"
-        },
-        {
-          "name": "account",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "addy",
-          "type": "address"
-        }
-      ],
-      "name": "channelForAddress",
-      "outputs": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "disable",
-          "type": "bool"
-        },
-        {
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "name": "account",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "myChannel",
-      "outputs": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "disable",
-          "type": "bool"
-        },
-        {
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "name": "account",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "id",
-          "type": "uint256"
-        }
-      ],
-      "name": "channelName",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "id",
-          "type": "uint256"
-        }
-      ],
-      "name": "channelDesc",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "hasChannel",
-      "outputs": [
-        {
-          "name": "has_channel",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "chId",
-          "type": "uint256"
-        }
-      ],
-      "name": "racesForChannel",
-      "outputs": [
-        {
-          "name": "races",
-          "type": "address[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -327,13 +151,8 @@
     },
     {
       "constant": false,
-      "inputs": [
-        {
-          "name": "cost",
-          "type": "uint256"
-        }
-      ],
-      "name": "raceCostValue",
+      "inputs": [],
+      "name": "transferFees",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -413,34 +232,6 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "myRaces",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "houseRaces",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
       "type": "function"
     }
   ]

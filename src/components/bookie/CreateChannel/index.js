@@ -56,7 +56,7 @@ export default class CreateChannel extends Component {
   render() {
     if (this.state.redirect ||
             (utils.nonNull(this.props.econtract.user) && this.props.econtract.user.channelOwner)){
-      return <Redirect to='/home' {...this.props} />;
+      return <Redirect to='/' {...this.props} />;
     }
     return (<Card  style={{marginTop: 32}} bordered={false}>
       <div className="pocket-form">

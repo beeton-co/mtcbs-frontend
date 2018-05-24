@@ -56,6 +56,10 @@ export const nonNull = (object) =>{
   return !isNull(object);
 };
 
+export const notEmpty = (object) => {
+  return nonNull(object) && object !=='';
+};
+
 export const redirect = (props) => {
   const {econtract} = props;
   if (isNull(econtract.user) || isNull(econtract.account) || isNull(econtract.account.default)) {

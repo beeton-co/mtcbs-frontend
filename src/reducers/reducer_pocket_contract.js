@@ -86,17 +86,15 @@ export default function (state = initialState, action) {
         cRaceResult: action.payload
       };
     case MY_CHANNEL:
-      if ((typeof action.payload) === 'object') {
-        const name = action.payload[0];
-        const description = action.payload[1];
-        const disable = action.payload[2];
-        const id = action.payload[3];
-        result['channelOwner'] = name !== '' && description !== '' && id !== undefined;
-        sc.smartcontract.user.channelOwner = name !== '' && description !== '' && id !== undefined;
-        result['channel'] = {name: name, description: description, disable: disable, id: id};
-        sc.smartcontract.user.channel = {name: name, description: description, disable: disable, id: id};
-      } else {
+      if(utils.nonNull(action.payload['error'])){
         result['error'] = action.payload.toString();
+      }else {
+        const payload = action.payload;
+        result['channel'] = sc.smartcontract.user.channel = action.payload;
+        result['channelOwner'] = sc.smartcontract.user.channelOwner =
+                utils.notEmpty(payload.name) &&
+                utils.notEmpty(payload.description) &&
+                utils.notEmpty(payload.id);
       }
       return {
         ...state,
