@@ -1,6 +1,7 @@
 import ChannelManager from '../blockchain/ChannelManager.json';
 import Race from '../blockchain/Race.json';
 import SubDomainManager from '../blockchain/SubDomainManager.json';
+import BoothAccountManager from '../blockchain/BoothAccountManager.json';
 
 
 //import * as utils from './utils';
@@ -8,6 +9,7 @@ import SubDomainManager from '../blockchain/SubDomainManager.json';
 const Web3 = require('web3');
 const TruffleContract = require("truffle-contract");
 const CONTRACT_CONTROLLER_ADDRESS = `${process.env.REACT_APP_POCKET_CONTRACT_CONTROLLER}`;
+const BOOTH_MANAGER_CONTRACT_ADDRESS = `${process.env.REACT_APP_BOOTH_MANAGER}`;
 
 
 export const PRECISION = 100000;
@@ -16,6 +18,7 @@ export const web3Instance = new Web3(Web3.givenProvider);
 export const CONTRACT_CONTROLLER = loadContract2(ChannelManager);
 export const RACE_CONTRACT = loadContract2(Race);
 export const SUBDOMAIN_MANAGER_CONTRACT = loadContract2(SubDomainManager);
+export const BOOTH_MANAGER_CONTRACT = loadContract2(BoothAccountManager);
 
 
 export const __controller = () => {
@@ -28,6 +31,10 @@ export const __race = (race) =>{
 
 export const __subdomainManager = (sdm) =>{
   return SUBDOMAIN_MANAGER_CONTRACT.at(sdm);
+};
+
+export const __boothManager = () =>{
+  return BOOTH_MANAGER_CONTRACT.at(BOOTH_MANAGER_CONTRACT_ADDRESS);
 };
 
 
