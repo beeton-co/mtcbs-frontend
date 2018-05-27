@@ -132,7 +132,6 @@ export const createRace = (name, coins, minBet, bStartTime, rStartTime, duration
       }
 
     }).catch(function (err) {
-      console.log(err);
       hideMessage();
       notification.error('Could not determine gas at this point in time. Please try again later');
       dispatcher(dispatch, CREATE_RACE, null, err);
