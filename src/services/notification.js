@@ -7,9 +7,9 @@ export function info(description, title='', duration = 10, color="#00D4FF") {
     description: description,
     duration: duration,
     style:{
-      backgroundColor: "#9a27ff",
+      //backgroundColor: "#9a27ff",
       //backgroundColor: color,
-      color: "#fff"
+      //color: "#fff"
     }
   });
 }
@@ -20,9 +20,9 @@ export function warn(description, title='', duration = 10, color="#00D4FF") {
     description: description,
     duration: duration,
     style:{
-      backgroundColor: "#9a27ff",
+      //backgroundColor: "#9a27ff",
       //backgroundColor: color,
-      color: "#fff"
+      //color: "#fff"
     }
   });
 }
@@ -33,9 +33,9 @@ export function success(description, title='', duration = 10, color="#00D4FF") {
     description: description,
     duration: duration,
     style:{
-      backgroundColor: "#9a27ff",
+      //backgroundColor: "#9a27ff",
       //backgroundColor: color,
-      color: "#fff"
+      //color: "#fff"
     }
   });
 }
@@ -46,8 +46,8 @@ export function error(description, title='', duration = 10) {
     description: description,
     duration: duration,
     style:{
-      backgroundColor: "#9a27ff",
-      color: "#fff"
+      //backgroundColor: "#9a27ff",
+      //color: "#fff"
     }
   });
 }
