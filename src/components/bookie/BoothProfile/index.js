@@ -9,7 +9,7 @@ const {Description} = DescriptionList;
 const ProfileEntry = (props) => {
   const {name, value} = props;
   return (<Row gutter={40} style={{marginBottom: 4}}>
-    <Col sm={2} className='description'>
+    <Col sm={3} className='description'>
       <div className='term'>{name}</div>
     </Col>
     <Col sm={10} className='description'>
@@ -22,7 +22,7 @@ const ProfileEntry = (props) => {
 const AccountEntry = (props) => {
   const {name, value, handleLoadAccount} = props;
   return (<Row gutter={40} style={{marginBottom: 4}}>
-    <Col sm={2} className='description'>
+    <Col sm={3} className='description'>
       <div className='term'>{name}</div>
     </Col>
     <Col sm={10} className='description'>
