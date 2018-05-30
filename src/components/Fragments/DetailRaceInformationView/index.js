@@ -23,6 +23,7 @@ export const DetailRaceInformationView = (props) => {
     <Divider style={{marginBottom: 32}}/>
     <DescriptionList title="Race Information" style={{marginBottom: 32}} size={size} col={col}>
       <Description term="Race name">{race.name}</Description>
+      <Description term="Race Address @Block Explorer">{process.env.REACT_APP_BLOCK_EXPLORER_PREFIX}{race.id}</Description>
       <Description term="Betting start time">{new Date(race.bStartTime * 1000).toLocaleString()}</Description>
       <Description term="Race start time">{new Date(race.startTime * 1000).toLocaleString()}</Description>
       <Description term="Race Duration"><CountDownTimer static={timerStatic} duration={duration} startTime={startTime}/></Description>
