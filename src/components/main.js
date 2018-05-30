@@ -13,7 +13,7 @@ import MyBetRacesView from './Profile/MyBetRacesView';
 import ChannelOwnerRacesView from './Profile/ChannelOwnerRacesView';
 import ClaimRewardView from './Profile/Rewards/ClaimRewardView';
 import PayOutView from './Profile/Rewards/PayOutView';
-
+import BoothProfile from './bookie/BoothProfile';
 
 import GetEther from './FAQ/GetEther';
 import ClaimReward from './FAQ/ClaimReward';
@@ -59,6 +59,7 @@ const Main = (props) => (
             <PropsRoute path='/profile/cmgmt/payout' component={PayOutView} {...props}   />
             <PropsRoute path='/profile/cmgmt/createrace' component={CreateRace} {...props}   />
             <PropsRoute path='/profile/cmgmt/races' component={ChannelOwnerRacesView} {...props}   />
+            <PropsRoute path='/profile/cmgmt/booth_settings' component={BoothProfile} {...props}   />
 
             <PropsRoute path='/faq/getether' component={GetEther} {...props}   />
             <PropsRoute path='/faq/claimreward' component={ClaimReward} {...props}   />

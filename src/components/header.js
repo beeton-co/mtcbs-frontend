@@ -77,6 +77,11 @@ class Header extends Component {
                     My Races
                   </Link>
                 </Menu.Item>*/}
+                <Menu.Item className="nav-item" key="cmgmt-booth-settings">
+                  <Link className="nav-link" to="/profile/cmgmt/booth_settings">
+                    Booth Profile
+                  </Link>
+                </Menu.Item>
                 <Menu.Item className="nav-item" key="cmgmt-payout">
                   <Link className="nav-link" to="/profile/cmgmt/payout">
                     My Payout
