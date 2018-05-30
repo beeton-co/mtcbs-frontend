@@ -39,6 +39,7 @@ import {
   raceStartPrices,
   totalAmount,
   inspectCoin,
+  reloadAccount,
   CONTRACT_NETWORK
 } from './actions/pocketcoin';
 
@@ -103,7 +104,6 @@ class App extends Component {
 
       }
     }
-    console.log(nextProps);
   }
 
   handleContractEvent(nextProps, props, state) {
@@ -213,7 +213,8 @@ function mapDispatchToProps(dispatch) {
     claimConfetti:claimConfetti,
     getUserClaimRewards:getUserClaimRewards,
     getUserPayOutReward:getUserPayOutReward,
-    isSubDomainAvailable:isSubDomainAvailable
+    isSubDomainAvailable:isSubDomainAvailable,
+    reloadAccount:reloadAccount
   }, dispatch);
 }
 

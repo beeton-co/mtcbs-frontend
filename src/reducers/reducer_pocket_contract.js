@@ -11,6 +11,7 @@ import {
   RACE_INSPECT_COIN,
   RACE_COINS_INFOS,
   IS_SDM_AVAILABLE,
+  ACCOUNT_RELOAD
 } from '../actions/types';
 
 import * as utils from '../actions/utils';
@@ -35,22 +36,22 @@ export default function (state = initialState, action) {
     case RACE_WINNERS:
       return {
         ...state,
-        race: {...state.race, winners:action.payload}
+        race: {...state.race, winners: action.payload}
       };
     case RACE_TOTAL_AMOUNT:
       return {
         ...state,
-        race: {...state.race, totalAmount:action.payload}
+        race: {...state.race, totalAmount: action.payload}
       };
     case RACE_COINS_INFOS:
       return {
         ...state,
-        race: {...state.race, coins:action.payload}
+        race: {...state.race, coins: action.payload}
       };
     case RACE_INSPECT_COIN:
       return {
         ...state,
-        race: {...state.race, coin:action.payload}
+        race: {...state.race, coin: action.payload}
       };
     case LOAD_CONTROLLER_CONTRACT:
       return {
@@ -86,9 +87,9 @@ export default function (state = initialState, action) {
         cRaceResult: action.payload
       };
     case MY_CHANNEL:
-      if(utils.nonNull(action.payload['error'])){
+      if (utils.nonNull(action.payload['error'])) {
         result['error'] = action.payload.toString();
-      }else {
+      } else {
         const payload = action.payload;
         result['channel'] = sc.smartcontract.user.channel = action.payload;
         result['channelOwner'] = sc.smartcontract.user.channelOwner =
@@ -121,6 +122,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         account: result
+      };
+    case ACCOUNT_RELOAD:
+      let user = state.user;
+      user.accountReloaded = action.payload;
+      return {
+        ...state,
+        user
       };
     default:
       return state;

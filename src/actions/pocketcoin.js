@@ -15,7 +15,8 @@ import {
   RACE_END_PRICES,
   RACE_TOTAL_AMOUNT,
   RACE_INSPECT_COIN,
-  RACE_COINS_INFOS
+  RACE_COINS_INFOS,
+  ACCOUNT_RELOAD
 } from "./types";
 import * as utils from './utils';
 import * as sc from '../services/smartcontract';
@@ -50,6 +51,39 @@ export const retrieveAccount = () => {
           web3Instance.eth.getAccounts);
 };
 
+export const reloadAccount = (value) => {
+  const hideMessage = message.loading('Reloading your account might take a couple of seconds...');
+  return dispatch => {
+    let controller;
+    let context = sc.smartcontract.context;
+    context["value"] = web3Instance.utils.toWei(value, "ether");
+    __controller().then(function (instance) {
+      controller = instance;
+      return controller.reloadAccount.estimateGas(context);
+    }).then(function (estimateGas) {
+      context['gas'] = estimateGas;
+      controller.reloadAccount(context)
+              .then(function (tx, error) {
+                hideMessage();
+                if (utils.nonNull(error)) {
+                  notification.error('Account could not be loaded! Please try again later');
+                  dispatch(utils.async(ACCOUNT_RELOAD, false));
+                } else {
+                  notification.success(`Congratulations! Your account was successfully reloaded! Transaction:${tx.tx}`);
+                  dispatch(utils.async(ACCOUNT_RELOAD, true));
+                }
+              }).catch(function (err) {
+        hideMessage();
+        notification.error('Account could not be loaded! Please try again later');
+        dispatch(utils.async(ACCOUNT_RELOAD, false));
+      });
+    }).catch(function (err) {
+      hideMessage();
+      notification.error('Please make sure you are sending a minimum of 0.5 ETH.');
+      dispatcher(dispatch, ACCOUNT_RELOAD, false, null);
+    });
+  }
+};
 
 export const createChannel = (name, description, subdomain) => {
   const hideMessage = message.loading(`Creating '${name}' channel. This might take a couple of seconds...`);

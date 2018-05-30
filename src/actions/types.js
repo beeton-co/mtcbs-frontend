@@ -30,6 +30,7 @@ export const LOAD_CONTROLLER_CONTRACT = 'load_controller_contract';
 export const DETECT_ETHEREUM_NETWORK = 'detect_ethereum_network';
 export const RETRIEVE_USER_ACCOUNT = 'retrieve_user_account';
 export const CREATE_CHANNEL = 'contract_call_create_channel';
+export const ACCOUNT_RELOAD = 'contract_call_account_reload';
 export const MY_CHANNEL = 'contract_call_my_channel';
 export const CREATE_RACE = 'contract_call_create_race';
 export const IS_BOOKIE = 'contract_call_is_bookie';
