@@ -6,6 +6,7 @@ import CoinListView from '../../../Fragments/CoinListView';
 import {GenerateSVGGradient} from '../../../Fragments/SVGGradients';
 import {DetailRaceInformationView} from '../../../Fragments/DetailRaceInformationView';
 import {RaceCarousel} from '../../RaceCarousel';
+import {EmptyRaceView} from '../../EmptyRaceView';
 
 export default class RunningRaceView extends Component {
 
@@ -68,8 +69,8 @@ export default class RunningRaceView extends Component {
       );
 
     }
-    //TODO message about empty races.
-    return (<div></div>);
+    return (
+            <EmptyRaceView type="info" message="Running" description="No races currently running!"/>);
   }
 
   raceDetailView() {
