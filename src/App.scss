@@ -725,11 +725,22 @@ ant-carousel .slick-slide {
 .faq{
   color:#fff;
   margin-top: 50px;
-  margin-left:30px;
+  //margin-left:30px;
+  margin-left: 15%;
+  margin-right: 15%;
+
 }
 
 .faq-block{
   padding-top: 50px;
+
+  .faq-divider{
+    color: white;
+  }
+
+  .faq-image {
+    max-width: 600px;
+  }
 }
 
 .selected-dash-card{
